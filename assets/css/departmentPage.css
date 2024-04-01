@@ -1,0 +1,153 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body{
+    font-family: Poppins;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.nav_container{
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(1, 5, 98);
+    padding: 10px 10px;
+}
+
+.nav_links{
+    display: flex;
+    gap: 20px;
+}
+
+ul.nav_links{
+    list-style-type: none;
+}
+
+ul>li>a{
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 5px;
+    transition:  border-bottom 0.1s ease-in-out;
+}
+
+
+ul.nav_links>li>span{
+    display: block;
+    height: 2px;
+    transition: 0.5s;
+    width: 0%;
+    background-color: red;
+    margin: auto;
+}
+
+ul.nav_links>li:hover span{
+    width: 100%;
+}
+
+
+.logo img{
+    width: 150px;
+}
+
+.menu_item{
+    display: none;
+}
+
+.signup{
+    border: none;
+    border-radius: 25px;
+    background-color: #F82249;
+    transition: 0.4s;
+}
+
+.signup:hover{
+    filter: drop-shadow(0px 0px 10px red);
+}
+
+.signin{
+    border: none;
+    border-radius: 25px;
+    background-color: #F82249;
+    transition: 0.7s;
+}
+
+.signin:hover{
+    filter: drop-shadow(0px 0px 10px red);
+}
+
+.footer{
+    color: white;
+    text-align: center;
+    padding: 15px 0px;
+    background-color: #0E1B4D;
+    margin-top: 15px;
+    width: 100%;
+}
+
+
+.eventsPage{
+    background-color: #ffffff;
+    color: black;
+    text-align: center;
+    padding-top: 50px;
+    flex: 1;
+}
+
+.grid_container{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    width: 100%;
+    padding: 0px 2.5%;
+    column-gap: 5%;
+    row-gap:  30px;
+}
+
+.event{
+    height: 250px;
+    position: relative;
+    cursor: pointer;
+}
+
+.eventName{
+    background-color: #3036498f;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    color: white;
+    transition: 0.3s;
+    height: 35px;
+    overflow: hidden;
+}
+
+.imageEvent{
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+}
+
+.event:hover .eventName{
+    background-color: #F82249;
+    height: 70px;
+}
+
+@media (max-width:1024px){
+    .grid_container{
+        grid-template-columns: auto;
+        padding: 0px 10px;
+    }
+}

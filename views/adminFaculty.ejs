@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/adminDashboard.css">
+
+</head>
+<body>
+    <% if(locals.facultyData){ %>
+        <script>
+            alert("Faculty '<%=facultyData %>' added successfully!");
+        </script>
+    <% } %>
+
+    <% if(locals.error){ %>
+        <script>
+            alert("<%=error %>");
+        </script>
+    <% } %>
+
+    <div class="container">
+        <div class="panel">
+            <div style="flex: 1;">
+            <div style="display: flex; align-items: center; margin-top: 20px;">
+                <i class="fa fa-user" style="font-size: 20px;"></i>
+                <h4 style="margin-left: 5px;">Admin Panel</h4>
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/')">
+                Dashboard
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_faculty')" style="background-color: white; color: black;">
+                Add/Edit/Delete Faculty
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_department')">
+                Add/Edit/Delete Department
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_event')">
+                Add/Edit/Delete Event
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+                Event Statistics
+            </div>
+        </div>
+
+        <div class="logout" style="margin-bottom: 30px;">
+            Logout
+        </div>
+        </div>
+
+        <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
+            <h1>Add Faculty</h1>
+            <div style="width: 600px; height: 430px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
+                <form action="/theevent/admin/manage_faculty/" id="facultyForm" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                    <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
+                        <p style="font-size: 20px;">Faculty Name</p>
+                        <input type="text" name="facultyName" placeholder="Enter Faculty Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        <p style="font-size: 20px; margin-top: 15px;">Faculty Email-ID</p>
+                        <input type="email" name="facultyEmail" placeholder="Enter Faculty Email-ID" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+
+                        <p style="font-size: 20px; margin-top: 15px;">Associate Department</p>
+                        <div style="height: 45px; width: 550px;">
+                            <select class="department" id="department" name="departmentName" style="height: 100%; width: 100%; font-size: 16px; padding-left: 8px;">
+                                <option value="Select Department" disabled selected>Select Department</option>
+                                <% for(var i=0; i<departments.length; i++){ %>
+                                    <option value="<%= departments[i] %>"><%= departments[i] %></option>
+                                    <% } %>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; justify-content: center; margin-top: 40px;">
+                            <input type="submit" value="Add" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            document.getElementById("facultyForm").addEventListener("submit",(event)=>{
+                event.preventDefault();
+                if(document.getElementById("department").value == "Select Department"){
+                    alert("Please select department!")
+                    return;
+                }
+                else{
+                    document.getElementById("facultyForm").submit();
+                }
+            });
+
+        function openSlider(element,path){
+            var anotherSliderNav = document.getElementsByClassName("sliderNav");
+            for(var i=0; i<anotherSliderNav.length; i++){
+                anotherSliderNav[i].style.backgroundColor = "#202123";
+                anotherSliderNav[i].style.color ="white";
+            }
+
+            element.style.backgroundColor ="white";
+            element.style.color ="black";
+
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin"+path;
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'key';
+            hiddenInput.value = 'value';
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        const passwordInput = document.getElementById('password-input');
+        const toggleButton = document.getElementById('togglePassword');
+
+        toggleButton.addEventListener('click',function(){
+            if(passwordInput.type === 'password'){
+                passwordInput.type = 'text';
+                toggleButton.classList.add('fa-eye');
+                toggleButton.classList.remove('fa-eye-slash');
+            }
+            else{
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            }
+        });
+    </script>
+</body>
+</html>

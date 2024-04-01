@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/facultyDashboard.css">
+
+</head>
+<body>
+    <% if(locals.facultyData){ %>
+        <script>
+            alert("Coordinator '<%=facultyData %>' added successfully!");
+        </script>
+    <% } %>
+
+    <% if(locals.error){ %>
+        <script>
+            alert("<%=error %>");
+        </script>
+    <% } %>
+
+    <div class="container">
+        <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </div>
+        <div class="panel" id="panel" style="position: absolute; z-index: 1;display: none; left: 0; opacity: 0; transition: opacity 1s;">
+            <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="flex: 1;">
+            <div style="display: flex; align-items: center; margin-top: 20px;">
+                <i class="fa fa-user" style="font-size: 20px;"></i>
+                <h4 style="margin-left: 5px;">Coordinator</h4>
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/')">
+                Dashboard
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_coordinator')" style="background-color: white; color: black;">
+                Add/Edit/Delete Coordinator
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_event')">
+                Add/Edit/Delete Event
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+                Event Statistics
+            </div>
+        </div>
+
+        <div class="logout" style="margin-bottom: 30px;">
+            Logout
+        </div>
+    </div>
+        </div>
+
+        <div style=" display: flex; flex-direction: column;align-items: center; width: 100%; margin-top: 20px;">
+        
+        <div style="height: 45px; width: 550px;">
+            <select class="department" id="eventSelect" name="departmentName" style="height: 100%; width: 100%; font-size: 16px; padding-left: 8px;">
+                <option value="Select Event" disabled selected>Select Event</option>
+                <option value="code connection"> Code connection </option>
+                <option value="quizzard"> Quizzard </option>
+            </select>
+        </div>
+
+        <hr width="85%" size="2" color="gray" style="margin-top: 25px; margin-bottom: 20px; opacity: 0.7;">
+        
+        <div style="display: none;" id="coordForm">
+        <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
+            <h1>Add Coordinators</h1>
+            <div class="centerFormEvent" style="background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
+                <form action="/theevent/faculty/manage_event/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                    <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                        <div>
+                        <p style="font-size: 16px;">Email of Coordinator-1</p>
+                        <input type="text" name="eventName" placeholder="Enter Email of Coordinator-1" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        <div>
+                        <p style="font-size: 16px;">Email of Coordinator-2</p>
+                        <input type="text" name="eventName" placeholder="Email of Coordinator-2" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                        <div>
+                        <p style="font-size: 16px;">Email of Coordinator-3</p>
+                        <input type="text" name="eventName" placeholder="Email of Coordinator-3" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        <div>
+                        <p style="font-size: 16px;">Email of Coordinator-4</p>
+                        <input type="text" name="eventName" placeholder="Email of Coordinator-4" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px;">
+                            <input type="submit" value="Add" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+
+            document.getElementById("eventSelect").addEventListener("change",function(){
+                var selectedOption = this.value;
+                if (selectedOption !== "Select Event") {
+                    document.getElementById("coordForm").style.display = "block";
+                } else {
+                    document.getElementById("coordForm").style.display = "none";
+                }
+            });
+            document.getElementById("facultyForm").addEventListener("submit",(event)=>{
+                event.preventDefault();
+                if(document.getElementById("department").value == "Select Department"){
+                    alert("Please select department!")
+                    return;
+                }
+                else{
+                    document.getElementById("facultyForm").submit();
+                }
+            });
+
+        function openSlider(element,path){
+            var anotherSliderNav = document.getElementsByClassName("sliderNav");
+            for(var i=0; i<anotherSliderNav.length; i++){
+                anotherSliderNav[i].style.backgroundColor = "#202123";
+                anotherSliderNav[i].style.color ="white";
+            }
+
+            element.style.backgroundColor ="white";
+            element.style.color ="black";
+
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty"+path;
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'key';
+            hiddenInput.value = 'value';
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        const passwordInput = document.getElementById('password-input');
+        const toggleButton = document.getElementById('togglePassword');
+
+        toggleButton.addEventListener('click',function(){
+            if(passwordInput.type === 'password'){
+                passwordInput.type = 'text';
+                toggleButton.classList.add('fa-eye');
+                toggleButton.classList.remove('fa-eye-slash');
+            }
+            else{
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            }
+        });
+
+        function toggleMenu(){
+            var panel = document.getElementById("panel");
+            if (panel.style.opacity === "1") {
+                panel.style.opacity = "0";
+                setTimeout(function() {
+                    panel.style.display = "none";
+                }, 1000); // Match the transition duration
+            } else {
+                panel.style.display = "block";
+                setTimeout(function() {
+                    panel.style.opacity = "1";
+                }, 100); // Start transition with a slight delay
+            }
+        }
+
+    </script>
+</body>
+</html>

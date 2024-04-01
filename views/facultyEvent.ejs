@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/facultyDashboard.css">
+
+</head>
+<body>
+    <div class="container" style="display: flex; justify-content: center;">
+        <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </div>
+        <div class="panel" id="panel" style="position: absolute; z-index: 1;display: none; left: 0; opacity: 0; transition: opacity 1s;">
+            <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="flex: 1;">
+            <div style="display: flex; align-items: center; margin-top: 20px;">
+                <i class="fa fa-user" style="font-size: 20px;"></i>
+                <h4 style="margin-left: 5px;"><%= facultyName %></h4>
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/')">
+                Dashboard
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_coordinator')">
+                Add/Edit/Delete Coordinator
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_event')"  style="background-color: white; color: black;">
+                Add/Edit/Delete Event
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+                Event Statistics
+            </div>
+        </div>
+
+        <div class="logout" style="margin-bottom: 30px;">
+            Logout
+        </div>
+    </div>
+        </div>
+
+        <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
+            <h1>Add Event</h1>
+            <div class="centerFormEvent" style="width: 1200px; height: 590px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
+                <form action="/theevent/faculty/manage_event/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                    <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
+                        <div style="display: flex; gap: 50px;">
+                        <div>
+                        <p style="font-size: 16px;">Event Name</p>
+                        <input type="text" name="eventName" placeholder="Enter Event Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        <div>
+                        <p style="font-size: 16px;">Event Tagline</p>
+                        <input type="text" name="eventName" placeholder="Enter Event Tagline" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        </div>
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                        <div>
+                        <p style="font-size: 16px;">Event Description</p>
+                        <textarea  name="eventName"  placeholder="Enter Event Description" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px; padding-top: 10px;resize: none;"  required></textarea>
+                        </div>
+                        <div>
+                        <p style="font-size: 16px;">Event Venue</p>
+                        <input type="text" name="eventName" placeholder="Enter Event Venue" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        </div>
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                        <div>
+                            <p style="font-size: 16px;">Number of Coordinators</p>
+                            <input type="number" placeholder="Enter Number of Coordinators" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                            </div>
+                        <div>
+                        <p style="font-size: 16px;">Coordinators</p>
+                        <input type="text" name="eventName" placeholder="Enter Details of Event's Coordinators" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                        </div>
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                        <div>
+                        <p style="font-size: 16px;">Upload Icon</p>
+                        <input type="file" accept="image/jpeg, image/jpg, image/png" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                        </div>
+                        <div>
+                        <p style="font-size: 16px;">Upload Flyer</p>
+                        <input type="file" accept="image/jpeg, image/jpg, image/png" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                        </div>
+                        </div>
+                        <div style="display: flex; gap: 50px; margin-top: 20px;">
+                            <div>
+                                <p style="font-size: 16px;">Event Time(From)</p>
+                                <input type="text" name="eventName" placeholder="Enter Event Time From" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                </div>
+                            <div>
+                                <p style="font-size: 16px;">Event Time(To)</p>
+                                <input type="text" name="eventName" placeholder="Enter Event Time To" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                </div>
+                            </div>
+                        <div style="display: flex; justify-content: center; margin-top: 40px;">
+                            <input type="submit" value="Add" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openSlider(element,path){
+            
+            var anotherSliderNav = document.getElementsByClassName("sliderNav");
+            for(var i=0; i<anotherSliderNav.length; i++){
+                anotherSliderNav[i].style.backgroundColor = "#202123";
+                anotherSliderNav[i].style.color ="white";
+            }
+
+            element.style.backgroundColor ="white";
+            element.style.color ="black";
+            
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty"+path;
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'key';
+            hiddenInput.value = 'value';
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function toggleMenu(){
+            var panel = document.getElementById("panel");
+            if (panel.style.opacity === "1") {
+                panel.style.opacity = "0";
+                setTimeout(function() {
+                    panel.style.display = "none";
+                }, 1000); // Match the transition duration
+            } else {
+                panel.style.display = "block";
+                setTimeout(function() {
+                    panel.style.opacity = "1";
+                }, 100); // Start transition with a slight delay
+            }
+        }
+    </script>
+</body>
+</html>

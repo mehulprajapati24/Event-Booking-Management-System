@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <meta content="" name="keywords">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/user_dashboard.css">
+</head>
+<body>
+    <div class="bg_image"></div>
+    <div class="bg_color"></div>
+
+    <nav class="nav_container">
+        <div class="logo">
+            <img src="/img/logo.png" alt="logo"/>
+        </div>
+
+        <ul class="nav_links" id="menuItem">
+            <li class="listItem"><a onclick="closeMenu()" href="#home">Home</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#about">About</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#departmentPage">Departments</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#eventSchedulePage">Schedule</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#venuePage">Venue</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#galleryPage">Gallery</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#sponsorsPage">Sponsors</a><span class="content"></span></li>
+            <li class="listItem"><a onclick="closeMenu()" href="#contactPage">Contact Us</a><span class="content"></span></li>
+            <% if(locals.first_name){ %>
+                <p class="signup" style="width: 150px; text-align: center; filter: drop-shadow(0px 0px 10px red)">Hello <%= first_name %></p>
+            <% }else{ %>
+            <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
+            <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
+            <%}%>
+        </ul>
+        
+        <div class="menu_item" id="menu_item" onclick="toggleMenu()">
+            <i class="fa fa-bars"></i>
+        </div>
+    </nav>
+
+    <section class="title" id="home">
+        <div class="projectTitle">
+            <h1 style="font-size: 45px;">EVENT BOOKING</h1>
+            <h1 style="font-size: 45px;"><span style="color: #F82249;">MANAGEMENT</span> SYSTEM</h1>
+            <p style="font-size: 20px; margin-top: 25px;">U. V. Patel College of Engineering, Ganpat University</p>
+            <a href="https://youtu.be/OsoXEo1wpYI?si=RbziMJBAdjlvdDuv" style="color: white; text-decoration: none;">
+                <div class="playButton" style="margin-top: 25px;">
+                    <i class="fa fa-play"></i>
+                </div>
+            </a>
+
+            <a href="#about" style="color: white; text-decoration: none;"><button type="button" style="margin-top: 25px;" class="aboutButton">About The Event</button></a> 
+        </div>
+    </section>
+    
+    <section class="aboutPage" id="about">
+        <div class="aboutContainer">
+            <div class="aboutTheEvent">
+                <h1>ABOUT THE EVENT</h1>
+                <p style="text-align: justify;">At UVPCE College, we organize events tailored to different departments to help students and faculty grow. These events bring people together to learn, share ideas, and build skills. We carefully plan each event to make sure it's valuable and aligns with our college's goals. They're opportunities for everyone to connect, learn, and develop in a fun and supportive environment.</p>
+            </div>
+
+            <div class="where">
+                <h1>WHERE</h1>
+                <p style="text-align: justify;">Ganpat University Campus</p>
+            </div>
+            
+            <div class="when">
+                <h1>WHEN</h1>
+                <p style="text-align: justify;">From Monday to Sunday, depending on the event</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="departmentPage" id="departmentPage">
+        <h1 style="font-size: 40px;">DEPARTMENTS</h1>
+        <h2 style="font-size: 20px;">Department Details</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <% if(departmentNames.length>0){ %>
+        <div class="grid_container">
+            <% for(var i=0; i<departmentNames.length; i++){ %>
+                <div class="department" onclick="document.location='/theevent/user/department'">
+                    <img src="/img/departments/<%= departmentIcons[i] %>" class="imageDepartment">
+                    <h2 class="departmentName"><%= departmentNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;">View the events</span> </h2>
+                </div>
+                <%}%>
+        </div>
+        <%}else{%>
+            <h1 style="text-align: center;">No any department available!</h1>
+            <%}%>
+    </section>
+
+    <section class="eventSchedulePage" id="eventSchedulePage">
+        <h1 style="font-size: 40px;">EVENT SCHEDULE</h1>
+        <h2 style="font-size: 20px;">Here is our event schedule</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <div class="rowButton">
+            <button type="button" onclick="btnColor(0)" class="scheduleBtn">DAY 1</button>
+            <button type="button" onclick="btnColor(1)" class="scheduleBtn">DAY 2</button>
+            <button type="button" onclick="btnColor(2)" class="scheduleBtn">DAY 3</button>
+        </div>
+
+        <p style="width: 100%; padding-left: 75px; padding-right: 75px; padding-top: 20px;">Here's a list of events happening today, tomorrow, and the day after tomorrow. These events offer various activities and opportunities for everyone to participate and enjoy. Whether it's a workshop, seminar, or social gathering, there's something for everyone to engage with and learn from. Join us for a great time and make the most out of these upcoming days!</p>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">10:00 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Code Connection</h4>
+                    <h5>Computer Engineering</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">11:00 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Poster Presentation</h4>
+                    <h5>Computer Engineering</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">12:00 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Automobile Workshop</h4>
+                    <h5>Mechanical Engineering</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">1:00 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Robowar</h4>
+                    <h5>Mechanical Engineering</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">2:00 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Boat Racing</h4>
+                    <h5>Marine Engineering</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule">
+            <h3 style="margin-right: 20px;">3:30 AM</h3>
+            <div class="eventDetail">
+                <!-- here add event img -->
+                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="eventDept">
+                    <h4>Circuit Assembly</h4>
+                    <h5>Electrical Engineering</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="venuePage" id="venuePage">
+        <h1 style="font-size: 40px;">EVENT VENUE</h1>
+        <h2 style="font-size: 20px;">Event venue location info and gallery</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <div class="venue_grid_container">
+            <div class="venue_container">
+            <img src="/img/venue/1.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/2.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/3.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/4.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/5.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/6.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/7.jpg" class="imageVenue">
+            </div>
+            <div class="venue_container">
+            <img src="/img/venue/8.jpg" class="imageVenue">
+            </div>
+        </div>
+    </section>
+
+    <section class="galleryPage" id="galleryPage">
+        <h1 style="font-size: 40px;">GALLERY</h1>
+        <h2 style="font-size: 20px;">Check our gallery from the recent events</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <!-- <div class="gallery_flex_container">
+            <div class="gallery">
+                <img src="/img/gallery/1.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/2.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/3.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/4.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/5.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/6.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/7.jpg" class="galleryImage"> 
+            </div>
+
+            <div class="gallery">
+                <img src="/img/gallery/8.jpg" class="galleryImage"> 
+            </div>
+        </div> -->
+
+        <div class="sliderContainer">
+            <i class="fa fa-arrow-left" onclick="changeImage('left')" style="position: absolute; top: 50%; transform: translateY(-50%);left: 7%; font-size: 20px; cursor: pointer; background-color: rgb(219, 219, 219); padding: 20px; border: 1px solid black; border-radius: 50%;"></i>
+            <i class="fa fa-arrow-right" onclick="changeImage('right')" style="position: absolute; top: 50%; transform: translateY(-50%);right: 7%; font-size: 20px; cursor: pointer;  background-color: rgb(219, 219, 219); padding: 20px; border: 1px solid black; border-radius: 50%;"></i>
+            <img src="/img/gallery/1.jpg" id="imageGallery" style="height: 550px; width: 100%;">
+        </div>
+    </section>
+
+    <section class="sponsorsPage" id="sponsorsPage">
+        <h1 style="font-size: 40px;">SPONSORS</h1>
+        <h2 style="font-size: 20px;">Check our gallery from the recent events</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <div class="sponsors_grid_container">
+            <div class="sponsors">
+                <img src="/img/sponsors/1.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/2.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/3.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/4.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/5.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/6.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/7.png" alt="sponsor" class="sponsorImage">
+            </div>
+
+            <div class="sponsors">
+                <img src="/img/sponsors/8.png" alt="sponsor" class="sponsorImage">
+            </div>
+        </div>
+    </section>
+
+
+    <section class="contactPage" id="contactPage">
+        <h1 style="font-size: 40px;">CONTACT US</h1>
+        <h2 style="font-size: 20px;">Get in Touch</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <div class="contactPageContainer">
+            <div class="nestedContainer">
+                <i class="fa fa-map-marker" style="color: #F82249; font-size: 50px;"></i>
+                <h4>ADDRESS</h4>
+                <h5>UVPCE, GANPAT UNIVERSITY,VIDYANAGAR, MEHSANA</h5>
+            </div>
+
+            <div class="nestedContainer">
+                <i class="fa fa-phone" style="color: #F82249; font-size: 50px;"></i>
+                <h4>PHONE NUMBER</h4>
+                <h5>+91 7802827504</h5>
+            </div>
+
+            <div class="nestedContainer">
+                <i class="fa fa-envelope" style="color: #F82249; font-size: 50px;"></i>
+                <h4>EMAIL</h4>
+                <h5>mehulprajapati1661@gmail.com</h5>
+            </div>
+        </div>
+
+        <form class="containerForm">
+            <div class="formContainer">
+                <input type="text" placeholder="Your Name" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
+                <input type="email" placeholder="Your Email" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
+                <input type="text" placeholder="Subject" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
+                <textarea rows="6" cols="50" placeholder="Message" style="resize: none; width: 100%; padding-left: 6px; font-size: 14px; padding-top: 15px;"></textarea>
+
+                <input type="submit" value="Send Message" style="width: 250px; height: 30px; background-color: #F82249; border: none; border-radius: 50px; color: white; font-size: 18px; cursor: pointer;">
+            </div>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <p style="font-size: 16px;">© Copyright TheEvent. All Rights Reserved | Designed by A|M|D</p>
+    </footer>
+
+    <script src="/js/user_dashboard.js"></script>
+</body>
+</html>

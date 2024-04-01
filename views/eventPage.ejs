@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/eventPage.css">
+
+</head>
+<body>
+    <nav class="nav_container">
+        <div class="logo">
+            <img src="/img/logo.png" alt="logo"/>
+        </div>
+
+        <ul class="nav_links" id="menuItem">
+            <% if(locals.first_name){ %>
+                <p class="signup" style="width: 150px; text-align: center; filter: drop-shadow(0px 0px 10px red)">Hello <%= first_name %></p>
+            <% }else{ %>
+            <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
+            <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
+            <%}%>
+        </ul>
+        
+        <div class="menu_item" id="menu_item" onclick="toggleMenu()">
+            <i class="fa fa-bars"></i>
+        </div>
+    </nav>
+
+
+    <section class="eventPage">
+        <h1 style="font-size: 40px;">CODE CONNECTION</h1>
+        <h2 style="font-size: 20px;">Amazing Coding Competition!</h2>
+        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+
+        <div class="details">
+            <div style="height: 400px;" class="imgEvent"><img src="/img/events/event.jpg" alt="eventPicture" style="height: 100%; width: 100%;"></div>
+
+            <div style="text-align: left;" class="writtenDetails"> 
+                <h1 style="height: 25px; margin-bottom: 20px;">Details</h1>
+                <p style="height: 300px; overflow-y: scroll;">
+                Code connection is the coding competition where the participants will need to code for the interesting real life problems.
+                Code Connection is a two person team event, in which one can show their talent using C programming language. Code Connection looks for the real star team that stands up to the ability of ACCURACY, SPEED & LOGIC. Come take part in the Code Connection by showcasing coding skills in different rounds. You will get various challenges like:
+                (1) Can you construct the program of given output as a team?
+                (2) Can you construct the program of given output by shuffling the team member? For example, the first member has to code for the first half of the given time and for the remaining time the second member has to code.
+                (3) Can you reconstruct the code snippets to make a working program that produces the given output individually or by shuffling team members?
+                (4) Can you construct the program of given problem definition by shuffling
+                the team member?
+
+                Rules & Regulations:
+                (1) A group of two will form the participating team for the event.
+                (2) Participants will be given a blank A4 size paper for doing rough work.
+                (3) No external electronic data may be accessed at any time. This includes phones, USB drives, the internet, etc.
+                (4) The contest will consist of two rounds having a variety of problems.
+                (5) The permissible programming language is C only.
+                (6) All solutions will be submitted electronically. Solutions will be tested by the judges and feedback will be sent accordingly.
+                (7) Any unauthorized behavior will result in automatic disqualification. This includes but is not limited to: looking at other's work/solutions, using disallowed external resources, or attempting to hack the contest environment.
+                (8) Judges' decisions are final and will not be challenged in any case.
+
+                Evaluation Criteria:
+                Round 1: The maximum marks that can be availed by a group is 20 based on correct output with appropriate coding method.
+                Round-2: The maximum marks that can be availed by a group is 30 for a single problem (out of two) for different test cases.
+
+                Date & Time: 14th October, 11:00 AM to 3:00 PM
+
+                Venue: NB-GF-005, New Engineering Building, UVPCE
+
+                Faculty Coordinators:
+                Prof. Ravi Raval
+                Prof. Pruthvish Rajput
+                Prof. Mrugank Dave
+
+                Student Coordinators:
+                Keyur Raval - 94086 13035
+
+                Volunteers:
+                Abhi Solanki - 72020 96724
+                Jay Khatri - 70465 66942
+
+            </p>
+            <div class="signin" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin: auto; margin-top: 25px;">
+                Register
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p style="font-size: 16px;">© Copyright TheEvent. All Rights Reserved | Designed by A|M|D</p>
+    </footer>
+</body>
+
+<script src="/js/departmentPage.js">
+
+</script>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <meta content="" name="keywords">
+    <title>TheEvent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="bg_image"></div>
+    <div class="center">
+        <h1>Registration</h1>
+        <form action="/theevent/user/registration" id="registrationForm" method="post">
+            <div class="txt_field row_field">
+                <% if(locals.firstname){ %>
+                    <input type="text" name="first_name" value="<%= firstname %>" id="first_name" required>
+                <% }else{ %>
+                <input type="text" name="first_name" id="first_name" required>
+                <% } %>
+                <span></span>
+                <Label>First Name</Label>
+            </div>
+            <div class="txt_field row_field right">
+                <%  if(locals.lastname) { %>
+                    <input type="text" value="<%= lastname %>" name="last_name" id="" required>
+                <% } else { %>
+                <input type="text" name="last_name" id="" required>
+                <% } %>
+                <span></span>
+                <Label>Last Name</Label>
+            </div>
+            <div class="txt_field row_field">
+                <% if(locals.email) { %>
+                    <input type="email" name="email_id" value="<%= email %>" id="" required>
+                    <h5 id="error" style="display: block;">Email Id already exists!</h5>
+                <% } else { %>
+                <input type="email" name="email_id" id="" required>
+                <h5 id="error"></h5>
+                <% } %>
+                <span></span>
+                <Label>Email ID</Label>
+            </div>
+            <div class="txt_field row_field right">
+                <% if(locals.phone){ %>
+                    <input type="tel" value="<%= phone %>" name="phone" id="phone" required>
+                <% } else{ %>
+                <input type="tel" name="phone" id="phone" required>
+                <% } %>
+                <span></span>
+                <Label>Phone Number</Label>
+                <h5 id="error" class="errorClass">Please enter valid phone number!</h5>
+            </div>
+            
+            <div class="gender">
+                <label>Gender</label>
+            </div>
+
+            <div class="date">
+                <label>Date of Birth</label>
+            </div>
+
+            <div class="gender_selection">
+                <% if(locals.gender_reg){ %>
+                    <% if(gender_reg =="male"){ %>
+                        Male <input class="radio" type="radio" name="gender" value="male" required checked>
+                        &nbsp;
+                        Female <input class="radio" type="radio" name="gender" value="female" required>
+                    <% }else{ %>
+                        Male <input class="radio" type="radio" name="gender" value="male" required>
+                        &nbsp;
+                        Female <input class="radio" type="radio" name="gender" value="female" required checked>
+                    <% } %>
+                <% }else{ %>
+                 Male <input class="radio" type="radio" name="gender" value="male" required>
+                &nbsp;
+                Female <input class="radio" type="radio" name="gender" value="female" required>
+                <% } %>
+            </div>
+            
+            <div class="calendar">
+                <% if(locals.dateofbirth){ %>
+                    <input class="dob" type="date" value="<%= dateofbirth %>" name="dob" id="" required>
+                <% }else{ %>
+                <input class="dob" type="date" name="dob" id="" required>
+                <% } %>
+                <span></span>
+                </div>
+
+            <div class="pass pass_reg">Forgot Password?</div>
+
+             <button type="submit" class="btn">Next</button> 
+            <div class="signup_link">
+                Already have an account? <a href="/theevent/user/login">Login</a>
+            </div>
+    </form>
+    </div>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            // Perform form validation
+            var phoneNumber = document.getElementById("phone").value;
+            if (!isValidPhoneNumber(phoneNumber)) {
+                // alert("Please enter a valid phone no");
+                document.getElementsByClassName("errorClass")[0].style.display ="block";
+                return;
+            }
+            document.getElementById("error").style.display ="none";
+
+            // If validation passes, submit the form
+            // document.getElementById("registrationForm").submit();
+            this.submit();
+        });
+
+        document.getElementById("phone").addEventListener('input', function() {
+        var phoneNumber = document.getElementById("phone").value;
+        if (!isValidPhoneNumber(phoneNumber)) {
+            document.getElementsByClassName("errorClass")[0].style.display = "block";
+        } else {
+            document.getElementsByClassName("errorClass")[0].style.display = "none";
+        }
+        });
+
+        document.getElementById("phone").addEventListener('blur', function(){
+            if(this.value == ""){
+                document.getElementById("error").style.display = "none";
+            }
+        });
+
+        function isValidPhoneNumber(phoneNumber) {
+            // Regular expression to validate 10-digit phone number starting with 6, 7, 8, or 9
+            var phoneRegex = /^[6-9]\d{9}$/;
+            return phoneRegex.test(phoneNumber);
+        }
+    </script>
+
+</body>
+</html>

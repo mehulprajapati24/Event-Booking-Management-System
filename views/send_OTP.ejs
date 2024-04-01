@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <meta content="" name="keywords">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    
+
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="bg_image"></div>
+    <div class="center" id="mainForm">
+        <h1>Verification</h1>
+        <h2>OTP has been sent to <%= emailId %></h2>
+        <% if(locals.forgotpassword){ %>
+        <form action="/theevent/user/changedpassword" method="post" id="otpForm">
+        <% }else{ %>
+            <form action="/theevent/user/otpdone" method="post" id="otpForm">
+        <% } %>
+        <input type="text" name="emailOfNewPassword" value="<%=  emailId %>" hidden/>
+            <div class="txt_field">
+                <input type="number" name="otp" id="otp" required>
+                <span></span>
+                <Label>Enter OTP</Label>
+                <h5 id="error">Invalid  OTP! Please try again.</h5>
+            </div>
+            <input type="submit" class="otp-btn" value="Enter">
+        </form>
+    </div>
+    <h1 id="randomOtp" style="display: none;"><%= randomOtp %></h1>
+    <h1 id="milliseconds" style="display: none;"><%= millisecs %></h1>
+
+
+    <div class="container">
+        <div class="popup" id="popup">
+            <h1 style="color: red; margin-top: 10px;">Timeout</h1>
+            <h2 style="margin-bottom: 50px;color: black; padding: 0 20px; font-size: 22px;">Please click on OK button to regenerate the OTP</h2>
+            <button type="button" class="otpregenerate" onclick="removePopup()">OK</button>
+        </div>
+    </div>
+
+
+
+    <script>
+        document.getElementById("otpForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            // Perform form validation
+            var otp = document.getElementById("otp").value;
+            var randomOtp = document.getElementById("randomOtp").innerHTML;
+            var milliseconds = document.getElementById("milliseconds").innerHTML;
+            if (otp != randomOtp) {
+                document.getElementById("error").style.display ="block";
+                if((Number(milliseconds) + 60000) < Number(Date.now()))
+                {
+                    document.getElementById("popup").classList.add("openpopup");
+                    document.getElementById("mainForm").classList.add("blurform");
+                }
+                return;
+            }
+            else
+            {
+                //900000 for 15 minutes but test purpose 1 minute = 60000 millis
+                
+                if((Number(milliseconds) + 60000) >= Number(Date.now())){
+                    document.getElementById("error").style.display ="none";
+
+                    // If validation passes, submit the form
+                    // document.getElementById("registrationForm").submit();
+                    document.getElementById("otpForm").submit();
+                }
+                else{
+                 //  alert("Timeout! Regenerate OTP!");
+                 document.getElementById("popup").classList.add("openpopup");
+                 document.getElementById("mainForm").classList.add("blurform");
+                  // window.location.href = "/theevent/user/registration1";
+                 //  $('#myModal').modal('show');
+                }
+            }
+        });
+
+        function removePopup(){
+            event.preventDefault();
+            document.getElementById("popup").classList.remove("openpopup");
+            document.getElementById("mainForm").classList.remove("blurform");
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
