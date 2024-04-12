@@ -19,7 +19,11 @@
         </script>
     <% } %>
     <div class="container">
-        <div class="panel">
+        <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </div>
+        <div class="panel" style="display: none; opacity: 0; transition: opacity 1s;" id="panel">
+            <div style="display: flex; flex-direction: column; height: 100%;">
             <div style="flex: 1;">
             <div style="display: flex; align-items: center; margin-top: 20px;">
                 <i class="fa fa-user" style="font-size: 20px;"></i>
@@ -49,6 +53,7 @@
 
         <div class="logout" style="margin-bottom: 30px;">
             Logout
+        </div>
         </div>
         </div>
 
@@ -93,6 +98,21 @@
             form.appendChild(hiddenInput);
             document.body.appendChild(form);
             form.submit();
+        }
+
+        function toggleMenu(){
+            var panel = document.getElementById("panel");
+            if (panel.style.opacity === "1") {
+                panel.style.opacity = "0";
+                setTimeout(function() {
+                    panel.style.display = "none";
+                }, 1000); // Match the transition duration
+            } else {
+                panel.style.display = "block";
+                setTimeout(function() {
+                    panel.style.opacity = "1";
+                }, 100); // Start transition with a slight delay
+            }
         }
     </script>
 </body>

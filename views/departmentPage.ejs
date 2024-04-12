@@ -34,30 +34,25 @@
 
 
     <section class="eventsPage" style="padding-top: 100px;">
-        <h1 style="font-size: 40px;">Computer Engineering</h1>
+        <h1 style="font-size: 40px;"><%= departmentName %></h1>
         <h2 style="font-size: 20px;">Events and Activities</h2>
         <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
 
+        <% if(eventNames.length > 0){ %>
         <div class="grid_container">
-            <div class="event" onclick="document.location='/theevent/user/event'">
-                <img src="/img/events/event.jpg" class="imageEvent">
-                <h2 class="eventName">Code Connection <br> <span style="font-size: 20px; font-weight: 400;">Amazing Coding Competition!</span> </h2>
+            <% for(i=0; i<eventNames.length; i++){ %>
+            <div class="event" onclick="document.location='/theevent/user/event/<%= eventNames[i] %>'">
+                <img src="/img/events/<%= eventIcons[i] %>" class="imageEvent">
+                <h2 class="eventName"><%= eventNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;"><%= eventTagline[i] %></span> </h2>
             </div>
-
-            <div class="event">
-                <img src="/img/events/event.jpg" class="imageEvent">
-                <h2 class="eventName">Webathon <br> <span style="font-size: 20px; font-weight: 400;">Test Your Brain!</span></h2>
-            </div>
-
-            <div class="event">
-                <img src="/img/events/event.jpg" class="imageEvent">
-                <h2 class="eventName">Poster Presentation <br> <span style="font-size: 20px; font-weight: 400;">View the More details</span></h2>
-            </div>
-
-            
-
+            <% }  %>
             </div>
         </div>
+        <% }else{ %>
+            <div style="display: flex; justify-content: center; align-items: center; height: 400px;">
+                <p style="font-size: 28px;">------------ No any events right now! ------------</p>
+            </div>
+            <% } %>
     </section>
 
     <footer class="footer">

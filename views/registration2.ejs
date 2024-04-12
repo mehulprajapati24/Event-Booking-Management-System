@@ -35,10 +35,9 @@
                 <div class="department">
                     <select class="department" id="department" name="department">
                         <option value="Select Department" disabled selected>Select Department</option>
-                        <option value="Computer Engineering">Computer Engineering</option>
-                        <option value="Mechanical Engineering">Mechanical Engineering</option>
-                        <option value="Electrical Engineering">Electrical Engineering</option>
-                        <option value="Civil Engineering">Civil Engineering</option>
+                        <% for(i=0; i<departments.length; i++) { %>
+                            <option value="<%= departments[i]%>"><%= departments[i] %></option>
+                        <% } %>
                     </select>
                     <h5 id="error" class="department_error" style="top: 52px;">Please select department!</h5>
                 </div>

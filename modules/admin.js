@@ -4,7 +4,6 @@ const con = require('./connect');
 const bcrypt = require('bcrypt');
 const path = require('path');
 
-const passKey = require("../passKey");
 
 const router = express.Router();
 
@@ -141,7 +140,7 @@ function send_mail(name, password, text, emailId){
       service: 'gmail',
       auth: {
         user: 'mehulprajapati1661@gmail.com',
-        pass: passKey
+        pass: process.env.PASS_KEY
       }
     });
 

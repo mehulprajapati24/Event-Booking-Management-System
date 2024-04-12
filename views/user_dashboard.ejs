@@ -88,7 +88,8 @@
         <% if(departmentNames.length>0){ %>
         <div class="grid_container">
             <% for(var i=0; i<departmentNames.length; i++){ %>
-                <div class="department" onclick="document.location='/theevent/user/department'">
+                    <div class="department" onclick="document.location='/theevent/user/department/<%= departmentNames[i] %>';">
+
                     <img src="/img/departments/<%= departmentIcons[i] %>" class="imageDepartment">
                     <h2 class="departmentName"><%= departmentNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;">View the events</span> </h2>
                 </div>
@@ -193,27 +194,35 @@
 
         <div class="venue_grid_container">
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/1.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">New building</h1>
             <img src="/img/venue/2.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/3.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/4.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/5.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/6.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/7.jpg" class="imageVenue">
             </div>
             <div class="venue_container">
+            <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
             <img src="/img/venue/8.jpg" class="imageVenue">
             </div>
         </div>
@@ -259,8 +268,8 @@
         </div> -->
 
         <div class="sliderContainer">
-            <i class="fa fa-arrow-left" onclick="changeImage('left')" style="position: absolute; top: 50%; transform: translateY(-50%);left: 7%; font-size: 20px; cursor: pointer; background-color: rgb(219, 219, 219); padding: 20px; border: 1px solid black; border-radius: 50%;"></i>
-            <i class="fa fa-arrow-right" onclick="changeImage('right')" style="position: absolute; top: 50%; transform: translateY(-50%);right: 7%; font-size: 20px; cursor: pointer;  background-color: rgb(219, 219, 219); padding: 20px; border: 1px solid black; border-radius: 50%;"></i>
+            <i class="fa fa-arrow-left" onclick="changeImage('left')" style="color: #F82249; position: absolute; top: 50%; transform: translateY(-50%);left: 7%; font-size: 20px; cursor: pointer; background-color: #010562; padding: 20px; border: 1px solid black; border-radius: 50%; filter: drop-shadow(0px 0px 20px #F82249);"></i>
+            <i class="fa fa-arrow-right" onclick="changeImage('right')" style="color: #F82249; position: absolute; top: 50%; transform: translateY(-50%);right: 7%; font-size: 20px; cursor: pointer;  background-color: #010562; padding: 20px; border: 1px solid black; border-radius: 50%; filter: drop-shadow(0px 0px 20px #F82249);"></i>
             <img src="/img/gallery/1.jpg" id="imageGallery" style="height: 550px; width: 100%;">
         </div>
     </section>

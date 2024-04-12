@@ -58,4 +58,18 @@ con.query(sql,(err,result)=>{
     if (err) throw err;
     console.log("faculty table created")
 });
+
+sql = "create table if not exists event(id int primary key auto_increment, eventName varchar(50), eventTagline varchar(50), eventDescription varchar(5000), eventVenue varchar(50), numberOfCoordinators varchar(1), eventIcon varchar(50), eventFlyer varchar(50), eventDate varchar(50), eventStartTime varchar(50), eventEndTime varchar(50), registrationFees varchar(50), attendeesCapacity varchar(50), department varchar(50) ,facultyEmailId varchar(50))";
+
+con.query(sql,(err,result)=>{
+    if (err) throw err;
+    console.log("event table created");
+});
+
+sql = "create table if not exists coordinator(id int primary key auto_increment, coordinatorEmail varchar(50), coordinatorPassword varchar(100), associatedDepartment varchar(50), associatedEvent varchar(50))";
+
+con.query(sql, (err,result)=>{
+    if (err) throw err;
+    console.log("coordinator table created");
+});
 module.exports = con;

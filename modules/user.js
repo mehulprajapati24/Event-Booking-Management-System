@@ -4,7 +4,7 @@ const con = require('./connect');
 const bcrypt = require('bcrypt');
 const { error } = require('console');
 
-const passKey = require("../passKey");
+
 
 const saltRounds = 10;
 
@@ -39,7 +39,14 @@ router.post('/registration', (req, res) => {
         con.query(sql, [emailId],(err,result)=>{
             if (err) throw err;
             if(result.length == 0){
-              res.sendFile(process.cwd() + '/views/registration2.html');
+              var departmentArray = [];
+              sql = "select departmentName from department";
+              con.query(sql,(err,results)=> {
+                for(i=0; i< results.length ; i++){
+                  departmentArray.push(results[i].departmentName);
+                }
+                res.render("registration2.ejs",{departments: departmentArray});
+              });
             }
             else{
                   res.render("registration1.ejs",{firstname: firstName, lastname: lastName, email: emailId, phone: Number(phoneNo), gender_reg: gender, dateofbirth: dob});
@@ -55,7 +62,8 @@ router.post('/otp',(req,res)=>{
     enrollmentNo = obj.enrollment;
     password = obj.password;
 
-    var otp = Math.floor(Math.random() * 1000000) + 1;
+    //var otp = Math.floor(Math.random() * 1000000) + 1;
+    var otp = Math.floor(Math.random() * 900000) + 100000;
     var milliseconds = Date.now();
     var sql = `INSERT INTO otp (created_at, email, otp) VALUES(?,?,?) ON DUPLICATE KEY UPDATE created_at=VALUES(created_at), otp=VALUES(otp)`;
 
@@ -119,9 +127,28 @@ router.post('/login',(req,res)=>{
 });
 
 router.get('/',(req,res)=>{
-  var departmentArray = [];
-  var departmentIconsArray = [];
-  var sql = "select departmentName, departmentIcon from department";
+ // console.log("Cookie: "+req.cookies.emailId);
+ console.log("Session data: "+req.session.email_id);
+  // var emailID = req.cookies.emailId;
+  // var firstNAME = req.cookies.firstName;
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  if(emailID){
+    var departmentArray = [];
+    var departmentIconsArray = [];
+    var sql = "select departmentName, departmentIcon from department";
+    con.query(sql,(err,results)=> {
+      for(i=0; i< results.length ; i++){
+        departmentArray.push(results[i].departmentName);
+        departmentIconsArray.push(results[i].departmentIcon);
+      }
+      res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstNAME, email_id: emailID});
+    });
+  }
+  else{
+    var departmentArray = [];
+    var departmentIconsArray = [];
+    var sql = "select departmentName, departmentIcon from department";
     con.query(sql,(err,results)=> {
       for(i=0; i< results.length ; i++){
         departmentArray.push(results[i].departmentName);
@@ -129,6 +156,7 @@ router.get('/',(req,res)=>{
       }
       res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray});
     });
+  }
 });
 
 router.get("/forgot-password",(req,res)=>{
@@ -145,6 +173,10 @@ router.post("/",(req,res)=>{
               departmentArray.push(results[i].departmentName);
               departmentIconsArray.push(results[i].departmentIcon);
             }
+          //  res.cookie("emailId",emailId,{maxAge:3600000 * 24, httpOnly: true});
+          //  res.cookie("firstName",firstName,{maxAge:3600000 * 24, httpOnly: true});
+          req.session.email_id = emailId;
+          req.session.first_name = firstName;
             res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstName, email_id: emailId});
           });
 });
@@ -173,8 +205,8 @@ router.post("/forgot-password",(req,res)=>{
               res.render("forgotpasswordemail.ejs",{existEmailId:email});
             }
             else{
-
-              var otp = Math.floor(Math.random() * 1000000) + 1;
+              //var otp = Math.floor(Math.random() * 1000000) + 1;
+              var otp = Math.floor(Math.random() * 900000) + 100000;
               var milliseconds = Date.now();
               var sql = `INSERT INTO otp (created_at, email, otp) VALUES(?,?,?) ON DUPLICATE KEY UPDATE created_at=VALUES(created_at), otp=VALUES(otp)`;
 
@@ -213,12 +245,89 @@ router.post("/passwordchanged", (req,res)=>{
   });
 });
 
-router.get("/department",(req,res)=>{
-  res.render("departmentPage.ejs",{first_name : firstName, email_id: emailId});
+router.get("/department/:departmentName",(req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  if(emailID){
+  var departmentName = req.params.departmentName;
+  var sql = `select * from event where department=?;`
+  con.query(sql, [departmentName] ,(err, result)=>{
+    if (err) throw err;
+    console.log("Events fetched successfully");
+    eventNames = [];
+    eventIcons = [];
+    eventTagline = [];
+    for(i=0; i<result.length; i++){
+      eventNames.push(result[i].eventName);
+      eventIcons.push(result[i].eventIcon);
+      eventTagline.push(result[i].eventTagline);
+    }
+    res.render("departmentPage.ejs",{first_name : firstNAME, email_id: emailID, eventNames: eventNames, eventIcons: eventIcons, eventTagline: eventTagline, departmentName: departmentName});
+  });
+  }else{
+    var departmentName = req.params.departmentName;
+  var sql = `select * from event where department=?;`
+  con.query(sql, [departmentName] ,(err, result)=>{
+    if (err) throw err;
+    console.log("Events fetched successfully");
+    eventNames = [];
+    eventIcons = [];
+    eventTagline = [];
+    for(i=0; i<result.length; i++){
+      eventNames.push(result[i].eventName);
+      eventIcons.push(result[i].eventIcon);
+      eventTagline.push(result[i].eventTagline);
+    }
+    res.render("departmentPage.ejs",{eventNames: eventNames, eventIcons: eventIcons, eventTagline: eventTagline, departmentName: departmentName});
+  });
+}
 });
 
-router.get("/event",(req,res)=>{
-  res.render("eventPage.ejs", {first_name : firstName, email_id: emailId});
+router.get("/event/:eventName",(req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  if(emailID){
+  var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  con.query(sql, [eventName] , (err, result)=>{
+    if (err) throw err;
+    console.log("Event fetched successfully");
+
+    res.render("eventPage.ejs", {first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+  });
+}else{
+  var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  con.query(sql, [eventName] , (err, result)=>{
+    if (err) throw err;
+    console.log("Event fetched successfully");
+
+    res.render("eventPage.ejs", {eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+  });
+}
+});
+
+router.get("/eventregister/:eventName",(req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  var eventName = req.params.eventName;
+  if(emailID){
+    var sql = `select * from event where eventName=?;`
+    con.query(sql, [eventName] , (err, result)=>{
+      if (err) throw err;
+      console.log("Event fetched successfully");
+
+      res.render("eventPage.ejs", {registered: "Successfully registered" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+    });
+  }else{
+    var sql = `select * from event where eventName=?;`
+    con.query(sql, [eventName] , (err, result)=>{
+      if (err) throw err;
+      console.log("Event fetched successfully");
+
+      res.render("eventPage.ejs", {error: "You need to login to register for the event!" ,eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+    });
+  }
 });
 
 function send_mail(otp, text, emailId){
@@ -226,7 +335,7 @@ function send_mail(otp, text, emailId){
         service: 'gmail',
         auth: {
           user: 'mehulprajapati1661@gmail.com',
-          pass: passKey
+          pass: process.env.PASS_KEY
         }
       });
 

@@ -348,6 +348,7 @@ ul.nav_links>li:hover span{
 
 .venue_container{
     height: 250px;
+    position: relative;
 }
 
 .imageVenue{

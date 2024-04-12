@@ -13,11 +13,18 @@
 
 </head>
 <body>
+
+    <% if(locals.eventData){ %>
+        <script>
+            alert("Event '<%= eventData %>' added successfully!");
+        </script>
+    <% } %>
+
     <div class="container" style="display: flex; justify-content: center;">
         <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
             <i class="fa fa-bars" style="font-size: 30px;"></i>
         </div>
-        <div class="panel" id="panel" style="position: absolute; z-index: 1;display: none; left: 0; opacity: 0; transition: opacity 1s;">
+        <div class="panel" id="panel" style="position: fixed; z-index: 1;display: none; left: 0; opacity: 0; transition: opacity 1s; position: fixed;">
             <div style="display: flex; flex-direction: column; height: 100%;">
             <div style="flex: 1;">
             <div style="display: flex; align-items: center; margin-top: 20px;">
@@ -51,7 +58,7 @@
         <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
             <h1>Add Event</h1>
             <div class="centerFormEvent" style="width: 1200px; height: 670px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
-                <form action="/theevent/faculty/manage_event/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                <form id="eventForm" action="/theevent/faculty/manage_event/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
                     <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
                         <div style="display: flex; gap: 50px;">
                         <div>
@@ -60,57 +67,94 @@
                         </div>
                         <div>
                         <p style="font-size: 16px;">Event Tagline</p>
-                        <input type="text" name="eventName" placeholder="Enter Event Tagline" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        <input type="text" name="eventTagline" placeholder="Enter Event Tagline" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                         </div>
                         </div>
                         <div style="display: flex; gap: 50px; margin-top: 20px;">
                         <div>
                         <p style="font-size: 16px;">Event Description</p>
-                        <textarea  name="eventName"  placeholder="Enter Event Description" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px; padding-top: 10px;resize: none;"  required></textarea>
+                        <textarea  name="eventDescription"  placeholder="Enter Event Description" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px; padding-top: 10px;resize: none;"  required></textarea>
                         </div>
                         <div>
                         <p style="font-size: 16px;">Event Venue</p>
-                        <input type="text" name="eventName" placeholder="Enter Event Venue" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        <input type="text" name="eventVenue" placeholder="Enter Event Venue" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                         </div>
                         </div>
                         <div style="display: flex; gap: 50px; margin-top: 20px;">
                         <div>
                             <p style="font-size: 16px;">Number of Coordinators</p>
-                            <input type="number" placeholder="Enter Number of Coordinators" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                            <input type="number" placeholder="Enter Number of Coordinators" name="numberOfCoordinators" min="0" max="4" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
                             </div>
                         <div>
-                        <p style="font-size: 16px;">Coordinators</p>
-                        <input type="text" name="eventName" placeholder="Enter Details of Event's Coordinators" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                            <p style="font-size: 16px;">Upload Icon</p>
+                            <input type="file" accept="image/jpeg, image/jpg, image/png" name="eventIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
                         </div>
                         </div>
                         <div style="display: flex; gap: 50px; margin-top: 20px;">
                         <div>
-                        <p style="font-size: 16px;">Upload Icon</p>
-                        <input type="file" accept="image/jpeg, image/jpg, image/png" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                        <p style="font-size: 16px;">Upload Flyer</p>
+                        <input type="file" accept="image/jpeg, image/jpg, image/png" name="eventFlyer" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
                         </div>
                         <div>
                         <p style="font-size: 16px;">Event Date</p>
-                        <input type="date" name="eventName" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        <input type="date" name="eventDate" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                     </div>
                         </div>
                         <div style="display: flex; gap: 50px; margin-top: 20px;">
                             <div>
                                 <p style="font-size: 16px;">Event Time(From)</p>
-                                <input type="time" name="eventName" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                <!-- <input type="time" name="eventStartTime" step="60" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required> -->
+                                <select name="startHour" id="startHour" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select hour">select hour</option>
+                                    <% for(i=1;i<=12;i++){ %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                                <select name="startMinute" id="startMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select minute">select minute</option>
+                                    <% for(i=1;i<=60;i++){ %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                                <select name="startPeriod" id="startPeriod" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select period">select period</option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
                                 </div>
                             <div>
                                 <p style="font-size: 16px;">Event Time(To)</p>
-                                <input type="time" name="eventName" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                <select name="endHour" id="endHour" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select hour">select hour</option>
+                                    <% for(i=1;i<=12;i++){ %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                                <select name="endMinute" id="endMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select minute">select minute</option>
+                                    <% for(i=1;i<=60;i++){ %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                                <select name="endPeriod" id="endPeriod" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                    <option disabled selected value="select period">select period</option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
                                 </div>
                             </div>
                             <div style="display: flex; gap: 50px; margin-top: 20px;">
                                 <div>
                                     <p style="font-size: 16px;">Registration Fees</p>
-                                    <input type="text" name="eventName" placeholder="Enter Registration Fees" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                    <input type="text" name="registrationFees" placeholder="Enter Registration Fees" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                                 </div>
                                 <div>
                                     <p style="font-size: 16px;">Capacity</p>
-                                    <input type="number" name="eventName" placeholder="Enter Number of Attendees allowed" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                    <input type="number" name="attendeesCapacity" placeholder="Enter Number of Attendees allowed" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                                 </div>
                             </div>
                         <div style="display: flex; justify-content: center; margin-top: 40px;">
@@ -161,6 +205,83 @@
                 }, 100); // Start transition with a slight delay
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById("eventForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            var error=0;
+
+            if(document.getElementById("startHour").value=="select hour"){
+                document.getElementById("startHour").style.border = "1px solid red";
+                document.getElementById("startHour").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("startHour").style.border = "1px solid black";
+                document.getElementById("startHour").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(document.getElementById("startMinute").value=="select minute"){
+                document.getElementById("startMinute").style.border = "1px solid red";
+                document.getElementById("startMinute").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("startMinute").style.border = "1px solid black";
+                document.getElementById("startMinute").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(document.getElementById("startPeriod").value=="select period"){
+                document.getElementById("startPeriod").style.border = "1px solid red";
+                document.getElementById("startPeriod").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("startPeriod").style.border = "1px solid black";
+                document.getElementById("startPeriod").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(document.getElementById("endHour").value=="select hour"){
+                document.getElementById("endHour").style.border = "1px solid red";
+                document.getElementById("endHour").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("endHour").style.border = "1px solid black";
+                document.getElementById("endHour").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(document.getElementById("endMinute").value=="select minute"){
+                document.getElementById("endMinute").style.border = "1px solid red";
+                document.getElementById("endMinute").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("endMinute").style.border = "1px solid black";
+                document.getElementById("endMinute").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(document.getElementById("endPeriod").value=="select period"){
+                document.getElementById("endPeriod").style.border = "1px solid red";
+                document.getElementById("endPeriod").style.backgroundColor = "#f8d7da";
+                error=1;
+                return;
+            }else{
+                document.getElementById("endPeriod").style.border = "1px solid black";
+                document.getElementById("endPeriod").style.backgroundColor = "white";
+                error=0;
+            }
+
+            if(error==0){
+                document.getElementById("eventForm").submit();
+            }
+        });
+    });
     </script>
 </body>
 </html>
