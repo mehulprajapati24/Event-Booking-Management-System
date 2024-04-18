@@ -53,7 +53,7 @@
 
                 <!-- onclick="document.location='/theevent/user/eventregister/<%#= eventName %>'" -->
                 <% if(locals.register == "Register"){ %>
-                    <div class="signin" id="rzp-button1" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin: auto; margin-top: 25px;">
+                    <div class="signin" id="rzp-button1" onclick="registerForEvent('<%= eventName %>')" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin: auto; margin-top: 25px;">
                         <%= register %>
                     </div>
                 <% }else{ %>
@@ -69,80 +69,16 @@
         <p style="font-size: 16px;">© Copyright TheEvent. All Rights Reserved | Designed by A|M|D</p>
     </footer>
 
-
 <script src="/js/departmentPage.js">
 </script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
 <script>
-
-var orderId ;
-$(document).ready(function(){
-    var settings = {
-  "url": "/theevent/user/create/orderId",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    "amount": '<%=registrationFees%>' * 100
-  }),
-};
-
-//creates new orderId everytime
-$.ajax(settings).done(function (response) {
-
-  orderId=response.id;
-  console.log(orderId);
-  $("button").show();
-});
-});
-
-
-var options = {
-    "key": '<%=key_id%>', // Enter the Key ID generated from the Dashboard
-    "amount": '<%=registrationFees%>' * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "TheEvent UVPCE",
-    "description": "Test Transaction",
-    "image": "/img/university-logo.jpg",
-    "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "callback_url": "/theevent/user/successpayment/"+ '<%= eventName %>',
-    "prefill": {
-        "name": '<%= fullName %>',
-        "email": '<%= emailID %>',
-        "contact": '<%= phoneNo %>'
-    },
-    "notes": {
-        "address": "U. V. Patel College of Engineering, Ganpat University"
-    },
-    "theme": {
-        "color": "#3399cc"
+    function registerForEvent(eventName){
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/theevent/user/successpayment/"+eventName);
+        document.body.appendChild(form);
+        form.submit();
     }
-};
-var rzp1 = new Razorpay(options);
-
-document.getElementById('rzp-button1').onclick = function(e){
-    if('<%= loggedIn %>' == "yes"){
-        if('<%= register %>' == "Registered"){
-            alert("You are already registered for this event!");
-        }
-        else{
-            rzp1.open();
-            e.preventDefault();
-        }
-    }
-    else{
-        alert("Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!");
-    }
-}
-
-
 </script>
-
 </body>
-
 </html>

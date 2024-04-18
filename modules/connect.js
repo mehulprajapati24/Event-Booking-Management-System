@@ -72,4 +72,11 @@ con.query(sql, (err,result)=>{
     if (err) throw err;
     console.log("coordinator table created");
 });
+
+sql = "create table if not exists registered_event(user_id int, event_id int)";
+
+con.query(sql, (err,result)=>{
+    if (err) throw err;
+    console.log("registered_event table created");
+});
 module.exports = con;
