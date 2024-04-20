@@ -97,7 +97,8 @@
     }
 
     function registerForEvent2(eventName){
-        var result = confirm("Time clash found! Are you still want to proceed? If yes then press ok button."); // Display the warning alert box
+        clashesEventsName = '<%= clashesEventsName %>';
+        var result = confirm("Time clash found in such event(s): " + clashesEventsName + "\nAre you still want to proceed? If yes then press ok button."); // Display the warning alert box
         if (result) {
             var form = document.createElement("form");
             form.setAttribute("method", "post");

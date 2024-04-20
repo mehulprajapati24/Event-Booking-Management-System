@@ -6,6 +6,9 @@ const { error } = require('console');
 const Razorpay = require("razorpay");
 const env = require("dotenv");
 const moment = require('moment');
+var crypto = require("crypto");
+const util = require('util');
+const conQuery = util.promisify(con.query);
 
 
 env.config();
@@ -295,34 +298,122 @@ router.get("/department/:departmentName",(req,res)=>{
 });
 
 
-// Function to check if the selected event clashes with any existing event
-function checkEventClash(selectedDate, selectedStartTime, selectedEndTime, event) {
 
-  const selectedDateTimeStart = moment(selectedDate + ' ' + selectedStartTime, 'DD/MM/YYYY h:mm A');
-  const selectedDateTimeEnd = moment(selectedDate + ' ' + selectedEndTime, 'DD/MM/YYYY h:mm A');
+/*
+router.get("/event/:eventName",async (req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  var fullName="";
+  var phone_no="";
+
+  if(emailID){
+  var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  var result = await conQuery(sql, [eventName]);
+  console.log("Event fetched successfully");
 
 
-      if (event.date === selectedDate) {
-          console.log("Event Date:", event.date);
-          const eventStartTime = moment(event.date + ' ' + event.startTime, 'DD/MM/YYYY h:mm A');
-          const eventEndTime = moment(event.date + ' ' + event.endTime, 'DD/MM/YYYY h:mm A');
+   eventId = result[0].id;
+   eventTagline = result[0].eventTagline;
+   eventDescription = result[0].eventDescription;
+   eventVenue = result[0].eventVenue;
+   eventFlyer = result[0].eventFlyer;
+   eventDate = result[0].eventDate;
+   eventStartTime = result[0].eventStartTime;
+   eventEndTime = result[0].eventEndTime;
+   registrationFees = result[0].registrationFees;
+   attendeesCapacity = result[0].attendeesCapacity;
 
-          console.log("Event Start Time:", event.startTime);
-          console.log("Event End Time:", event.endTime);
+   sql = "select * from user_registration where email_id=?";
+   result = await conQuery(sql, [emailID]);
+   var user_id = result[0].user_id;
+   var first_name = result[0].first_name;
+   var last_name = result[0].last_name;
+   fullName = first_name + " " + last_name;
+   phone_no = result[0].phone_no;
 
-          if (
-              (selectedDateTimeStart.isBetween(eventStartTime, eventEndTime) || selectedDateTimeEnd.isBetween(eventStartTime, eventEndTime)) ||
-              (eventStartTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd) || eventEndTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd))
-          ) {
-              console.log("Clash Found!");
-              return true; // Clash found
+   sql = "select * from registered_event where user_id=? AND event_id=?";
+   result = await conQuery(sql, [user_id, eventId]);
+
+   if(result.length == 0){
+
+    sql = "select * from registered_event where user_id=?";
+    result = await conQuery(sql, [user_id]);
+    
+    if(result.length == 0)
+          {
+            if(registrationFees==0)
+            {
+              res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
+            else
+            {
+              res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
           }
-      }
+          else
+          {
+            registeredEvent = {
+              date: "",
+              startTime: "",
+              endTime: ""
+            };
+
+            var clashFound = false;
+            for(i=0; i<result.length; i++){
+              var eventId = result[i].event_id;
+              sql = "select * from event where id=?";
+              result2 = await conQuery(sql, [eventId]);
+
+              registeredEvent.date = result2[0].eventDate;
+              registeredEvent.startTime = result2[0].eventStartTime;
+              registeredEvent.endTime = result2[0].eventEndTime;
+
+              if(checkEventClash(eventDate, eventStartTime, eventEndTime, registeredEvent)){
+                clashFound = true;
+                break;
+              }
+              }
+
+              if(clashFound){
+                if(registrationFees==0)
+                {
+                  res.render("eventPage2.ejs", {clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+                else
+                {
+                  res.render("eventPage.ejs", {clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+              }else{
+                if(registrationFees==0)
+                {
+                  res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+                else
+                {
+                  console.log("Clash not found!");
+                  res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+              }
+          }
+
+   }else{
+    res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+   }
+
+  }else{
+    var eventName = req.params.eventName;
+    var sql = `select * from event where eventName=?;`
+    result = await conQuery(sql, [eventName]);
+    console.log("Event fetched successfully");
+
+    res.render("eventPage.ejs", {clashWarning: "no" ,fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+  }
+});
+*/
 
 
-  return false; // No clash found
-}
-
+/*
 router.get("/event/:eventName",(req,res)=>{
   var emailID = req.session.email_id;
   var firstNAME = req.session.first_name;
@@ -438,22 +529,217 @@ router.get("/event/:eventName",(req,res)=>{
   });
 }
 });
+*/
+
+
+router.get("/event/:eventName",(req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  var fullName="";
+  var phone_no="";
+
+  if(emailID){
+  var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  con.query(sql, [eventName] , (err, result)=>{
+    if (err) throw err;
+    console.log("Event fetched successfully");
+
+
+   eventId = result[0].id;
+   eventTagline = result[0].eventTagline;
+   eventDescription = result[0].eventDescription;
+   eventVenue = result[0].eventVenue;
+   eventFlyer = result[0].eventFlyer;
+   eventDate = result[0].eventDate;
+   eventStartTime = result[0].eventStartTime;
+   eventEndTime = result[0].eventEndTime;
+   registrationFees = result[0].registrationFees;
+   attendeesCapacity = result[0].attendeesCapacity;
+
+
+   sql = "select * from user_registration where email_id=?";
+   con.query(sql, [emailID], (err, result)=>{
+    if (err) throw err;
+    var user_id = result[0].user_id;
+    var first_name = result[0].first_name;
+    var last_name = result[0].last_name;
+    fullName = first_name + " " + last_name;
+    phone_no = result[0].phone_no;
+
+    sql = "select * from registered_event where user_id=? AND event_id=?";
+    con.query(sql, [user_id, eventId], (err, result)=>{
+      if (err) throw err;
+      if(result.length == 0){
+
+        sql = "select * from registered_event where user_id=?";
+        con.query(sql, [user_id], async (err, result)=>{
+          if (err) throw err;
+          if(result.length == 0)
+          {
+            if(registrationFees==0)
+            {
+              res.render("eventPage2.ejs", {clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
+            else
+            {
+              res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
+          }
+          else
+          {
+            registeredEvent = {
+              date: "",
+              startTime: "",
+              endTime: ""
+            };
+
+            var clashFound = false;
+
+
+            // Function to check if the selected event clashes with any existing event
+            var clashesEventsName = "";
+            function checkEventClash(selectedDate, selectedStartTime, selectedEndTime, event) {
+              console.log(event.eventName);
+
+              const selectedDateTimeStart = moment(selectedDate + ' ' + selectedStartTime, 'DD/MM/YYYY h:mm A');
+              const selectedDateTimeEnd = moment(selectedDate + ' ' + selectedEndTime, 'DD/MM/YYYY h:mm A');
+              
+              console.log(selectedDateTimeStart);
+
+
+                  if (event.eventDate === selectedDate) {
+                      console.log("Event Date:", event.eventDate);
+                      const eventStartTime = moment(event.eventDate + ' ' + event.eventStartTime, 'DD/MM/YYYY h:mm A');
+                      const eventEndTime = moment(event.eventDate + ' ' + event.eventEndTime, 'DD/MM/YYYY h:mm A');
+
+                      console.log("Event Start Time:", event.eventStartTime);
+                      console.log("Event End Time:", event.eventEndTime);
+
+                      if (
+                          (selectedDateTimeStart.isBetween(eventStartTime, eventEndTime) || selectedDateTimeEnd.isBetween(eventStartTime, eventEndTime)) ||
+                          (eventStartTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd) || eventEndTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd))
+                      ) {
+                          clashesEventsName = clashesEventsName + event.eventName + ", ";
+                          console.log("Clash Found!");
+                          return true; // Clash found
+                      }
+                  }
+
+
+              return false; // No clash found
+            }
+
+
+            async function getEventData(eventId) {
+              return new Promise((resolve, reject) => {
+                  sql = "select * from event where id=?";
+                  con.query(sql, [eventId], (err, result) => {
+                      if (err) {
+                          reject(err);
+                      } else {
+                          resolve(result[0]);
+                      }
+                  });
+              });
+          }
+
+            async function checkClashes() {
+              for (var i = 0; i < result.length; i++) {
+                  var eventId = result[i].event_id;
+                  const event = await getEventData(eventId);
+                  if (checkEventClash(eventDate, eventStartTime, eventEndTime, event)) {
+                      clashFound = true;
+                  }
+              }
+          }
+
+            await checkClashes();
+            console.log(clashFound);
+
+            if(clashFound){
+
+              console.log(clashesEventsName);
+              //from 0 index to length-1 and we get 0 to length-2 parts
+             // clashesEventsName = clashesEventsName.slice(0, clashesEventsName.length-2);
+              clashesEventsName = clashesEventsName.slice(0, -2);
+              if(registrationFees==0)
+              {
+                console.log(clashesEventsName);
+                res.render("eventPage2.ejs", {clashesEventsName: clashesEventsName, clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+              else
+              {
+                console.log(clashesEventsName);
+                res.render("eventPage.ejs", {clashesEventsName: clashesEventsName, clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+            }else{
+              if(registrationFees==0)
+              {
+                console.log("Clash not found!");
+                res.render("eventPage2.ejs", {clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+              else
+              {
+                console.log("Clash not found!");
+                res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+            }
+          }
+        });
+      }
+      else{
+        res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+      }
+    });
+   });
+
+  });
+}else{
+  var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  con.query(sql, [eventName] , (err, result)=>{
+    if (err) throw err;
+    console.log("Event fetched successfully");
+
+    res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no" ,fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+  });
+}
+});
+
+
 router.post('/create/orderId', (req, res)=>{ 
 
   var options = {
     amount: req.body.amount,  // amount in the smallest currency unit
     currency: "INR",
-    receipt: "order_rcptid_11"
+    receipt: "order_rcptid_1"
   };
   instance.orders.create(options, function(err, order) {
     	if(!err) {
         console.log(order);
-			  res.json(order) 
+			  res.send({orderId : order.id});
       }
 		  else{
 			  res.send(err); 
 		  } 
   }); 
+});
+
+
+
+router.post("/api/payment/verify", (req,res)=>{
+  let body=req.body.response.razorpay_order_id + "|" +req.body.response.razorpay_payment_id;
+
+  var expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(body.toString()).digest('hex');
+  console.log("Signature received", req.body.response.razorpay_signature);
+  console.log("Signature generated", expectedSignature);
+
+  var response = {"signatureIsValid":"false"};
+  if(expectedSignature === req.body.response.razorpay_signature){
+    response = {"signatureIsValid":"true"};
+  }
+  res.send(response);
 });
 
 
