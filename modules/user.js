@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const { error } = require('console');
 const Razorpay = require("razorpay");
 const env = require("dotenv");
+const moment = require('moment');
 
 
 env.config();
@@ -293,6 +294,35 @@ router.get("/department/:departmentName",(req,res)=>{
 }
 });
 
+
+// Function to check if the selected event clashes with any existing event
+function checkEventClash(selectedDate, selectedStartTime, selectedEndTime, event) {
+
+  const selectedDateTimeStart = moment(selectedDate + ' ' + selectedStartTime, 'DD/MM/YYYY h:mm A');
+  const selectedDateTimeEnd = moment(selectedDate + ' ' + selectedEndTime, 'DD/MM/YYYY h:mm A');
+
+
+      if (event.date === selectedDate) {
+          console.log("Event Date:", event.date);
+          const eventStartTime = moment(event.date + ' ' + event.startTime, 'DD/MM/YYYY h:mm A');
+          const eventEndTime = moment(event.date + ' ' + event.endTime, 'DD/MM/YYYY h:mm A');
+
+          console.log("Event Start Time:", event.startTime);
+          console.log("Event End Time:", event.endTime);
+
+          if (
+              (selectedDateTimeStart.isBetween(eventStartTime, eventEndTime) || selectedDateTimeEnd.isBetween(eventStartTime, eventEndTime)) ||
+              (eventStartTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd) || eventEndTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd))
+          ) {
+              console.log("Clash Found!");
+              return true; // Clash found
+          }
+      }
+
+
+  return false; // No clash found
+}
+
 router.get("/event/:eventName",(req,res)=>{
   var emailID = req.session.email_id;
   var firstNAME = req.session.first_name;
@@ -332,17 +362,66 @@ router.get("/event/:eventName",(req,res)=>{
     con.query(sql, [user_id, eventId], (err, result)=>{
       if (err) throw err;
       if(result.length == 0){
-        if(registrationFees==0)
-        {
-          res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-        }
-        else
-        {
-          res.render("eventPage.ejs", {fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-        }
+
+        sql = "select * from registered_event where user_id=?";
+        con.query(sql, [user_id], (err, result)=>{
+          if (err) throw err;
+          if(result.length == 0)
+          {
+            if(registrationFees==0)
+            {
+              res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
+            else
+            {
+              res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+            }
+          }
+          else
+          {
+            registeredEvent = {
+              date: "",
+              startTime: "",
+              endTime: ""
+            };
+
+            for(i=0; i<result.length; i++){
+              var eventId = result[i].event_id;
+              sql = "select * from event where id=?";
+              con.query(sql, [eventId], (err,result)=>{
+                registeredEvent.date = result[0].eventDate;
+                registeredEvent.startTime = result[0].eventStartTime;
+                registeredEvent.endTime = result[0].eventEndTime;
+
+                
+                if(checkEventClash(eventDate, eventStartTime, eventEndTime, registeredEvent)){
+                  if(registrationFees==0)
+                  {
+                    res.render("eventPage2.ejs", {clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                  }
+                  else
+                  {
+                    res.render("eventPage.ejs", {clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                  }
+                }else{
+                  if(registrationFees==0)
+                  {
+                    res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                  }
+                  else
+                  {
+                    console.log("Clash not found!");
+                    res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                  }
+                }
+              });
+
+            }
+          }
+        });
       }
       else{
-        res.render("eventPage.ejs", {fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+        res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
       }
     });
    });
@@ -355,7 +434,7 @@ router.get("/event/:eventName",(req,res)=>{
     if (err) throw err;
     console.log("Event fetched successfully");
 
-    res.render("eventPage.ejs", {fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
+    res.render("eventPage.ejs", {clashWarning: "no" ,fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
   });
 }
 });

@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.10.0/toastify.min.css">
     <link rel="stylesheet" href="/css/eventPage.css">
 
 </head>
@@ -72,7 +73,7 @@
 
 <script src="/js/departmentPage.js">
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.10.0/toastify.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -128,15 +129,40 @@ var rzp1 = new Razorpay(options);
 document.getElementById('rzp-button1').onclick = function(e){
     if('<%= loggedIn %>' == "yes"){
         if('<%= register %>' == "Registered"){
-            alert("You are already registered for this event!");
+           // alert("You are already registered for this event!");
+           Toastify({
+            text: "You are already registered for this event!",
+            duration: 3000, // Duration in milliseconds
+            gravity: "top", // Position of the toast
+            position: "right", // Alignment within the position
+            backgroundColor: "linear-gradient(to right, #ff9a00, #ff4e00)" // Background color
+        }).showToast(); // Show the toast
         }
         else{
-            rzp1.open();
-            e.preventDefault();
+            if('<%= clashWarning %>' == "yes"){
+                var result = confirm("Time clash found! Are you still want to proceed? If yes then press ok button."); // Display the warning alert box
+                if (result) {
+                    rzp1.open();
+                    e.preventDefault();
+                }else{
+                    return;
+                }
+            }
+            else{
+                rzp1.open();
+                e.preventDefault();
+            }
         }
     }
     else{
-        alert("Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!");
+      //  alert("Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!");
+      Toastify({
+        text: "Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!",
+        duration: 5000, // Duration in milliseconds
+        gravity: "top", // Position of the toast
+        position: "right", // Alignment within the position
+        backgroundColor: "linear-gradient(to right, #ff9a00, #ff4e00)" // Background color
+      }).showToast(); // Show the toast
     }
 }
 
