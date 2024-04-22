@@ -22,8 +22,18 @@
 
         <ul class="nav_links" id="menuItem">
             <% if(locals.first_name){ %>
-                <p class="signup" style="width: 150px; text-align: center; filter: drop-shadow(0px 0px 10px red)">Hello <%= first_name %></p>
-            <% }else{ %>
+                <div class="profileImage mainProfile" onclick="toggleDropDown()" style="background-color: #F82249; border: 1px solid #F82249; padding-left: 8px; padding-right: 8px; border-radius: 50%;  cursor: pointer;">
+                    <i class="fa fa-user" style="font-size: 18px;"></i>
+                </div>
+
+                <div id="dropdownList" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px; position: absolute; right: 10px; top: 70px;">
+                    <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; ">Your Events</p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                  </div> 
+                <% }else{ %>
             <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
             <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
             <%}%>
@@ -52,7 +62,11 @@
                 <br> <span style="font-weight: 700;">Registration Fees:</span> Rs.  <%= registrationFees %>
                 <br> <span style="font-weight: 700;">Maximum limit of attendees:</span> <%= attendeesCapacity %></p>
 
-                <!-- onclick="document.location='/theevent/user/eventregister/<%#= eventName %>'" -->
+                <% if(locals.MaxAttendeesReached){ %>
+                    <div class="signin" onclick="maxAttendeesReached()" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin: auto; margin-top: 25px; opacity: 0.6; cursor: not-allowed;">
+                        <%= register %>
+                    </div>
+                <% }else{ %>
                 <% if(locals.register == "Register"){ %>
                     <div class="signin" id="rzp-button1" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; margin: auto; margin-top: 25px;">
                         <%= register %>
@@ -61,7 +75,7 @@
                     <div class="signin" disabled id="rzp-button1" style="width: 135px; height: 35px; display: flex; justify-content: center; align-items: center; margin: auto; margin-top: 25px; opacity: 0.6; cursor: not-allowed;">
                         <%= register %>
                     </div>
-                <% } %>
+                <% }} %>
             </div>
         </div>
     </section>
@@ -78,6 +92,17 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+
+function maxAttendeesReached(){
+        Toastify({
+            text: "Apologies, but we've reached the maximum number of attendees for this event. Keep an eye out for future opportunities!",
+            duration: 5000, // Duration in milliseconds
+            gravity: "top", // Position of the toast
+            position: "right", // Alignment within the position
+            backgroundColor: "linear-gradient(to right, #ff9a00, #ff4e00)" // Background color
+        }).showToast(); // Show the toast
+        return;
+    }
 
 var orderId ;
 $(document).ready(function(){
@@ -263,13 +288,22 @@ document.getElementById('rzp-button1').onclick = function(e){
       //  alert("Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!");
       Toastify({
         text: "Event registration awaits! Log in now to join the fun and secure your spot. Don't miss out - sign in to get started!",
-        duration: 3000, // Duration in milliseconds
+        duration: 5000, // Duration in milliseconds
         gravity: "top", // Position of the toast
         position: "right", // Alignment within the position
         backgroundColor: "linear-gradient(to right, #ff9a00, #ff4e00)" // Background color
       }).showToast(); // Show the toast
     }
 }
+
+function toggleDropDown(){
+        if(document.getElementById("dropdownList").style.display == "none"){
+            document.getElementById("dropdownList").style.display = "block";
+        }
+        else{
+            document.getElementById("dropdownList").style.display = "none";
+        }
+    }
 
 
 </script>

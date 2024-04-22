@@ -147,6 +147,67 @@ router.get('/',(req,res)=>{
   // var firstNAME = req.cookies.firstName;
   var emailID = req.session.email_id;
   var firstNAME = req.session.first_name;
+  var eventDetails1 = [];
+  var departmentDetails1 = [];
+  var eventImage1 = [];
+  var eventStartTime1 = [];
+  var eventEndTime1 = [];
+  var eventDetails2 = [];
+  var departmentDetails2 = [];
+  var eventImage2 = [];
+  var eventStartTime2 = [];
+  var eventEndTime2 = [];
+  var eventDetails3 = [];
+  var departmentDetails3 = [];
+  var eventImage3 = [];
+  var eventStartTime3 = [];
+  var eventEndTime3 = [];
+
+        sql = "select * from event where eventDate=?";
+        var today = new Date();
+        var formattedDate1 = String(today.getDate()).padStart(2, '0') + "/" + String((today.getMonth() + 1)).padStart(2, '0') + "/" +today.getFullYear();
+        console.log(formattedDate1);
+        con.query(sql, [formattedDate1], (err, result)=>{
+
+      for(i=0; i< result.length ; i++){
+        eventDetails1.push(result[i].eventName);
+        eventImage1.push(result[i].eventIcon);
+        departmentDetails1.push(result[i].department);
+        eventStartTime1.push(result[i].eventStartTime);
+        eventEndTime1.push(result[i].eventEndTime);
+      }
+
+      sql = "select * from event where eventDate=?";
+            var tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var formattedDate2 = String(tomorrow.getDate()).padStart(2, '0') + "/" + String((tomorrow.getMonth() + 1)).padStart(2, '0') + "/" +tomorrow.getFullYear();
+            console.log(formattedDate2);
+            con.query(sql, [formattedDate2], (err, result)=>{
+          req.session.email_id = emailId;
+          req.session.first_name = firstName;
+          for(i=0; i< result.length ; i++){
+            eventDetails2.push(result[i].eventName);
+            eventImage2.push(result[i].eventIcon);
+            departmentDetails2.push(result[i].department);
+            eventStartTime2.push(result[i].eventStartTime);
+            eventEndTime2.push(result[i].eventEndTime);
+          }
+
+          sql = "select * from event where eventDate=?";
+            var dayAfterTomorrow = new Date(tomorrow);
+            dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
+            var formattedDate3 = String(dayAfterTomorrow.getDate()).padStart(2, '0') + "/" + String((dayAfterTomorrow.getMonth() + 1)).padStart(2, '0') + "/" +dayAfterTomorrow.getFullYear();
+            console.log(formattedDate3);
+            con.query(sql, [formattedDate3], (err, result)=>{
+          req.session.email_id = emailId;
+          req.session.first_name = firstName;
+          for(i=0; i< result.length ; i++){
+            eventDetails3.push(result[i].eventName);
+            eventImage3.push(result[i].eventIcon);
+            departmentDetails3.push(result[i].department);
+            eventStartTime3.push(result[i].eventStartTime);
+            eventEndTime3.push(result[i].eventEndTime);
+          }
   if(emailID){
     var departmentArray = [];
     var departmentIconsArray = [];
@@ -156,7 +217,7 @@ router.get('/',(req,res)=>{
         departmentArray.push(results[i].departmentName);
         departmentIconsArray.push(results[i].departmentIcon);
       }
-      res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstNAME, email_id: emailID});
+      res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstNAME, email_id: emailID, departmentDetails1: departmentDetails1, eventDetails1: eventDetails1, eventImage1: eventImage1, eventStartTime1: eventStartTime1, eventEndTime1: eventEndTime1, departmentDetails2: departmentDetails2, eventDetails2: eventDetails2, eventImage2: eventImage2, eventStartTime2: eventStartTime2, eventEndTime2: eventEndTime2, departmentDetails3: departmentDetails3, eventDetails3: eventDetails3, eventImage3: eventImage3, eventStartTime3: eventStartTime3, eventEndTime3: eventEndTime3});
     });
   }
   else{
@@ -168,9 +229,12 @@ router.get('/',(req,res)=>{
         departmentArray.push(results[i].departmentName);
         departmentIconsArray.push(results[i].departmentIcon);
       }
-      res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray});
+      res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, departmentDetails1: departmentDetails1, eventDetails1: eventDetails1, eventImage1: eventImage1, eventStartTime1: eventStartTime1, eventEndTime1: eventEndTime1, departmentDetails2: departmentDetails2, eventDetails2: eventDetails2, eventImage2: eventImage2, eventStartTime2: eventStartTime2, eventEndTime2: eventEndTime2, departmentDetails3: departmentDetails3, eventDetails3: eventDetails3, eventImage3: eventImage3, eventStartTime3: eventStartTime3, eventEndTime3: eventEndTime3});
     });
   }
+});
+});
+});
 });
 
 router.get("/forgot-password",(req,res)=>{
@@ -181,17 +245,79 @@ router.post("/",(req,res)=>{
   console.log(firstName);
         var departmentArray = [];
         var departmentIconsArray = [];
+        var eventDetails1 = [];
+        var departmentDetails1 = [];
+        var eventImage1 = [];
+        var eventStartTime1 = [];
+        var eventEndTime1 = [];
+        var eventDetails2 = [];
+        var departmentDetails2 = [];
+        var eventImage2 = [];
+        var eventStartTime2 = [];
+        var eventEndTime2 = [];
+        var eventDetails3 = [];
+        var departmentDetails3 = [];
+        var eventImage3 = [];
+        var eventStartTime3 = [];
+        var eventEndTime3 = [];
         var sql = "select departmentName, departmentIcon from department";
           con.query(sql,(err,results)=> {
             for(i=0; i< results.length ; i++){
               departmentArray.push(results[i].departmentName);
               departmentIconsArray.push(results[i].departmentIcon);
             }
+            sql = "select * from event where eventDate=?";
+            var today = new Date();
+            var formattedDate1 = String(today.getDate()).padStart(2, '0') + "/" + String((today.getMonth() + 1)).padStart(2, '0') + "/" +today.getFullYear();
+            console.log(formattedDate1);
+            con.query(sql, [formattedDate1], (err, result)=>{
           //  res.cookie("emailId",emailId,{maxAge:3600000 * 24, httpOnly: true});
           //  res.cookie("firstName",firstName,{maxAge:3600000 * 24, httpOnly: true});
           req.session.email_id = emailId;
           req.session.first_name = firstName;
-            res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstName, email_id: emailId});
+          for(i=0; i< result.length ; i++){
+            eventDetails1.push(result[i].eventName);
+            eventImage1.push(result[i].eventIcon);
+            departmentDetails1.push(result[i].department);
+            eventStartTime1.push(result[i].eventStartTime);
+            eventEndTime1.push(result[i].eventEndTime);
+          }
+
+          sql = "select * from event where eventDate=?";
+            var tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var formattedDate2 = String(tomorrow.getDate()).padStart(2, '0') + "/" + String((tomorrow.getMonth() + 1)).padStart(2, '0') + "/" +tomorrow.getFullYear();
+            console.log(formattedDate2);
+            con.query(sql, [formattedDate2], (err, result)=>{
+          req.session.email_id = emailId;
+          req.session.first_name = firstName;
+          for(i=0; i< result.length ; i++){
+            eventDetails2.push(result[i].eventName);
+            eventImage2.push(result[i].eventIcon);
+            departmentDetails2.push(result[i].department);
+            eventStartTime2.push(result[i].eventStartTime);
+            eventEndTime2.push(result[i].eventEndTime);
+          }
+
+          sql = "select * from event where eventDate=?";
+            var dayAfterTomorrow = new Date(tomorrow);
+            dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
+            var formattedDate3 = String(dayAfterTomorrow.getDate()).padStart(2, '0') + "/" + String((dayAfterTomorrow.getMonth() + 1)).padStart(2, '0') + "/" +dayAfterTomorrow.getFullYear();
+            console.log(formattedDate3);
+            con.query(sql, [formattedDate3], (err, result)=>{
+          req.session.email_id = emailId;
+          req.session.first_name = firstName;
+          for(i=0; i< result.length ; i++){
+            eventDetails3.push(result[i].eventName);
+            eventImage3.push(result[i].eventIcon);
+            departmentDetails3.push(result[i].department);
+            eventStartTime3.push(result[i].eventStartTime);
+            eventEndTime3.push(result[i].eventEndTime);
+          }
+            res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstName, email_id: emailId, departmentDetails1: departmentDetails1, eventDetails1: eventDetails1, eventImage1: eventImage1, eventStartTime1: eventStartTime1, eventEndTime1: eventEndTime1, departmentDetails2: departmentDetails2, eventDetails2: eventDetails2, eventImage2: eventImage2, eventStartTime2: eventStartTime2, eventEndTime2: eventEndTime2, departmentDetails3: departmentDetails3, eventDetails3: eventDetails3, eventImage3: eventImage3, eventStartTime3: eventStartTime3, eventEndTime3: eventEndTime3});
+        });
+      });
+          });
           });
 });
 
@@ -299,238 +425,6 @@ router.get("/department/:departmentName",(req,res)=>{
 
 
 
-/*
-router.get("/event/:eventName",async (req,res)=>{
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
-  var fullName="";
-  var phone_no="";
-
-  if(emailID){
-  var eventName = req.params.eventName;
-  var sql = `select * from event where eventName=?;`
-  var result = await conQuery(sql, [eventName]);
-  console.log("Event fetched successfully");
-
-
-   eventId = result[0].id;
-   eventTagline = result[0].eventTagline;
-   eventDescription = result[0].eventDescription;
-   eventVenue = result[0].eventVenue;
-   eventFlyer = result[0].eventFlyer;
-   eventDate = result[0].eventDate;
-   eventStartTime = result[0].eventStartTime;
-   eventEndTime = result[0].eventEndTime;
-   registrationFees = result[0].registrationFees;
-   attendeesCapacity = result[0].attendeesCapacity;
-
-   sql = "select * from user_registration where email_id=?";
-   result = await conQuery(sql, [emailID]);
-   var user_id = result[0].user_id;
-   var first_name = result[0].first_name;
-   var last_name = result[0].last_name;
-   fullName = first_name + " " + last_name;
-   phone_no = result[0].phone_no;
-
-   sql = "select * from registered_event where user_id=? AND event_id=?";
-   result = await conQuery(sql, [user_id, eventId]);
-
-   if(result.length == 0){
-
-    sql = "select * from registered_event where user_id=?";
-    result = await conQuery(sql, [user_id]);
-    
-    if(result.length == 0)
-          {
-            if(registrationFees==0)
-            {
-              res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
-            else
-            {
-              res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
-          }
-          else
-          {
-            registeredEvent = {
-              date: "",
-              startTime: "",
-              endTime: ""
-            };
-
-            var clashFound = false;
-            for(i=0; i<result.length; i++){
-              var eventId = result[i].event_id;
-              sql = "select * from event where id=?";
-              result2 = await conQuery(sql, [eventId]);
-
-              registeredEvent.date = result2[0].eventDate;
-              registeredEvent.startTime = result2[0].eventStartTime;
-              registeredEvent.endTime = result2[0].eventEndTime;
-
-              if(checkEventClash(eventDate, eventStartTime, eventEndTime, registeredEvent)){
-                clashFound = true;
-                break;
-              }
-              }
-
-              if(clashFound){
-                if(registrationFees==0)
-                {
-                  res.render("eventPage2.ejs", {clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                }
-                else
-                {
-                  res.render("eventPage.ejs", {clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                }
-              }else{
-                if(registrationFees==0)
-                {
-                  res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                }
-                else
-                {
-                  console.log("Clash not found!");
-                  res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                }
-              }
-          }
-
-   }else{
-    res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-   }
-
-  }else{
-    var eventName = req.params.eventName;
-    var sql = `select * from event where eventName=?;`
-    result = await conQuery(sql, [eventName]);
-    console.log("Event fetched successfully");
-
-    res.render("eventPage.ejs", {clashWarning: "no" ,fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
-  }
-});
-*/
-
-
-/*
-router.get("/event/:eventName",(req,res)=>{
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
-  var fullName="";
-  var phone_no="";
-
-  if(emailID){
-  var eventName = req.params.eventName;
-  var sql = `select * from event where eventName=?;`
-  con.query(sql, [eventName] , (err, result)=>{
-    if (err) throw err;
-    console.log("Event fetched successfully");
-
-
-   eventId = result[0].id;
-   eventTagline = result[0].eventTagline;
-   eventDescription = result[0].eventDescription;
-   eventVenue = result[0].eventVenue;
-   eventFlyer = result[0].eventFlyer;
-   eventDate = result[0].eventDate;
-   eventStartTime = result[0].eventStartTime;
-   eventEndTime = result[0].eventEndTime;
-   registrationFees = result[0].registrationFees;
-   attendeesCapacity = result[0].attendeesCapacity;
-
-
-   sql = "select * from user_registration where email_id=?";
-   con.query(sql, [emailID], (err, result)=>{
-    if (err) throw err;
-    var user_id = result[0].user_id;
-    var first_name = result[0].first_name;
-    var last_name = result[0].last_name;
-    fullName = first_name + " " + last_name;
-    phone_no = result[0].phone_no;
-
-    sql = "select * from registered_event where user_id=? AND event_id=?";
-    con.query(sql, [user_id, eventId], (err, result)=>{
-      if (err) throw err;
-      if(result.length == 0){
-
-        sql = "select * from registered_event where user_id=?";
-        con.query(sql, [user_id], (err, result)=>{
-          if (err) throw err;
-          if(result.length == 0)
-          {
-            if(registrationFees==0)
-            {
-              res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
-            else
-            {
-              res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
-          }
-          else
-          {
-            registeredEvent = {
-              date: "",
-              startTime: "",
-              endTime: ""
-            };
-
-            for(i=0; i<result.length; i++){
-              var eventId = result[i].event_id;
-              sql = "select * from event where id=?";
-              con.query(sql, [eventId], (err,result)=>{
-                registeredEvent.date = result[0].eventDate;
-                registeredEvent.startTime = result[0].eventStartTime;
-                registeredEvent.endTime = result[0].eventEndTime;
-
-                
-                if(checkEventClash(eventDate, eventStartTime, eventEndTime, registeredEvent)){
-                  if(registrationFees==0)
-                  {
-                    res.render("eventPage2.ejs", {clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                  }
-                  else
-                  {
-                    res.render("eventPage.ejs", {clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                  }
-                }else{
-                  if(registrationFees==0)
-                  {
-                    res.render("eventPage2.ejs", {register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                  }
-                  else
-                  {
-                    console.log("Clash not found!");
-                    res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-                  }
-                }
-              });
-
-            }
-          }
-        });
-      }
-      else{
-        res.render("eventPage.ejs", {clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-      }
-    });
-   });
-
-  });
-}else{
-  var eventName = req.params.eventName;
-  var sql = `select * from event where eventName=?;`
-  con.query(sql, [eventName] , (err, result)=>{
-    if (err) throw err;
-    console.log("Event fetched successfully");
-
-    res.render("eventPage.ejs", {clashWarning: "no" ,fullName : fullName, phoneNo : phone_no, emailID : emailID ,key_id : process.env.RAZORPAY_KEY_ID, register: "Register", loggedIn : "no", eventName: eventName, eventTagline: result[0].eventTagline, eventDescription: result[0].eventDescription, eventVenue: result[0].eventVenue, eventFlyer: result[0].eventFlyer, eventDate: result[0].eventDate, eventStartTime: result[0].eventStartTime, eventEndTime: result[0].eventEndTime, registrationFees: result[0].registrationFees, attendeesCapacity: result[0].attendeesCapacity});
-  });
-}
-});
-*/
-
 
 router.get("/event/:eventName",(req,res)=>{
   var emailID = req.session.email_id;
@@ -573,21 +467,52 @@ router.get("/event/:eventName",(req,res)=>{
       if(result.length == 0){
 
         sql = "select * from registered_event where user_id=?";
-        con.query(sql, [user_id], async (err, result)=>{
+        con.query(sql, [user_id], (err, mainResult)=>{
           if (err) throw err;
-          if(result.length == 0)
+          if(mainResult.length == 0)
           {
-            if(registrationFees==0)
-            {
-              res.render("eventPage2.ejs", {clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
-            else
-            {
-              res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
-            }
+            sql = "select * from registered_event where event_id=?";
+            con.query(sql, [eventId], (err, result)=>{
+              if(result.length == attendeesCapacity){
+                if(registrationFees==0)
+                    {
+                      res.render("eventPage2.ejs", {MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+                    else
+                    {
+                      res.render("eventPage.ejs", {MaxAttendeesReached: "yes", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+              }
+              else{
+                if(registrationFees==0)
+                    {
+                      res.render("eventPage2.ejs", {clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+                    else
+                    {
+                      res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+              }
+            });
           }
           else
           {
+
+            sql = "select * from registered_event where event_id=?";
+            con.query(sql, [eventId], async (err, result)=>{
+              if(result.length == attendeesCapacity){
+
+                if(registrationFees==0)
+                {
+                  res.render("eventPage2.ejs", {MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+                else
+                {
+                  res.render("eventPage.ejs", {MaxAttendeesReached: "yes", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+
+              }
+              else{
             registeredEvent = {
               date: "",
               startTime: "",
@@ -645,8 +570,8 @@ router.get("/event/:eventName",(req,res)=>{
           }
 
             async function checkClashes() {
-              for (var i = 0; i < result.length; i++) {
-                  var eventId = result[i].event_id;
+              for (var i = 0; i < mainResult.length; i++) {
+                  var eventId = mainResult[i].event_id;
                   const event = await getEventData(eventId);
                   if (checkEventClash(eventDate, eventStartTime, eventEndTime, event)) {
                       clashFound = true;
@@ -687,6 +612,8 @@ router.get("/event/:eventName",(req,res)=>{
             }
           }
         });
+        }
+      });
       }
       else{
         res.render("eventPage.ejs", {clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
@@ -769,6 +696,11 @@ router.post("/successpayment/:eventName",(req,res)=>{
 });
 
 
+
+router.get("/logout",(req,res)=>{
+  req.session.destroy();
+  res.redirect("/theevent/user/login");
+});
 
 
 

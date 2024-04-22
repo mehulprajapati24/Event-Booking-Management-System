@@ -151,3 +151,13 @@ ul.nav_links>li:hover span{
         padding: 0px 10px;
     }
 }
+
+#option1:hover{
+    background-color: #0E1B4D;
+    color: white;
+}
+
+#option2:hover{
+    background-color: #0E1B4D;
+    color: white;
+}

@@ -34,13 +34,40 @@
             <li class="listItem"><a onclick="closeMenu()" href="#sponsorsPage">Sponsors</a><span class="content"></span></li>
             <li class="listItem"><a onclick="closeMenu()" href="#contactPage">Contact Us</a><span class="content"></span></li>
             <% if(locals.first_name){ %>
-                <p class="signup" style="width: 150px; text-align: center; filter: drop-shadow(0px 0px 10px red)">Hello <%= first_name %></p>
+
+                <div class="profileImage mainProfile" onclick="toggleDropDown()" style="background-color: #F82249; border: 1px solid #F82249; padding-left: 8px; padding-right: 8px; border-radius: 50%;  cursor: pointer;">
+                    <i class="fa fa-user" style="font-size: 18px;"></i>
+                </div>
+
+                <div id="dropdownList" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px;">
+                    <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; ">Your Events</p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                  </div>                
             <% }else{ %>
             <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
             <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
             <%}%>
         </ul>
         
+        <% if(locals.first_name){ %>
+            <div class="anotherProfileImage" onclick="toggleDropDown2()" style="background-color: #F82249; border: 1px solid #F82249; padding-left: 8px; padding-right: 8px; border-radius: 50%;  cursor: pointer; position: absolute; right: 60px;">
+                <i class="fa fa-user" style="font-size: 18px;"></i>
+            </div>
+       
+
+        <div id="dropdownList2" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px; position: absolute; top: 70px; right: 50px;">
+            <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
+            <hr width="100%" color="black" style="opacity: 0.2;">
+            <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; ">Your Events</p>
+            <hr width="100%" color="black" style="opacity: 0.2;">
+            <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+          </div>
+
+          <% } %>
+
         <div class="menu_item" id="menu_item" onclick="toggleMenu()">
             <i class="fa fa-bars"></i>
         </div>
@@ -106,84 +133,77 @@
         <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
 
         <div class="rowButton">
-            <button type="button" onclick="btnColor(0)" class="scheduleBtn">DAY 1</button>
+            <button type="button" onclick="btnColor(0)" style="background-color: #F82249; border-color: #F82249;" class="scheduleBtn">DAY 1</button>
             <button type="button" onclick="btnColor(1)" class="scheduleBtn">DAY 2</button>
             <button type="button" onclick="btnColor(2)" class="scheduleBtn">DAY 3</button>
         </div>
 
         <p style="width: 100%; padding-left: 75px; padding-right: 75px; padding-top: 20px;">Here's a list of events happening today, tomorrow, and the day after tomorrow. These events offer various activities and opportunities for everyone to participate and enjoy. Whether it's a workshop, seminar, or social gathering, there's something for everyone to engage with and learn from. Join us for a great time and make the most out of these upcoming days!</p>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">10:00 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                <div class="eventDept">
-                    <h4>Code Connection</h4>
-                    <h5>Computer Engineering</h5>
-                </div>
-            </div>
-        </div>
+        <div class="scheduleDate">
+         <% if(locals.eventImage1){ %>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">11:00 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+            <% if(eventImage1.length == 0){ %>
+                <h3 style="margin-top: 30px;">No events today!</h3>
+                <% }else{ for(i=0; i<eventImage1.length; i++){ %>
+                <div class="schedule">
+                        <h3 style="margin-right: 20px;"><%= eventStartTime1[i] %> to <%= eventEndTime1[i] %></h3>
+                    <div class="eventDetail">
+                <img src="/img/events/<%= eventImage1[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                 <div class="eventDept">
-                    <h4>Poster Presentation</h4>
-                    <h5>Computer Engineering</h5>
+                    <h4><%= eventDetails1[i] %></h4>
+                    <h5><%= departmentDetails1[i] %></h5>
                 </div>
             </div>
         </div>
+                <% } %>
+                <% } %>
+                <% } %>
+            </div>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">12:00 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                <div class="eventDept">
-                    <h4>Automobile Workshop</h4>
-                    <h5>Mechanical Engineering</h5>
-                </div>
-            </div>
-        </div>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">1:00 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                <div class="eventDept">
-                    <h4>Robowar</h4>
-                    <h5>Mechanical Engineering</h5>
-                </div>
-            </div>
-        </div>
+            <div class="scheduleDate" style="display: none;">
+                <% if(locals.eventImage2){ %>
+       
+                   <% if(eventImage2.length == 0){ %>
+                       <h3 style="margin-top: 30px;">No events tomorrow!</h3>
+                       <% }else{ for(i=0; i<eventImage2.length; i++){ %>
+                       <div class="schedule">
+                               <h3 style="margin-right: 20px;"><%= eventStartTime2[i] %> to <%= eventEndTime2[i] %></h3>
+                           <div class="eventDetail">
+                       <img src="/img/events/<%= eventImage2[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                       <div class="eventDept">
+                           <h4><%= eventDetails2[i] %></h4>
+                           <h5><%= departmentDetails2[i] %></h5>
+                       </div>
+                   </div>
+               </div>
+                       <% } %>
+                       <% } %>
+                       <% } %>
+                   </div>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">2:00 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                <div class="eventDept">
-                    <h4>Boat Racing</h4>
-                    <h5>Marine Engineering</h5>
-                </div>
-            </div>
-        </div>
 
-        <div class="schedule">
-            <h3 style="margin-right: 20px;">3:30 AM</h3>
-            <div class="eventDetail">
-                <!-- here add event img -->
-                <img src="/img/events/event.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                <div class="eventDept">
-                    <h4>Circuit Assembly</h4>
-                    <h5>Electrical Engineering</h5>
-                </div>
-            </div>
-        </div>
+                   <div class="scheduleDate" style="display: none;">
+                    <% if(locals.eventImage3){ %>
+           
+                       <% if(eventImage3.length == 0){ %>
+                           <h3 style="margin-top: 30px;">No events day after tomorrow!</h3>
+                           <% }else{ for(i=0; i<eventImage3.length; i++){ %>
+                           <div class="schedule">
+                                   <h3 style="margin-right: 20px;"><%= eventStartTime3[i] %> to <%= eventEndTime3[i] %></h3>
+                               <div class="eventDetail">
+                           <img src="/img/events/<%= eventImage3[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                           <div class="eventDept">
+                               <h4><%= eventDetails3[i] %></h4>
+                               <h5><%= departmentDetails3[i] %></h5>
+                           </div>
+                       </div>
+                   </div>
+                           <% } %>
+                           <% } %>
+                           <% } %>
+                       </div>
     </section>
 
 
@@ -233,39 +253,6 @@
         <h2 style="font-size: 20px;">Check our gallery from the recent events</h2>
         <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
 
-        <!-- <div class="gallery_flex_container">
-            <div class="gallery">
-                <img src="/img/gallery/1.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/2.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/3.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/4.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/5.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/6.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/7.jpg" class="galleryImage"> 
-            </div>
-
-            <div class="gallery">
-                <img src="/img/gallery/8.jpg" class="galleryImage"> 
-            </div>
-        </div> -->
 
         <div class="sliderContainer">
             <i class="fa fa-arrow-left" onclick="changeImage('left')" style="color: #F82249; position: absolute; top: 50%; transform: translateY(-50%);left: 7%; font-size: 20px; cursor: pointer; background-color: #010562; padding: 20px; border: 1px solid black; border-radius: 50%; filter: drop-shadow(0px 0px 20px #F82249);"></i>

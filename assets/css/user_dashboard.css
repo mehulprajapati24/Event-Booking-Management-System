@@ -86,7 +86,11 @@ ul.nav_links>li:hover span{
     display: none;
 }
 
-@media (max-width:1114px){
+.anotherProfileImage{
+    display: none;
+}
+
+@media (max-width:1164px){
     .menu_item{
         display: block;
     }
@@ -106,6 +110,19 @@ ul.nav_links>li:hover span{
 
     .menu_item>i{
         font-size: 30px;
+    }
+
+    .mainProfile{
+        display: none;
+    }
+
+    .dropdown-content{
+        top: -250px;
+        right: 60px;
+    }
+
+    .anotherProfileImage{
+        display: block;
     }
 }
 
@@ -504,4 +521,21 @@ ul.nav_links>li:hover span{
     .sliderContainer{
         width: 90%;
     }
+}
+
+
+.dropdown-content{
+    position: absolute;
+    right: 8px;
+    top: 60px;
+}
+
+#option1:hover{
+    background-color: #0E1B4D;
+    color: white;
+}
+
+#option2:hover{
+    background-color: #0E1B4D;
+    color: white;
 }

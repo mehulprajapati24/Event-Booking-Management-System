@@ -20,7 +20,17 @@
 
         <ul class="nav_links" id="menuItem">
             <% if(locals.first_name){ %>
-                <p class="signup" style="width: 150px; text-align: center; filter: drop-shadow(0px 0px 10px red)">Hello <%= first_name %></p>
+                <div class="profileImage mainProfile" onclick="toggleDropDown()" style="background-color: #F82249; border: 1px solid #F82249; padding-left: 8px; padding-right: 8px; border-radius: 50%;  cursor: pointer;">
+                    <i class="fa fa-user" style="font-size: 18px;"></i>
+                </div>
+
+                <div id="dropdownList" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px; position: absolute; right: 10px; top: 70px;">
+                    <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; ">Your Events</p>
+                    <hr width="100%" color="black" style="opacity: 0.2;">
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                  </div> 
             <% }else{ %>
             <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
             <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
@@ -62,5 +72,16 @@
 
 <script src="/js/departmentPage.js">
 
+</script>
+
+<script>
+    function toggleDropDown(){
+        if(document.getElementById("dropdownList").style.display == "none"){
+            document.getElementById("dropdownList").style.display = "block";
+        }
+        else{
+            document.getElementById("dropdownList").style.display = "none";
+        }
+    }
 </script>
 </html>

@@ -137,3 +137,13 @@ ul.nav_links>li:hover span{
         width: 70%;
     }
 }
+
+#option1:hover{
+    background-color: #0E1B4D;
+    color: white;
+}
+
+#option2:hover{
+    background-color: #0E1B4D;
+    color: white;
+}
