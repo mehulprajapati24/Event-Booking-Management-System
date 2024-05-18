@@ -37,7 +37,7 @@
                 Add/Edit/Delete Event
             </div>
 
-            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')">
                 Event Statistics
             </div>
         </div>
@@ -52,219 +52,79 @@
             <div style="display: flex; justify-content: space-between; padding: 20px;">
                 <div style="font-size: 25px; font-weight: 400; text-align: center; border: 1px solid black; padding: 15px; border-radius: 5px; background-color: rgba(228, 253, 253, 0.679);">
                     <p>Total Number of Registrations</p>
-                    <p>4</p>
+                    <p><%= userOriginalID.length %></p>
                 </div>
 
                 <div style="font-size: 25px; font-weight: 400; text-align: center;  border: 1px solid black; padding: 15px; border-radius: 5px; background-color: rgba(228, 253, 253, 0.679);">
                     <p>Number of Locked Profiles</p>
-                    <p>4</p>
+                    <p><%= lockedProfiles.length %></p>
                 </div>
 
                 <div style="font-size: 25px; font-weight: 400; text-align: center;  border: 1px solid black; padding: 15px; border-radius: 5px; background-color: rgba(228, 253, 253, 0.679);">
                     <p>Number of Unlocked Profiles</p>
-                    <p>4</p>
+                    <p><%= userOriginalID.length - lockedProfiles.length %></p>
                 </div>
             </div>
             <hr>
 
-            <div style="padding-left: 25px;">
+            <div style="padding-left: 5px;">
             <div>
-                <p style="font-weight: 600; font-size: 20px;">Users:</p>
+                <p style="font-weight: 600; font-size: 20px;">Participants:</p>
 
                 <div style="width: 1280px; overflow-x: scroll;">
-                <table border="1" style="border-collapse: collapse;">
-                    <tr>
-                        <th style="padding: 15px;">#</th>
-                        <th style="padding: 15px;">Name</th>
-                        <th style="padding: 15px;">Email</th>
-                        <th style="padding: 15px;">Phone</th>
-                        <th style="padding: 15px;">Gender</th>
-                        <th style="padding: 15px;">DOB</th>
-                        <th style="padding: 15px;">Department</th>
-                        <th style="padding: 15px;">Year</th>
-                        <th style="padding: 15px;">Enrollment No</th>
-                        <th style="padding: 15px;">Payment ID</th>
-                        <th style="padding: 15px;">Order ID</th>
-                        <th style="padding: 15px;">Profile Status</th>
-                        <th style="padding: 15px;">Action</th>
-                    </tr>
+                
 
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
+                    <table border="1" style="border-collapse: collapse;">
 
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
 
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
+                        <tr>
+                            <th style="padding: 15px;">#</th>
+                            <th style="padding: 15px;">Name</th>
+                            <th style="padding: 15px;">Email</th>
+                            <th style="padding: 15px;">Phone</th>
+                            <th style="padding: 15px;">Gender</th>
+                            <th style="padding: 15px;">Department</th>
+                            <th style="padding: 15px;">Year</th>
+                            <th style="padding: 15px;">Enrollment No</th>
+                            <th style="padding: 15px;">Action</th>
+                        </tr>
 
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
+                        <% for(i=0; i< userOriginalID.length; i++){ %>
+    
+                            <tr style="text-align: center;">
+                                <td style="padding: 15px;"><%= i + 1 %></td>
+                                <td style="padding: 15px;"><%= userName[i] %></td>
+                                <td style="padding: 15px;"><%= userEmail[i] %></td>
+                                <td style="padding: 15px;"><%= userPhone[i] %></td>
+                                <td style="padding: 15px;"><%= userGender[i] %></td>
+                                <% dateString = userDOB[i].split("-");
+                                %>
+                                <!-- <td style="padding: 15px;"><%#= dateString[2] + "/" + dateString[1] + "/" + dateString[0] %></td> -->
+                                <td style="padding: 15px;"><%= userDepartment[i] %></td>
+                                <td style="padding: 15px;"><%= userYear[i] %></td>
+                                <td style="padding: 15px;"><%= userEnroll[i] %></td>
+                                <td style="padding: 15px;">
+                                    <% if(lockedProfiles.includes(userOriginalID[i])){ %>
+                                        <div style="width: 70px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px; cursor: not-allowed; opacity: 0.5;" onclick="lockedProfile('<%= userOriginalID[i] %>')">
+                                            Locked
+                                        </div>
+                                        <div style="width: 90px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px; cursor: pointer;" onclick="unLockedProfile('<%= userOriginalID[i] %>')">
+                                            Unlock
+                                        </div>
+                                        <% }else{ %>
+                                            <div style="width: 70px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px; cursor: pointer;" onclick="lockedProfile('<%= userOriginalID[i] %>')">
+                                                Lock
+                                            </div>
+                                            <div style="width: 90px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px; cursor: not-allowed; opacity: 0.5;" onclick="unLockedProfile('<%= userOriginalID[i] %>')">
+                                                Unlocked
+                                            </div>
+                                        <% } %>
+                            </td>
+                            </tr>
+        
+                            <% } %>
+                    </table>
 
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
-
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
-
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
-
-                    <tr style="text-align: center;">
-                        <td style="padding: 15px;">1</td>
-                        <td style="padding: 15px;">Mehul Prajapati</td>
-                        <td style="padding: 15px;">mehulprajapati1661@gmail.com</td>
-                        <td style="padding: 15px;">7802827504</td>
-                        <td style="padding: 15px;">male</td>
-                        <td style="padding: 15px;">2/4/2004</td>
-                        <td style="padding: 15px;">Computer Engineering</td>
-                        <td style="padding: 15px;">3</td>
-                        <td style="padding: 15px;">21012011118</td>
-                        <td style="padding: 15px;">pay_LYDjHvSqIH951w</td>
-                        <td style="padding: 15px;">order_LYDiWGW2fVZSgU</td>
-                        <td style="padding: 15px;">Unlocked</td>
-                        <td style="padding: 15px;"><div style="width: 50px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px;">
-                            Lock
-                        </div>
-                        <div style="width: 70px; height: 25px; background-color: rgb(13, 134, 81); color: white; text-align: center; border-radius: 5px; margin-top: 3px;">
-                            Unlock
-                        </div>
-                    </td>
-                    </tr>
-                </table>
             </div>
             </div>
         </div>
@@ -307,6 +167,22 @@
                     panel.style.opacity = "1";
                 }, 100); // Start transition with a slight delay
             }
+        }
+
+        function lockedProfile(user_id){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/lockedProfile/"+user_id;
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function unLockedProfile(user_id){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/unLockedProfile/"+user_id;
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

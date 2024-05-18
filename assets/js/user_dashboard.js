@@ -72,3 +72,12 @@ var gallery = ["/img/gallery/1.jpg", "/img/gallery/2.jpg", "/img/gallery/3.jpg",
     }
 
 
+    function your_events(){
+        var form_req = document.createElement("form");
+        form_req.setAttribute("method", "post");
+        form_req.setAttribute("action", "/theevent/user/registeredevents");
+
+        document.body.appendChild(form_req);
+        form_req.submit();
+    }
+

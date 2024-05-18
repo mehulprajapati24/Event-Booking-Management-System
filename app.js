@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const user = require('./modules/user');
 const admin = require('./modules/admin');
 const faculty = require('./modules/faculty');
+const coordinator = require('./modules/coordinator');
 const upload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const session = require("express-session");
@@ -33,6 +34,7 @@ app.use(session({
 app.use('/theevent/user',user);
 app.use('/theevent/admin',admin);
 app.use('/theevent/faculty',faculty);
+app.use('/theevent/coordinator',coordinator);
 
 app.listen(3000);
 

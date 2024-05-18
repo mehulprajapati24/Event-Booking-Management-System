@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/adminDashboard.css">
+    <style>
+        td{
+            text-align: center;
+        }
+
+        #btn1{
+            width: 70px; height: 25px; background-color: red; color: white; text-align: center; border-radius: 5px; cursor: pointer; margin-left: 50%; transform: translateX(-50%);
+        }
+
+        #btn2{
+            width: 90px; height: 25px; background-color: #4560ca ; color: white; text-align: center; border-radius: 5px; margin-top: 3px; cursor: pointer; margin-left: 50%; transform: translateX(-50%);
+        }
+
+        .btn:hover{
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <i class="fa fa-arrow-left" style="font-size: 20px; margin: 30px; cursor: pointer;" onclick="goBack()"></i>
+        <div class="dashboard" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px;">
+            <div>
+                <p style="font-weight: 600; font-size: 20px;">Coordinators:</p>
+
+                <div style="height: 610px; overflow-y: scroll;">
+                <table border="1" style="border-collapse: collapse; width: 1000px;">
+                    <tr>
+                        <th style="padding: 15px;">#</th>
+                        <th style="padding: 15px;">Coordinator Email Id</th>
+                        <th style="padding: 15px;">Associated Event</th>
+                        <th style="padding: 15px;">Action</th>
+                    </tr>
+
+                    <% for(i=0; i<coordinatorId.length; i++){ %>
+                    <tr>
+                        <td style="padding: 15px;"><%= i+1 %></td>
+                        <td style="padding: 15px;"><%= coordinatorEmail[i] %></td>
+                        <td style="padding: 15px;"><%= associatedEvent[i] %></td>
+                        <td style="padding: 15px; ">
+                            <div id="btn2" class="btn" onclick="updateCoordinator('<%= coordinatorId[i] %>')">
+                                Update
+                            </div>
+                        </td>
+                    </tr>
+
+                    <% } %>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function updateCoordinator(coordinatorId){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/manage_coordinator/edit/update";
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'coordinatorId';
+            hiddenInput.value = coordinatorId;
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function goBack(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/manage_coordinator";
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'key';
+            hiddenInput.value = 'value';
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</body>
+</html>

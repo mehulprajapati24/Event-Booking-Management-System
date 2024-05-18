@@ -9,10 +9,48 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/departmentPage.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.10.0/toastify.min.css">
+    <link rel="stylesheet" href="/css/eventPage.css">
 
+    <style>
+        /* CSS styles */
+        #tableDiv{
+            width: 70%;
+            display: flex;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          color: black;
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+    
+        th, td {
+          border: 1px solid #000000;
+          text-align: left;
+          padding: 8px;
+        }
+    
+        th {
+          background-color: #F82249; /* Light gray */
+          color: white;
+        }
+
+        tr:hover{
+          background-color: #1993de43;
+        }
+
+        @media(max-width:463px){
+            #tableDiv{
+                overflow-x: scroll;
+            }
+        }
+      </style>
 </head>
 <body>
+
     <nav class="nav_container">
         <div class="logo">
             <img src="/img/logo.png" alt="logo"/>
@@ -26,12 +64,11 @@
 
                 <div id="dropdownList" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px; position: absolute; right: 10px; top: 70px;">
                     <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
-                    <hr width="100%" color="black" style="opacity: 0.2;">
-                    <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; " onclick="your_events()">Your Events</p>
+                    
                     <hr width="100%" color="black" style="opacity: 0.2;">
                     <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
                   </div> 
-            <% }else{ %>
+                <% }else{ %>
             <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
             <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
             <%}%>
@@ -43,39 +80,51 @@
     </nav>
 
 
-    <section class="eventsPage" style="padding-top: 100px;">
-        <h1 style="font-size: 40px;"><%= departmentName %></h1>
-        <h2 style="font-size: 20px;">Events and Activities</h2>
-        <hr width="5%" size="5px" color="red" style="margin: auto; margin-top: 15px; margin-bottom: 15px;">
+    <% if(registered){ %>
+    <div style="flex: 1;">
+    <div style="width: 100%; margin-top: 70px;" id="tableDiv">
+        <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Department</th>
+                <th>More Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(i=0; i<name.length; i++){ %>
+              <tr>
+                <td><%= name[i] %></td>
+                <td><%= venue[i] %></td>
+                <td><%= date[i] %></td>
+                <td><%= time[i] %></td>
+                <td><%= department[i] %></td>
+                <td> <button style="background-color: #1993de; padding: 5px; border: 1px solid #1993de; border-radius: 5px; color: white; width: 100px; font-size: 16px; font-weight: 400; cursor: pointer;" onclick="document.location='/theevent/user/event/<%= name[i] %>'">View</button></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+    </div>
+    <div>
+    </div>
+</div>
 
-        <% if(eventNames.length > 0){ %>
-        <div class="grid_container">
-            <% for(i=0; i<eventNames.length; i++){ %>
-            <div class="event" onclick="document.location='/theevent/user/event/<%= eventNames[i] %>'">
-                <img src="/img/events/<%= eventIcons[i] %>" class="imageEvent">
-                <h2 class="eventName"><%= eventNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;"><%= eventTagline[i] %></span> </h2>
-            </div>
-            <% }  %>
-            </div>
-        </div>
-        <% }else{ %>
-            <div style="display: flex; justify-content: center; align-items: center; height: 400px;">
-                <p style="font-size: 28px;">------------ No any events right now! ------------</p>
-            </div>
-            <% } %>
-    </section>
+<% }else{ %>
+    <div style="display: flex; justify-content: center; align-items: center; flex: 1; color: black;">
+        <p style="font-size: 28px;">------------ You had not registered any event! ------------</p>
+    </div>
+    <% } %>
 
     <footer class="footer">
         <p style="font-size: 16px;">© Copyright TheEvent. All Rights Reserved | Designed by A|M|D</p>
     </footer>
-</body>
 
-<script src="/js/departmentPage.js">
 
-</script>
-
-<script>
-    function toggleDropDown(){
+    <script>
+        function toggleDropDown(){
         if(document.getElementById("dropdownList").style.display == "none"){
             document.getElementById("dropdownList").style.display = "block";
         }
@@ -83,14 +132,6 @@
             document.getElementById("dropdownList").style.display = "none";
         }
     }
-
-    function your_events(){
-        var form_req = document.createElement("form");
-        form_req.setAttribute("method", "post");
-        form_req.setAttribute("action", "/theevent/user/registeredevents");
-
-        document.body.appendChild(form_req);
-        form_req.submit();
-    }
-</script>
-</html>
+    </script>
+    </body>
+    </html>

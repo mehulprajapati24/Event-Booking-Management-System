@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/adminDashboard.css">
+
+</head>
+<body>
+    <div class="container">
+        <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </div>
+        <div class="panel" style="display: none; opacity: 0; transition: opacity 1s;" id="panel">
+            <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="flex: 1;">
+            <div style="display: flex; align-items: center; margin-top: 20px;">
+                <i class="fa fa-user" style="font-size: 20px;"></i>
+                <h4 style="margin-left: 5px;">Admin Panel</h4>
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/')">
+                Dashboard
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_faculty')">
+                Add/Edit/Delete Faculty
+            </div>
+            
+            <div class="sliderNav" onclick="openSlider(this, '/manage_department')">
+                Add/Edit/Delete Department
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/manage_event')">
+                Add/Edit/Delete Event
+            </div>
+
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')" style="background-color: white; color: black;">
+                Event Statistics
+            </div>
+        </div>
+
+        <div class="logout" style="margin-bottom: 30px;" onclick="logoutAdmin()">
+            Logout
+        </div>
+        </div>
+        </div>
+
+        <div class="dashboard" style="width: 1000px; display: flex; flex-direction: column; align-items: center;">
+            <div style="height: 45px; width: 550px; margin-top: 20px;">
+                <select class="department" id="departmentSelect" name="departmentName" style="height: 100%; width: 100%; font-size: 16px; padding-left: 8px;">
+                    <option value="Select Event" disabled selected>Select Department</option>
+                    <% for(i=0;i<departments.length;i++){ %>
+                        <% if(locals.selectedDepartment){ %>
+                            <option value="<%= departments[i] %>" <% if(departments[i] === selectedDepartment) { %> selected <% } %> > <%= departments[i] %> </option>
+                            <% }else{ %>
+                                <option value="<%= departments[i] %>" > <%= departments[i] %> </option>
+                            <% } %>
+                    <% } %>
+                </select>
+            </div>
+
+
+            <% if(locals.events){ %>
+            <div style="height: 45px; width: 550px; margin-top: 20px;">
+                <select class="department" id="eventSelect" name="eventName" style="height: 100%; width: 100%; font-size: 16px; padding-left: 8px;">
+                    <option value="Select Event" disabled selected>Select Event</option>
+                    <% for(i=0;i<events.length;i++){ %>
+                        <% if(locals.selectedEvent){ %>
+                            <option value="<%= events[i] %>" <% if(events[i] === selectedEvent) { %> selected <% } %> > <%= events[i] %> </option>
+                            <% }else{ %>
+                                <option value="<%= events[i] %>" > <%= events[i] %> </option>
+                            <% } %>
+                    <% } %>
+                </select>
+            </div>
+            <% } %>
+
+            <hr width="100%" size="2" color="gray" style="margin-top: 25px; margin-bottom: 20px; opacity: 0.7;">
+
+            <% if(locals.selectedEvent){ %>
+
+            <div style="height: 570px; overflow-y: scroll;">
+                <table border="1" style="border-collapse: collapse; width: 98%;">
+                    <tr>
+                        <th style="padding: 15px;">#</th>
+                        <th style="padding: 15px;">Name</th>
+                        <th style="padding: 15px;">Email</th>
+                        <th style="padding: 15px;">Phone</th>
+                        <th style="padding: 15px;">Department</th>
+                        <th style="padding: 15px;">Year</th>
+                        <th style="padding: 15px;">Enrollment No</th>
+                    </tr>
+                        <% for(i=0; i< userOriginalID.length; i++){ %>
+
+                            <tr style="text-align: center;">
+                                <td style="padding: 12px;"><%= i + 1 %></td>
+                                <td style="padding: 12px;"><%= userName[i] %></td>
+                                <td style="padding: 12px;"><%= userEmail[i] %></td>
+                                <td style="padding: 12px;"><%= userPhone[i] %></td>
+                                <% dateString = userDOB[i].split("-");
+                                %>
+                                <td style="padding: 12px;"><%= userDepartment[i] %></td>
+                                <td style="padding: 12px;"><%= userYear[i] %></td>
+                                <td style="padding: 12px;"><%= userEnroll[i] %></td>
+                            </tr>
+                            <% } %>
+
+                </table>
+
+        </div>
+        <% } %>
+
+        </div>
+
+
+    </div>
+
+    <script>
+        function openSlider(element,path){
+            
+            var anotherSliderNav = document.getElementsByClassName("sliderNav");
+            for(var i=0; i<anotherSliderNav.length; i++){
+                anotherSliderNav[i].style.backgroundColor = "#202123";
+                anotherSliderNav[i].style.color ="white";
+            }
+
+            element.style.backgroundColor ="white";
+            element.style.color ="black";
+
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin"+path;
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = "hidden";
+            hiddenInput.name = 'key';
+            hiddenInput.value = 'value';
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function toggleMenu(){
+            var panel = document.getElementById("panel");
+            if (panel.style.opacity === "1") {
+                panel.style.opacity = "0";
+                setTimeout(function() {
+                    panel.style.display = "none";
+                }, 1000); // Match the transition duration
+            } else {
+                panel.style.display = "block";
+                setTimeout(function() {
+                    panel.style.opacity = "1";
+                }, 100); // Start transition with a slight delay
+            }
+        }
+
+        function logoutAdmin(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin/logout";
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+
+        document.getElementById("departmentSelect").addEventListener("change",function(){
+                var selectedOption = this.value;
+                if (selectedOption !== "Select Department") {
+                    var form = document.createElement("form");
+                    form.method = "post";
+                    form.action = "/theevent/admin/eventstatistics";
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "departmentName";
+                    input.value = selectedOption;
+                    form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+
+                }
+            });
+
+
+            document.getElementById("eventSelect").addEventListener("change",function(){
+                var selectedOption = this.value;
+                var selectedDepartment = document.getElementById("departmentSelect").value;
+
+                if (selectedOption !== "Select Event") {
+                    var form = document.createElement("form");
+                    form.method = "post";
+                    form.action = "/theevent/admin/eventstatistics";
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "eventName";
+                    input.value = selectedOption;
+                    var input2 = document.createElement("input");
+                    input2.type = "hidden";
+                    input2.name = "departmentName";
+                    input2.value = selectedDepartment;
+                    form.appendChild(input);
+                    form.appendChild(input2);
+                    document.body.appendChild(form);
+                    form.submit();
+
+                }
+            });
+
+    </script>
+</body>
+</html>

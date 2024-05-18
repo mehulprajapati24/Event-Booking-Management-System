@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/adminDashboard.css">
+    <style>
+        #edit {
+            cursor: pointer;
+            font-size: 30px;
+            border: 3px solid white;
+            padding: 15px;
+            border-radius: 50%;
+            background-color: #0D6EFD;
+            color: white;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            transition: background-color 0.5s ease;
+        }
+
+        #edit:hover {
+            background-color: #F82249;
+        }
+    </style>
+</head>
+<body>
+        <div class="container" style="display: flex; justify-content: center;">
+            <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
+                <h1>Update Event</h1>
+                <div class="centerFormEvent" style="width: 1200px; height: 610px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
+                    <form id="eventForm" action="/theevent/faculty/manage_event/edit/updateevent" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                        <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 5px;">
+                            <div style="display: flex; gap: 50px;">
+                            <div>
+                            <p style="font-size: 16px;">Event Name</p>
+                            <input type="text" name="eventName" value="<%= eventName %>" placeholder="Enter Event Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                            </div>
+                            <div>
+                            <p style="font-size: 16px;">Event Tagline</p>
+                            <input type="text" name="eventTagline" value="<%= eventTagline %>" placeholder="Enter Event Tagline" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                            </div>
+                            </div>
+                            <div style="display: flex; gap: 50px; margin-top: 20px;">
+                            <div>
+                            <p style="font-size: 16px;">Event Description</p>
+                            <textarea  name="eventDescription"  placeholder="Enter Event Description" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px; padding-top: 10px;resize: none;"  required><%= eventDescription %></textarea>
+                            </div>
+                            <div>
+                            <p style="font-size: 16px;">Event Venue</p>
+                            <input type="text" name="eventVenue" value="<%= eventVenue %>" placeholder="Enter Event Venue" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                            </div>
+                            </div>
+                            <div style="display: flex; gap: 50px; margin-top: 20px;">
+                            <div>
+                                <p style="font-size: 16px;">Number of Coordinators</p>
+                                <input type="number" value="<%= numberOfCoordinators %>" placeholder="Enter Number of Coordinators" name="numberOfCoordinators" min="0" max="4" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                                </div>
+                            <div>
+                                <p style="font-size: 16px;">Upload Icon</p>
+                                <input type="file" value="<%= eventIcon %>" accept="image/jpeg, image/jpg, image/png" name="eventIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                            </div>
+                            </div>
+                            <div style="display: flex; gap: 50px; margin-top: 20px;">
+                            <div>
+                            <p style="font-size: 16px;">Upload Flyer</p>
+                            <input type="file" value="<%= eventFlyer %>" accept="image/jpeg, image/jpg, image/png" name="eventFlyer" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                            </div>
+                            <div>
+                            <p style="font-size: 16px;">Event Date</p>
+                            <input type="date" value="<%= eventDate %>" name="eventDate" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                        </div>
+                            </div>
+                            <div style="display: flex; gap: 50px; margin-top: 20px;">
+                                <div>
+                                    <p style="font-size: 16px;">Event Time(From)</p>
+                                    <!-- <input type="time" name="eventStartTime" step="60" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required> -->
+                                    <select name="startHour" id="startHour" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select hour">select hour</option>
+                                        <% for(i=1;i<=12;i++){ %>
+                                            <% if(i == hours1){ %>
+                                                <option value="<%= i %>" selected><%= i %></option>
+                                                <% }else{ %>
+                                            <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+    
+                                    <select name="startMinute" id="startMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select minute">select minute</option>
+                                        <% for(i=1;i<=60;i++){ %>
+                                            <% if(i == minutes1){ %>
+                                                <option value="<%= i %>" selected><%= i %></option>
+                                                <% }else{ %>
+                                            <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+    
+                                    <select name="startPeriod" id="startPeriod" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select period">select period</option>
+                                        <% if(period1 == "AM"){ %>
+                                        <option value="AM" selected>AM</option>
+                                        <option value="PM">PM</option>
+                                        <% }else{ %>
+                                            <option value="AM">AM</option>
+                                            <option value="PM" selected>PM</option>
+                                            <% } %>
+                                    </select>
+                                    </div>
+                                <div>
+                                    <p style="font-size: 16px;">Event Time(To)</p>
+                                    <select name="endHour" id="endHour" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select hour">select hour</option>
+                                        <% for(i=1;i<=12;i++){ %>
+                                            <% if(i == hours2){ %>
+                                                <option value="<%= i %>" selected><%= i %></option>
+                                                <% }else{ %>
+                                            <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+    
+                                    <select name="endMinute" id="endMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select minute">select minute</option>
+                                        <% for(i=1;i<=60;i++){ %>
+                                            <% if(i == minutes2){ %>
+                                                <option value="<%= i %>" selected><%= i %></option>
+                                                <% }else{ %>
+                                            <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+    
+                                    <select name="endPeriod" id="endPeriod" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
+                                        <option disabled selected value="select period">select period</option>
+                                        <% if(period2 == "AM"){ %>
+                                            <option value="AM" selected>AM</option>
+                                            <option value="PM">PM</option>
+                                            <% }else{ %>
+                                                <option value="AM">AM</option>
+                                                <option value="PM" selected>PM</option>
+                                                <% } %>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 50px; margin-top: 20px;">
+                                    <div>
+                                        <p style="font-size: 16px;">Registration Fees</p>
+                                        <input type="text" value="<%= registrationFees %>" name="registrationFees" placeholder="Enter Registration Fees" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 16px;">Capacity</p>
+                                        <input type="number" value="<%= attendeesCapacity %>" name="attendeesCapacity" placeholder="Enter Number of Attendees allowed" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                    </div>
+                                </div>
+                                <input type="text" name="eventId" value="<%= eventId %>" style="display: none;" />
+                            <div style="display: flex; justify-content: center; margin-top: 15px;">
+                                <input type="submit" value="Update" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    
+        </div>
+
+</body>
+</html>

@@ -424,7 +424,10 @@ router.get("/department/:departmentName",(req,res)=>{
 });
 
 
-
+function parseDate(dateString) {
+  const parts = dateString.split('/');
+  return new Date(parts[2], parts[1] - 1, parts[0]); // Months are 0-based
+}
 
 router.get("/event/:eventName",(req,res)=>{
   var emailID = req.session.email_id;
@@ -433,6 +436,212 @@ router.get("/event/:eventName",(req,res)=>{
   var phone_no="";
 
   if(emailID){
+
+    sql = "select * from locked_profile lp join user_registration ur on lp.user_id = ur.user_id where ur.email_id=?";
+    con.query(sql, [emailID], (err, result) => {
+
+      if(result.length > 0){
+
+
+        var eventName = req.params.eventName;
+  var sql = `select * from event where eventName=?;`
+  con.query(sql, [eventName] , (err, result)=>{
+    if (err) throw err;
+    console.log("Event fetched successfully");
+
+
+   eventId = result[0].id;
+   eventTagline = result[0].eventTagline;
+   eventDescription = result[0].eventDescription;
+   eventVenue = result[0].eventVenue;
+   eventFlyer = result[0].eventFlyer;
+   eventDate = result[0].eventDate;
+   eventStartTime = result[0].eventStartTime;
+   eventEndTime = result[0].eventEndTime;
+   registrationFees = result[0].registrationFees;
+   attendeesCapacity = result[0].attendeesCapacity;
+
+
+   var eventDateString = eventDate;
+   var event_date = parseDate(eventDateString);
+   var todayDate = new Date();
+   if(event_date < todayDate){
+    res.render("eventPage2.ejs", {locked:"locked", closedRegistration: true ,MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+   }
+   else{
+
+   sql = "select * from user_registration where email_id=?";
+   con.query(sql, [emailID], (err, result)=>{
+    if (err) throw err;
+    var user_id = result[0].user_id;
+    var first_name = result[0].first_name;
+    var last_name = result[0].last_name;
+    fullName = first_name + " " + last_name;
+    phone_no = result[0].phone_no;
+
+    sql = "select * from registered_event where user_id=? AND event_id=?";
+    con.query(sql, [user_id, eventId], (err, result)=>{
+      if (err) throw err;
+      if(result.length == 0){
+
+        sql = "select * from registered_event where user_id=?";
+        con.query(sql, [user_id], (err, mainResult)=>{
+          if (err) throw err;
+          if(mainResult.length == 0)
+          {
+            sql = "select * from registered_event where event_id=?";
+            con.query(sql, [eventId], (err, result)=>{
+              if(result.length == attendeesCapacity){
+                if(registrationFees==0)
+                    {
+                      res.render("eventPage2.ejs", {locked:"locked", MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+                    else
+                    {
+                      res.render("eventPage.ejs", {locked:"locked", MaxAttendeesReached: "yes", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+              }
+              else{
+                if(registrationFees==0)
+                    {
+                      res.render("eventPage2.ejs", {locked:"locked", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+                    else
+                    {
+                      res.render("eventPage.ejs", {locked:"locked", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                    }
+              }
+            });
+          }
+          else
+          {
+
+            sql = "select * from registered_event where event_id=?";
+            con.query(sql, [eventId], async (err, result)=>{
+              if(result.length == attendeesCapacity){
+
+                if(registrationFees==0)
+                {
+                  res.render("eventPage2.ejs", {locked:"locked", MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+                else
+                {
+                  res.render("eventPage.ejs", {locked:"locked", MaxAttendeesReached: "yes", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+                }
+
+              }
+              else{
+            registeredEvent = {
+              date: "",
+              startTime: "",
+              endTime: ""
+            };
+
+            var clashFound = false;
+
+
+            // Function to check if the selected event clashes with any existing event
+            var clashesEventsName = "";
+            function checkEventClash(selectedDate, selectedStartTime, selectedEndTime, event) {
+              console.log(event.eventName);
+
+              const selectedDateTimeStart = moment(selectedDate + ' ' + selectedStartTime, 'DD/MM/YYYY h:mm A');
+              const selectedDateTimeEnd = moment(selectedDate + ' ' + selectedEndTime, 'DD/MM/YYYY h:mm A');
+              
+              console.log(selectedDateTimeStart);
+
+
+                  if (event.eventDate === selectedDate) {
+                      console.log("Event Date:", event.eventDate);
+                      const eventStartTime = moment(event.eventDate + ' ' + event.eventStartTime, 'DD/MM/YYYY h:mm A');
+                      const eventEndTime = moment(event.eventDate + ' ' + event.eventEndTime, 'DD/MM/YYYY h:mm A');
+
+                      console.log("Event Start Time:", event.eventStartTime);
+                      console.log("Event End Time:", event.eventEndTime);
+
+                      if (
+                          (selectedDateTimeStart.isBetween(eventStartTime, eventEndTime) || selectedDateTimeEnd.isBetween(eventStartTime, eventEndTime)) ||
+                          (eventStartTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd) || eventEndTime.isBetween(selectedDateTimeStart, selectedDateTimeEnd))
+                      ) {
+                          clashesEventsName = clashesEventsName + event.eventName + ", ";
+                          console.log("Clash Found!");
+                          return true; // Clash found
+                      }
+                  }
+
+
+              return false; // No clash found
+            }
+
+
+            async function getEventData(eventId) {
+              return new Promise((resolve, reject) => {
+                  sql = "select * from event where id=?";
+                  con.query(sql, [eventId], (err, result) => {
+                      if (err) {
+                          reject(err);
+                      } else {
+                          resolve(result[0]);
+                      }
+                  });
+              });
+          }
+
+            async function checkClashes() {
+              for (var i = 0; i < mainResult.length; i++) {
+                  var eventId = mainResult[i].event_id;
+                  const event = await getEventData(eventId);
+                  if (checkEventClash(eventDate, eventStartTime, eventEndTime, event)) {
+                      clashFound = true;
+                  }
+              }
+          }
+
+            await checkClashes();
+            console.log(clashFound);
+
+            if(clashFound){
+
+              console.log(clashesEventsName);
+              //from 0 index to length-1 and we get 0 to length-2 parts
+             // clashesEventsName = clashesEventsName.slice(0, clashesEventsName.length-2);
+              clashesEventsName = clashesEventsName.slice(0, -2);
+              if(registrationFees==0)
+              {
+                console.log(clashesEventsName);
+                res.render("eventPage2.ejs", {locked:"locked", clashesEventsName: clashesEventsName, clashWarning: "Clash found! Are you still want to proceed?" ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+              else
+              {
+                console.log(clashesEventsName);
+                res.render("eventPage.ejs", {locked:"locked", clashesEventsName: clashesEventsName, clashWarning: "yes", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+            }else{
+              if(registrationFees==0)
+              {
+                console.log("Clash not found!");
+                res.render("eventPage2.ejs", {locked:"locked", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+              else
+              {
+                console.log("Clash not found!");
+                res.render("eventPage.ejs", {locked:"locked", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID ,register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+              }
+            }
+          }
+        });
+        }
+      });
+      }
+      else{
+        res.render("eventPage.ejs", {locked:"locked", clashesEventsName: "empty", clashWarning: "no", fullName : fullName, phoneNo : phone_no, emailID : emailID , key_id : process.env.RAZORPAY_KEY_ID, register: "Registered", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+      }
+    });
+   });
+  }
+  });
+
+      }else{
   var eventName = req.params.eventName;
   var sql = `select * from event where eventName=?;`
   con.query(sql, [eventName] , (err, result)=>{
@@ -451,6 +660,14 @@ router.get("/event/:eventName",(req,res)=>{
    registrationFees = result[0].registrationFees;
    attendeesCapacity = result[0].attendeesCapacity;
 
+
+   var eventDateString = eventDate;
+   var event_date = parseDate(eventDateString);
+   var todayDate = new Date();
+   if(event_date < todayDate){
+    res.render("eventPage2.ejs", {closedRegistration: true ,MaxAttendeesReached: "yes", clashesEventsName: "empty", register: "Register", loggedIn : "yes" ,first_name : firstNAME, email_id: emailID, eventName: eventName, eventTagline: eventTagline, eventDescription: eventDescription, eventVenue: eventVenue, eventFlyer: eventFlyer, eventDate: eventDate, eventStartTime: eventStartTime, eventEndTime: eventEndTime, registrationFees: registrationFees, attendeesCapacity: attendeesCapacity});
+   }
+   else{
 
    sql = "select * from user_registration where email_id=?";
    con.query(sql, [emailID], (err, result)=>{
@@ -620,8 +837,10 @@ router.get("/event/:eventName",(req,res)=>{
       }
     });
    });
-
+  }
   });
+}
+});
 }else{
   var eventName = req.params.eventName;
   var sql = `select * from event where eventName=?;`
@@ -694,6 +913,56 @@ router.post("/successpayment/:eventName",(req,res)=>{
       });
     });
 });
+
+async function registeredEvents(eventId){
+  return new Promise((resolve, reject) => {
+    sql = "select * from event where id=?";
+    con.query(sql, [eventId], (err, result) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(result[0]);
+        }
+    });
+});
+}
+router.post("/registeredevents", (req,res)=>{
+  var emailID = req.session.email_id;
+  var firstNAME = req.session.first_name;
+  //console.log(emailID);
+  var name = [];
+  var venue = [];
+  var time = [];
+  var date = [];
+  var department = [];
+
+  var sql = "select user_id from user_registration where email_id=?";
+  con.query(sql, [emailID], (err,result)=>{
+    var userId = result[0].user_id;
+    //console.log(userId);
+    var sql = "select event_id from registered_event where user_id=?";
+    con.query(sql, [userId], async (err,result)=>{
+
+      if(result.length > 0){
+        for(i=0; i<result.length; i++){
+          var eventId = result[i].event_id;
+
+          var event = await registeredEvents(eventId);
+          name.push(event.eventName);
+          venue.push(event.eventVenue);
+          date.push(event.eventDate);
+          time.push(event.eventStartTime + " to " + event.eventEndTime);
+          department.push(event.department);
+        }
+        //console.log(name);
+        res.render("registeredEvents.ejs",{first_name: firstNAME, registered: true, name: name, venue: venue, date: date, time: time, department: department});
+      }
+      else{
+        res.render("registeredEvents.ejs",{first_name: firstNAME, registered: false});
+      }
+    });
+  });
+})
 
 
 

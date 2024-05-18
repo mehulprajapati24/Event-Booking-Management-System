@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Event</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/facultyDashboard.css">
+    <style>
+
+        th, td {
+          border: 1px solid #000000;
+          padding: 8px;
+        }
+
+        th {
+          background-color: #F82249; /* Light gray */
+          color: white;
+        }
+
+        tr:hover{
+          background-color: #1993de43;
+        }
+    </style>
+
+</head>
+<body>
+
+        <div class="anotherProfileImage" onclick="document.location='/theevent/coordinator/logout'" style="display: flex; align-items: center; padding-left: 8px; padding-right: 0px; border-radius: 50%;  cursor: pointer; position: absolute; right: 60px; top: 10px;">
+            <i class="fa fa-arrow-left" style="font-size: 18px; padding-right: 10px;"></i>
+
+            <p>Logout</p>
+        </div>
+
+
+        <hr width="100%" color="black" size="1" style="position: absolute; top: 40px; opacity: 0.6;">
+        <div class="dashboard" style="margin-top: 40px;">
+            <div style="display: flex; justify-content: center; padding: 20px; background-color: rgba(114, 154, 233, 0.704);">
+                <h1><%= eventsName[0] %></h1>
+            </div>
+            <hr>
+
+            <div style="padding-left: 25px;">
+            <div>
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; margin-bottom: 30px; cursor: pointer;" onclick="downloadPdf('<%= eventsName[0] %>'+'.csv')">
+                    <p style="font-weight: 600; font-size: 20px;">Participants:</p>
+                    <p style="font-weight: 600; font-size: 20px; background-color: #F82249; width: 150px; text-align: center; color: white; border: 1px solid #F82249; border-radius: 50px; margin-right: 60px;">Download   <i class="fa fa-download"></i></p>
+                </div>
+
+                <div style="height: 525px; overflow-y: scroll;">
+                
+
+                    <table id="participantTable" border="1" style="border-collapse: collapse; width: 98%;">
+
+
+                        <tr>
+                            <th style="padding: 15px;">#</th>
+                            <th style="padding: 15px;">Name</th>
+                            <th style="padding: 15px;">Email</th>
+                            <th style="padding: 15px;">Phone</th>
+                            <th style="padding: 15px;">Department</th>
+                            <th style="padding: 15px;">Year</th>
+                            <th style="padding: 15px;">Enrollment No</th>
+                            <th style="padding: 15px; padding-left: 20px; padding-right: 20px;">Signature</th>
+                        </tr>
+                        
+                            <% for(i=0; i< userOriginalID.length; i++){ %>
+    
+                                <tr style="text-align: center;">
+                                    <td style="padding: 12px;"><%= i + 1 %></td>
+                                    <td style="padding: 12px;"><%= userName[i] %></td>
+                                    <td style="padding: 12px;"><%= userEmail[i] %></td>
+                                    <td style="padding: 12px;"><%= userPhone[i] %></td>
+                                    <% dateString = userDOB[i].split("-");
+                                    %>
+                                    <td style="padding: 12px;"><%= userDepartment[i] %></td>
+                                    <td style="padding: 12px;"><%= userYear[i] %></td>
+                                    <td style="padding: 12px;"><%= userEnroll[i] %></td>
+                                    <td style="padding: 12px;"></td>
+                                </tr>
+
+            
+                                <% } %>
+                        
+
+                        
+                    </table>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function downloadPdf(filename) {
+        const table = document.getElementById('participantTable');
+        let csv = [];
+        const rows = table.querySelectorAll('tr');
+
+        for (let row of rows){
+            let cols = row.querySelectorAll('td, th');
+            let csvRow = [];
+            for(let col of cols){
+                csvRow.push(col.innerText);
+            }
+            csv.push(csvRow.join(', '));
+        }
+
+        const csvFile = new Blob([csv.join('\n')], {type: 'text/csv'});
+        const downloadLink = document.createElement('a');
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = 'none';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    </script>
+
+</body>
+</html>

@@ -11,6 +11,26 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/facultyDashboard.css">
 
+    <style>
+        #edit {
+            cursor: pointer;
+            font-size: 30px;
+            border: 3px solid white;
+            padding: 15px;
+            border-radius: 50%;
+            background-color: #0D6EFD;
+            color: white;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            transition: background-color 0.5s ease;
+        }
+
+        #edit:hover {
+            background-color: #F82249;
+        }
+    </style>
 </head>
 <body>
 
@@ -44,7 +64,7 @@
                 Add/Edit/Delete Event
             </div>
 
-            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')">
                 Event Statistics
             </div>
         </div>
@@ -167,6 +187,8 @@
 
     </div>
 
+    <i class="fa fa-pencil" id="edit" onclick="manageEvent()"></i>
+
     <script>
         function openSlider(element,path){
             
@@ -282,6 +304,15 @@
             }
         });
     });
+
+    function manageEvent(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/manage_event/edit";
+            document.body.appendChild(form);
+            form.submit();
+        }
+
     </script>
 </body>
 </html>

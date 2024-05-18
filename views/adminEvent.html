@@ -41,12 +41,12 @@
                 Add/Edit/Delete Event
             </div>
 
-            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')">
                 Event Statistics
             </div>
         </div>
 
-        <div class="logout" style="margin-bottom: 30px;">
+        <div class="logout" style="margin-bottom: 30px;" onclick="logoutAdmin()">
             Logout
         </div>
         </div>
@@ -94,6 +94,14 @@
                     panel.style.opacity = "1";
                 }, 100); // Start transition with a slight delay
             }
+        }
+
+        function logoutAdmin(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin/logout";
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

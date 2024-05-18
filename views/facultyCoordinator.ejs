@@ -11,6 +11,26 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/facultyDashboard.css">
 
+    <style>
+        #edit {
+           cursor: pointer;
+           font-size: 30px;
+           border: 3px solid white;
+           padding: 15px;
+           border-radius: 50%;
+           background-color: #0D6EFD;
+           color: white;
+           box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+           position: absolute;
+           bottom: 30px;
+           right: 50px;
+           transition: background-color 0.5s ease;
+       }
+
+       #edit:hover {
+           background-color: #F82249;
+       }
+   </style>
 </head>
 <body>
 
@@ -19,6 +39,7 @@
             alert("<%= coordinator %> added successfully");
         </script>
     <% } %>
+    <i class="fa fa-pencil" id="edit" onclick="manageCoordinator()"></i>
 
     <div class="container">
         <div onclick="toggleMenu()" id="menuBtn" style="cursor: pointer; position: absolute; left: 25px; top: 25px;">
@@ -44,7 +65,7 @@
                 Add/Edit/Delete Event
             </div>
 
-            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')">
                 Event Statistics
             </div>
         </div>
@@ -105,6 +126,7 @@
     </div>
     </div>
     </div>
+
 
     <script>
 
@@ -191,6 +213,13 @@
             }
         }
 
+        function manageCoordinator(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/faculty/manage_coordinator/edit";
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 </body>
 </html>

@@ -10,7 +10,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/adminDashboard.css">
+    <style>
+        #edit {
+            cursor: pointer;
+            font-size: 30px;
+            border: 3px solid white;
+            padding: 15px;
+            border-radius: 50%;
+            background-color: #0D6EFD;
+            color: white;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 60px;
+            right: 80px;
+            transition: background-color 0.5s ease;
+        }
 
+        #edit:hover {
+            background-color: #F82249;
+        }
+    </style>
 </head>
 <body>
     <% if(locals.facultyData){ %>
@@ -53,12 +72,12 @@
                 Add/Edit/Delete Event
             </div>
 
-            <div class="sliderNav" onclick="openSlider(this, '/statistics')">
+            <div class="sliderNav" onclick="openSlider(this, '/eventstatistics')">
                 Event Statistics
             </div>
         </div>
 
-        <div class="logout" style="margin-bottom: 30px;">
+        <div class="logout" style="margin-bottom: 30px;" onclick="logoutAdmin()">
             Logout
         </div>
         </div>
@@ -92,6 +111,7 @@
             </div>
         </div>
     </div>
+    <i class="fa fa-pencil" id="edit" onclick="manageFaculty()"></i>
 
     <script>
 
@@ -157,6 +177,22 @@
                     panel.style.opacity = "1";
                 }, 100); // Start transition with a slight delay
             }
+        }
+
+        function logoutAdmin(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin/logout";
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function manageFaculty(){
+            var form = document.createElement('form');
+            form.method = "post";
+            form.action = "/theevent/admin/manage_faculty/edit";
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

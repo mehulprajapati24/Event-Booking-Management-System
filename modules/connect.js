@@ -78,6 +78,13 @@ con.connect((err)=>{
         if (err) throw err;
         console.log("registered_event table created");
     });
+
+    sql11 = "create table if not exists locked_profile(user_id int);"
+
+    con.query(sql11, (err,result)=>{
+        if (err) throw err;
+        console.log("locked_profile table created");
+    });
 });
 
 
