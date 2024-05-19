@@ -1,17 +1,19 @@
 const mysql = require("mysql");
-const bcrypt = require("bcrypt");
+const env = require("dotenv");
+env.config();
+
 
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
 });
 
 con.connect((err) => {
   if (err) throw err;
   console.log("Connected");
 
-  var sql1 = "CREATE DATABASE IF NOT EXISTS event_management";
+  var sql1 = "CREATE DATABASE IF NOT EXISTS "+process.env.DATABASE;
   con.query(sql1, (err, result) => {
     if (err) throw err;
     console.log("Database created");
