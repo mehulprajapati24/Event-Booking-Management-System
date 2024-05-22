@@ -127,7 +127,7 @@ function verifyToken(req, res, next) {
           var departmentIconsArray = [];
           var sql = "select departmentName, departmentIcon from department";
           con.query(sql, (err, results) => {
-            if(result && result.length >0){
+            if(results && results.length >0){
               for (i = 0; i < results.length; i++) {
                 departmentArray.push(results[i].departmentName);
                 departmentIconsArray.push(results[i].departmentIcon);

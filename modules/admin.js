@@ -4,6 +4,7 @@ const con = require("./connect");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const { error } = require("console");
+const fs = require('fs');
 
 const router = express.Router();
 
