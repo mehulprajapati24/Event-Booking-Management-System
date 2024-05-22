@@ -7,6 +7,7 @@ const { error } = require("console");
 
 const router = express.Router();
 
+
 const saltRounds = 10;
 
 router.get("/login", (req, res) => {

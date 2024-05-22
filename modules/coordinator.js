@@ -10,6 +10,7 @@ const router = express.Router();
 
 const saltRounds = 10;
 
+
 router.get("/login", (req, res) => {
   res.render("coordinatorLogin.ejs");
 });

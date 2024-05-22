@@ -9,6 +9,8 @@ const moment = require("moment");
 var crypto = require("crypto");
 const util = require("util");
 const conQuery = util.promisify(con.query);
+const path = require('path');
+const jwt = require("jsonwebtoken");
 
 env.config();
 
@@ -21,6 +23,7 @@ const saltRounds = 10;
 
 const router = express.Router();
 
+
 var firstName = "";
 var lastName = "";
 var emailId = "";
@@ -32,6 +35,246 @@ var year = "";
 var enrollmentNo = "";
 var password = "";
 var otp = "";
+
+function verifyToken(req, res, next) {
+  const token = req.cookies["token"];
+  //copy token and decode in base64
+  console.log(token);
+  // if (!token) return res.status(401).redirect("/theevent/user/");
+
+  if (!token){
+    var eventDetails1 = [];
+  var departmentDetails1 = [];
+  var eventImage1 = [];
+  var eventStartTime1 = [];
+  var eventEndTime1 = [];
+  var eventDetails2 = [];
+  var departmentDetails2 = [];
+  var eventImage2 = [];
+  var eventStartTime2 = [];
+  var eventEndTime2 = [];
+  var eventDetails3 = [];
+  var departmentDetails3 = [];
+  var eventImage3 = [];
+  var eventStartTime3 = [];
+  var eventEndTime3 = [];
+
+  sql = "select * from event where eventDate=?";
+  var today = new Date();
+  var formattedDate1 =
+    String(today.getDate()).padStart(2, "0") +
+    "/" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "/" +
+    today.getFullYear();
+  console.log(formattedDate1);
+  con.query(sql, [formattedDate1], (err, result) => {
+    if(result && result.length > 0){
+      for (i = 0; i < result.length; i++) {
+        eventDetails1.push(result[i].eventName);
+        eventImage1.push(result[i].eventIcon);
+        departmentDetails1.push(result[i].department);
+        eventStartTime1.push(result[i].eventStartTime);
+        eventEndTime1.push(result[i].eventEndTime);
+      }
+    }
+
+    sql = "select * from event where eventDate=?";
+    var tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var formattedDate2 =
+      String(tomorrow.getDate()).padStart(2, "0") +
+      "/" +
+      String(tomorrow.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      tomorrow.getFullYear();
+    console.log(formattedDate2);
+    con.query(sql, [formattedDate2], (err, result) => {
+
+      if(result && result.length > 0){
+        for (i = 0; i < result.length; i++) {
+          eventDetails2.push(result[i].eventName);
+          eventImage2.push(result[i].eventIcon);
+          departmentDetails2.push(result[i].department);
+          eventStartTime2.push(result[i].eventStartTime);
+          eventEndTime2.push(result[i].eventEndTime);
+        }
+      }
+
+      sql = "select * from event where eventDate=?";
+      var dayAfterTomorrow = new Date(tomorrow);
+      dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
+      var formattedDate3 =
+        String(dayAfterTomorrow.getDate()).padStart(2, "0") +
+        "/" +
+        String(dayAfterTomorrow.getMonth() + 1).padStart(2, "0") +
+        "/" +
+        dayAfterTomorrow.getFullYear();
+      console.log(formattedDate3);
+      con.query(sql, [formattedDate3], (err, result) => {
+
+        if(result && result.length > 0){
+          for (i = 0; i < result.length; i++) {
+            eventDetails3.push(result[i].eventName);
+            eventImage3.push(result[i].eventIcon);
+            departmentDetails3.push(result[i].department);
+            eventStartTime3.push(result[i].eventStartTime);
+            eventEndTime3.push(result[i].eventEndTime);
+          }
+        }
+
+        var departmentArray = [];
+          var departmentIconsArray = [];
+          var sql = "select departmentName, departmentIcon from department";
+          con.query(sql, (err, results) => {
+            if(result && result.length >0){
+              for (i = 0; i < results.length; i++) {
+                departmentArray.push(results[i].departmentName);
+                departmentIconsArray.push(results[i].departmentIcon);
+              }
+            }
+            res.render("user_dashboard.ejs", {
+              departmentNames: departmentArray,
+              departmentIcons: departmentIconsArray,
+              departmentDetails1: departmentDetails1,
+              eventDetails1: eventDetails1,
+              eventImage1: eventImage1,
+              eventStartTime1: eventStartTime1,
+              eventEndTime1: eventEndTime1,
+              departmentDetails2: departmentDetails2,
+              eventDetails2: eventDetails2,
+              eventImage2: eventImage2,
+              eventStartTime2: eventStartTime2,
+              eventEndTime2: eventEndTime2,
+              departmentDetails3: departmentDetails3,
+              eventDetails3: eventDetails3,
+              eventImage3: eventImage3,
+              eventStartTime3: eventStartTime3,
+              eventEndTime3: eventEndTime3,
+            });
+          });
+
+
+
+      });
+    });
+  });
+  }
+
+  else{
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+      } else {
+        return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
+      }
+    }
+    //only stored information purpose
+    req.user = decoded.user;
+    next();
+  });
+}
+}
+
+
+function verifyToken1(req, res, next) {
+  const token = req.cookies["token"];
+  //copy token and decode in base64
+  console.log(token);
+  // if (!token) return res.status(401).redirect("/theevent/user/");
+
+  if (!token){
+    var departmentName = req.params.departmentName;
+    var sql = `select * from event where department=?;`;
+    con.query(sql, [departmentName], (err, result) => {
+      if (err) throw err;
+      console.log("Events fetched successfully");
+      eventNames = [];
+      eventIcons = [];
+      eventTagline = [];
+      for (i = 0; i < result.length; i++) {
+        eventNames.push(result[i].eventName);
+        eventIcons.push(result[i].eventIcon);
+        eventTagline.push(result[i].eventTagline);
+      }
+      res.render("departmentPage.ejs", {
+        eventNames: eventNames,
+        eventIcons: eventIcons,
+        eventTagline: eventTagline,
+        departmentName: departmentName,
+      });
+    });
+  }
+
+  else{
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+      } else {
+        return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
+      }
+    }
+    //only stored information purpose
+    req.user = decoded.user;
+    next();
+  });
+}
+}
+
+function verifyToken2(req, res, next) {
+  const token = req.cookies["token"];
+  //copy token and decode in base64
+  console.log(token);
+  // if (!token) return res.status(401).redirect("/theevent/user/");
+
+  if (!token){
+    var eventName = req.params.eventName;
+    var sql = `select * from event where eventName=?;`;
+    con.query(sql, [eventName], (err, result) => {
+      if (err) throw err;
+      console.log("Event fetched successfully");
+
+      res.render("eventPage.ejs", {
+        clashesEventsName: "empty",
+        clashWarning: "no",
+        fullName: "",
+        phoneNo: "",
+        emailID: "",
+        key_id: process.env.RAZORPAY_KEY_ID,
+        register: "Register",
+        loggedIn: "no",
+        eventName: eventName,
+        eventTagline: result[0].eventTagline,
+        eventDescription: result[0].eventDescription,
+        eventVenue: result[0].eventVenue,
+        eventFlyer: result[0].eventFlyer,
+        eventDate: result[0].eventDate,
+        eventStartTime: result[0].eventStartTime,
+        eventEndTime: result[0].eventEndTime,
+        registrationFees: result[0].registrationFees,
+        attendeesCapacity: result[0].attendeesCapacity,
+      });
+    });
+  }
+
+  else{
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+      } else {
+        return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
+      }
+    }
+    //only stored information purpose
+    req.user = decoded.user;
+    next();
+  });
+}
+}
+
 
 router.get("/registration", (req, res) => {
   res.render("registration1.ejs");
@@ -149,13 +392,13 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/", (req, res) => {
+router.get("/", verifyToken, (req, res) => {
   // console.log("Cookie: "+req.cookies.emailId);
-  console.log("Session data: " + req.session.email_id);
+  console.log("Token data: " + req.user.userEmail);
   // var emailID = req.cookies.emailId;
   // var firstNAME = req.cookies.firstName;
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
+  var emailID = req.user.userEmail;
+  var firstNAME = req.user.userName;
   var eventDetails1 = [];
   var departmentDetails1 = [];
   var eventImage1 = [];
@@ -201,8 +444,8 @@ router.get("/", (req, res) => {
       tomorrow.getFullYear();
     console.log(formattedDate2);
     con.query(sql, [formattedDate2], (err, result) => {
-      req.session.email_id = emailId;
-      req.session.first_name = firstName;
+      req.user.userEmail = emailId;
+      req.user.userName = firstName;
       for (i = 0; i < result.length; i++) {
         eventDetails2.push(result[i].eventName);
         eventImage2.push(result[i].eventIcon);
@@ -222,8 +465,8 @@ router.get("/", (req, res) => {
         dayAfterTomorrow.getFullYear();
       console.log(formattedDate3);
       con.query(sql, [formattedDate3], (err, result) => {
-        req.session.email_id = emailId;
-        req.session.first_name = firstName;
+        req.user.userEmail = emailId;
+        req.user.userName = firstName;
         for (i = 0; i < result.length; i++) {
           eventDetails3.push(result[i].eventName);
           eventImage3.push(result[i].eventIcon);
@@ -338,8 +581,15 @@ router.post("/", (req, res) => {
     con.query(sql, [formattedDate1], (err, result) => {
       //  res.cookie("emailId",emailId,{maxAge:3600000 * 24, httpOnly: true});
       //  res.cookie("firstName",firstName,{maxAge:3600000 * 24, httpOnly: true});
-      req.session.email_id = emailId;
-      req.session.first_name = firstName;
+      // req.session.email_id = emailId;
+      // req.session.first_name = firstName;
+
+      const user = { userName: firstName, userEmail: emailId };
+      const token = jwt.sign({ user }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      res.cookie("token", token, { maxAge: 3600000 * 24, httpOnly: true });
+      
       for (i = 0; i < result.length; i++) {
         eventDetails1.push(result[i].eventName);
         eventImage1.push(result[i].eventIcon);
@@ -359,8 +609,6 @@ router.post("/", (req, res) => {
         tomorrow.getFullYear();
       console.log(formattedDate2);
       con.query(sql, [formattedDate2], (err, result) => {
-        req.session.email_id = emailId;
-        req.session.first_name = firstName;
         for (i = 0; i < result.length; i++) {
           eventDetails2.push(result[i].eventName);
           eventImage2.push(result[i].eventIcon);
@@ -380,8 +628,6 @@ router.post("/", (req, res) => {
           dayAfterTomorrow.getFullYear();
         console.log(formattedDate3);
         con.query(sql, [formattedDate3], (err, result) => {
-          req.session.email_id = emailId;
-          req.session.first_name = firstName;
           for (i = 0; i < result.length; i++) {
             eventDetails3.push(result[i].eventName);
             eventImage3.push(result[i].eventIcon);
@@ -498,9 +744,9 @@ router.post("/passwordchanged", (req, res) => {
   });
 });
 
-router.get("/department/:departmentName", (req, res) => {
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
+router.get("/department/:departmentName", verifyToken1, (req, res) => {
+  var emailID = req.user.userEmail;
+  var firstNAME = req.user.userName;
   if (emailID) {
     var departmentName = req.params.departmentName;
     var sql = `select * from event where department=?;`;
@@ -553,9 +799,9 @@ function parseDate(dateString) {
   return new Date(parts[2], parts[1] - 1, parts[0]); // Months are 0-based
 }
 
-router.get("/event/:eventName", (req, res) => {
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
+router.get("/event/:eventName", verifyToken2, (req, res) => {
+  var emailID = req.user.userEmail;
+  var firstNAME = req.user.userName;
   var fullName = "";
   var phone_no = "";
 
@@ -1524,9 +1770,9 @@ router.post("/api/payment/verify", (req, res) => {
   res.send(response);
 });
 
-router.post("/successpayment/:eventName", (req, res) => {
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
+router.post("/successpayment/:eventName", verifyToken, (req, res) => {
+  var emailID = req.user.userEmail;
+  var firstNAME = req.user.userName;
   var eventName = req.params.eventName;
   var sql = `select * from event where eventName=?;`;
 
@@ -1561,9 +1807,9 @@ async function registeredEvents(eventId) {
     });
   });
 }
-router.post("/registeredevents", (req, res) => {
-  var emailID = req.session.email_id;
-  var firstNAME = req.session.first_name;
+router.post("/registeredevents", verifyToken, (req, res) => {
+  var emailID = req.user.userEmail;
+  var firstNAME = req.user.userName;
   //console.log(emailID);
   var name = [];
   var venue = [];
@@ -1609,7 +1855,8 @@ router.post("/registeredevents", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  req.session.destroy();
+  // req.session.destroy();
+  res.cookie("token", "", { maxAge: 0, httpOnly: true });
   res.redirect("/theevent/user/login");
 });
 

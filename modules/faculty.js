@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
+
 const saltRounds = 10;
 var faculty_name = "";
 var faculty_email = "";
@@ -283,6 +284,11 @@ router.post("/passwordchanged", (req, res) => {
   });
 });
 
+router.get("/manage_event", verifyToken, (req, res) => {
+  res.render("facultyEvent.ejs", { facultyName: req.faculty.facultyName });
+});
+
+
 router.post("/manage_event", verifyToken, (req, res) => {
   var key = req.body.key;
   console.log("Value of key:", key);
@@ -382,6 +388,29 @@ router.post("/manage_event", verifyToken, (req, res) => {
     });
   }
 });
+
+router.get("/manage_coordinator", verifyToken, (req, res) => {
+    faculty_email = req.faculty.facultyEmail;
+    sql = "select associatedDepartment from faculty where facultyEmail=?";
+    con.query(sql, [faculty_email], (err, result) => {
+      department = result[0].associatedDepartment;
+
+      var sql =
+        "SELECT eventName, department FROM event WHERE eventName NOT IN (SELECT associatedEvent FROM coordinator) AND department=?";
+      var events = [];
+      con.query(sql, [department], (err, result) => {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          events.push(result[i].eventName);
+        }
+
+        res.render("facultyCoordinator.ejs", {
+          events: events,
+          facultyName: req.faculty.facultyName,
+        });
+      });
+    });
+  });
 
 router.post("/manage_coordinator", verifyToken, (req, res) => {
   var key = req.body.key;
@@ -496,6 +525,21 @@ router.post("/eventselected", (req, res) => {
     });
   });
 });
+
+router.get("/eventstatistics", verifyToken, (req, res) => {
+    sql = "select * from event where facultyEmailId=?";
+    con.query(sql, [req.faculty.facultyEmail], (err, result) => {
+      var events = [];
+      for (var i = 0; i < result.length; i++) {
+        events.push(result[i].eventName);
+      }
+
+      res.render("facultyEventStatistics.ejs", {
+        facultyName: req.faculty.facultyName,
+        events: events,
+      });
+    });
+  });
 
 router.post("/eventstatistics", verifyToken, (req, res) => {
   var key = req.body.key;
