@@ -21,7 +21,7 @@
     <div class="bg_image"></div>
     <div class="center">
         <h1>Login</h1>
-        <form action="/theevent/user/login" method="post" name="loginForm">
+        <form action="/login" method="post" name="loginForm">
             <div class="txt_field bottom">
                 <% if(locals.existEmailId){ %>
                     <input type="email" name="email" id="emaillogin" value="<%= existEmailId %>" required>
@@ -48,10 +48,10 @@
                 <h5 id="passwordError" class="passworderror" style="display: block;"><%= password %></h5>
                 <% } %>
             </div>
-            <div class="pass" onclick="window.location.href='/theevent/user/forgot-password'">Forgot Password?</div>
+            <div class="pass" onclick="window.location.href='/forgot-password'">Forgot Password?</div>
             <input type="submit" value="Login">
             <div class="signup_link">
-                Don't have an account? <a href="/theevent/user/registration">Signup</a>
+                Don't have an account? <a href="/registration">Signup</a>
             </div>
         </form>
     </div>    

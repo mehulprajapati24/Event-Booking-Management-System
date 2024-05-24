@@ -145,7 +145,7 @@
             
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty"+path;
+            form.action = "/faculty"+path;
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';
@@ -173,7 +173,7 @@
         function lockedProfile(user_id){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/lockedProfile/"+user_id;
+            form.action = "/faculty/lockedProfile/"+user_id;
             document.body.appendChild(form);
             form.submit();
         }
@@ -181,7 +181,7 @@
         function unLockedProfile(user_id){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/unLockedProfile/"+user_id;
+            form.action = "/faculty/unLockedProfile/"+user_id;
             document.body.appendChild(form);
             form.submit();
         }

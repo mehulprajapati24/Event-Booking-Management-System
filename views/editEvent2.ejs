@@ -85,7 +85,7 @@
         function deleteEvent(eventId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_event/edit/delete";
+            form.action = "/faculty/manage_event/edit/delete";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'eventId';
@@ -98,7 +98,7 @@
         function updateEvent(eventId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_event/edit/update";
+            form.action = "/faculty/manage_event/edit/update";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'eventId';
@@ -111,7 +111,7 @@
         function goBack(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_event";
+            form.action = "/faculty/manage_event";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';

@@ -147,7 +147,7 @@
             
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin"+path;
+            form.action = "/admin"+path;
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';
@@ -175,7 +175,7 @@
         function logoutAdmin(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/logout";
+            form.action = "/admin/logout";
             document.body.appendChild(form);
             form.submit();
         }
@@ -183,7 +183,7 @@
         function lockedProfile(user_id){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/lockedProfile/"+user_id;
+            form.action = "/admin/lockedProfile/"+user_id;
             document.body.appendChild(form);
             form.submit();
         }
@@ -191,7 +191,7 @@
         function unLockedProfile(user_id){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/unLockedProfile/"+user_id;
+            form.action = "/admin/unLockedProfile/"+user_id;
             document.body.appendChild(form);
             form.submit();
         }

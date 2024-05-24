@@ -40,7 +40,7 @@ function verifyToken(req, res, next) {
   const token = req.cookies["token"];
   //copy token and decode in base64
   console.log(token);
-  // if (!token) return res.status(401).redirect("/theevent/user/");
+  // if (!token) return res.status(401).redirect("/");
 
   if (!token){
     var eventDetails1 = [];
@@ -165,7 +165,7 @@ function verifyToken(req, res, next) {
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+        return res.status(401).redirect("/login"); // Redirect to login if token is expired
       } else {
         return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
       }
@@ -182,7 +182,7 @@ function verifyToken1(req, res, next) {
   const token = req.cookies["token"];
   //copy token and decode in base64
   console.log(token);
-  // if (!token) return res.status(401).redirect("/theevent/user/");
+  // if (!token) return res.status(401).redirect("/");
 
   if (!token){
     var departmentName = req.params.departmentName;
@@ -211,7 +211,7 @@ function verifyToken1(req, res, next) {
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+        return res.status(401).redirect("/login"); // Redirect to login if token is expired
       } else {
         return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
       }
@@ -227,7 +227,7 @@ function verifyToken2(req, res, next) {
   const token = req.cookies["token"];
   //copy token and decode in base64
   console.log(token);
-  // if (!token) return res.status(401).redirect("/theevent/user/");
+  // if (!token) return res.status(401).redirect("/");
 
   if (!token){
     var eventName = req.params.eventName;
@@ -263,7 +263,7 @@ function verifyToken2(req, res, next) {
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).redirect("/theevent/user/login"); // Redirect to login if token is expired
+        return res.status(401).redirect("/login"); // Redirect to login if token is expired
       } else {
         return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
       }
@@ -377,7 +377,7 @@ router.post("/login", (req, res) => {
                 departmentIconsArray.push(results[i].departmentIcon);
               }
               // res.render("user_dashboard.ejs",{departmentNames: departmentArray, departmentIcons: departmentIconsArray, first_name : firstName, email_id: emailId});
-              res.redirect(307, "/theevent/user/");
+              res.redirect(307, "/");
             });
           } else {
             res.render("login.ejs", {
@@ -684,7 +684,7 @@ router.post("/otpdone", (req, res) => {
         if (err) throw err;
         console.log("User registration data inserted");
 
-        res.redirect(307, "/theevent/user/");
+        res.redirect(307, "/");
       }
     );
   });
@@ -739,7 +739,7 @@ router.post("/passwordchanged", (req, res) => {
       if (err) throw err;
       console.log("Password changed successfully");
 
-      res.redirect("/theevent/user/login");
+      res.redirect("/login");
     });
   });
 });
@@ -1789,7 +1789,7 @@ router.post("/successpayment/:eventName", verifyToken, (req, res) => {
       con.query(sql, [userId, eventId], (err, result) => {
         if (err) throw err;
         console.log("Event registered successfully");
-        res.redirect("/theevent/user/event/" + eventName);
+        res.redirect("/event/" + eventName);
       });
     });
   });
@@ -1857,8 +1857,9 @@ router.post("/registeredevents", verifyToken, (req, res) => {
 router.get("/logout", (req, res) => {
   // req.session.destroy();
   res.cookie("token", "", { maxAge: 0, httpOnly: true });
-  res.redirect("/theevent/user/login");
+  res.redirect("/login");
 });
+
 
 function send_mail(otp, text, emailId) {
   var transporter = nodemailer.createTransport({

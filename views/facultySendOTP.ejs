@@ -23,9 +23,9 @@
         <h1>Verification</h1>
         <h2>OTP has been sent to <%= emailId %></h2>
         <% if(locals.forgotpassword){ %>
-        <form action="/theevent/faculty/changedpassword" method="post" id="otpForm">
+        <form action="/faculty/changedpassword" method="post" id="otpForm">
         <% }else{ %>
-            <form action="/theevent/faculty/otpdone" method="post" id="otpForm">
+            <form action="/faculty/otpdone" method="post" id="otpForm">
         <% } %>
         <input type="text" name="emailOfNewPassword" value="<%=  emailId %>" hidden/>
             <div class="txt_field">
@@ -82,7 +82,7 @@
                  //  alert("Timeout! Regenerate OTP!");
                  document.getElementById("popup").classList.add("openpopup");
                  document.getElementById("mainForm").classList.add("blurform");
-                  // window.location.href = "/theevent/user/registration1";
+                  // window.location.href = "/registration1";
                  //  $('#myModal').modal('show');
                 }
             }

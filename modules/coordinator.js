@@ -67,7 +67,7 @@ router.post("/", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.session.destroy();
-  res.redirect("/theevent/coordinator/login");
+  res.redirect("/coordinator/login");
 });
 
 router.get("/", (req, res) => {
@@ -124,7 +124,7 @@ router.get("/", (req, res) => {
         });
       });
     } else {
-      res.redirect("/theevent/coordinator/login");
+      res.redirect("/coordinator/login");
     }
   });
 });
@@ -152,7 +152,7 @@ router.post("/login", (req, res) => {
           else {
             if (passwordMatch) {
               req.session.email_id = coordinator_email;
-              res.redirect(307, "/theevent/coordinator/");
+              res.redirect(307, "/coordinator/");
             } else {
               res.render("coordinatorLogin.ejs", {
                 password: "Password is incorrect!",
@@ -169,7 +169,7 @@ router.post("/login", (req, res) => {
 
 router.post("/logout", (req, res) => {
   res.cookie("token", "", { maxAge: 0, httpOnly: true });
-  res.redirect("/theevent/faculty/login");
+  res.redirect("/faculty/login");
 });
 
 router.get("/forgot-password", (req, res) => {
@@ -229,7 +229,7 @@ router.post("/passwordchanged", (req, res) => {
       if (err) throw err;
       console.log("Password changed successfully");
 
-      res.redirect("/theevent/coordinator/login");
+      res.redirect("/coordinator/login");
     });
   });
 });

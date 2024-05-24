@@ -25,7 +25,7 @@ router.post("/login", (req, res) => {
   var key = req.body.key;
 
   if (key == "value") {
-    res.redirect(307, "/theevent/faculty/");
+    res.redirect(307, "/faculty/");
   } else {
     var sql = `select facultyName, facultyEmail, facultyPassword from faculty where facultyEmail=?`;
     con.query(sql, [email], (err, result) => {
@@ -46,7 +46,7 @@ router.post("/login", (req, res) => {
             if (err) console.log(err);
             else {
               if (passwordMatch) {
-                res.redirect(307, "/theevent/faculty/");
+                res.redirect(307, "/faculty/");
               } else {
                 res.render("facultyLogin.ejs", {
                   password: "Password is incorrect!",
@@ -71,7 +71,7 @@ function verifyToken(req, res, next) {
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).redirect("/theevent/faculty/login"); // Redirect to login if token is expired
+        return res.status(401).redirect("/faculty/login"); // Redirect to login if token is expired
       } else {
         return res.status(403).send("Forbidden"); // Send Forbidden for other token errors
       }
@@ -90,7 +90,7 @@ router.get("/", verifyToken, (req, res) => {
   //   res.render("facultyDashboard.ejs", {facultyName: faculty_name, facultyEmail: faculty_email});
   // }
   // else{
-  //   res.redirect("/theevent/faculty/login");
+  //   res.redirect("/faculty/login");
   // }
   console.log(req.faculty.facultyName);
   var sql =
@@ -217,11 +217,11 @@ router.post("/logout", (req, res) => {
   //     console.error('Error destroying session:', err);
   //     return res.status(500).send('Internal Server Error');
   //   }
-  //   res.redirect("/theevent/faculty/login");
+  //   res.redirect("/faculty/login");
   // })
   // Clear the JWT token by setting an expired cookie
   res.cookie("token", "", { maxAge: 0, httpOnly: true });
-  res.redirect("/theevent/faculty/login");
+  res.redirect("/faculty/login");
 });
 
 router.get("/forgot-password", (req, res) => {
@@ -279,7 +279,7 @@ router.post("/passwordchanged", (req, res) => {
       if (err) throw err;
       console.log("Password changed successfully");
 
-      res.redirect("/theevent/faculty/login");
+      res.redirect("/faculty/login");
     });
   });
 });
@@ -589,7 +589,7 @@ router.post("/lockedProfile/:user_id", (req, res) => {
       console.log(err);
     } else {
       console.log("profile locked");
-      res.redirect(307, "/theevent/faculty/");
+      res.redirect(307, "/faculty/");
     }
   });
 });
@@ -602,7 +602,7 @@ router.post("/unLockedProfile/:user_id", (req, res) => {
       console.log(err);
     } else {
       console.log("profile unlocked");
-      res.redirect(307, "/theevent/faculty/");
+      res.redirect(307, "/faculty/");
     }
   });
 });
@@ -725,7 +725,7 @@ router.post(
             "Your password is: ",
             coordinatorEmail
           );
-          res.redirect(307, "/theevent/faculty/manage_coordinator/edit");
+          res.redirect(307, "/faculty/manage_coordinator/edit");
         }
       );
     });
@@ -746,7 +746,7 @@ router.post("/manage_event/edit/delete", verifyToken, (req, res) => {
         if (err) throw err;
         console.log("Event deleted successfully");
   
-        res.redirect(307, "/theevent/faculty/manage_event/edit");
+        res.redirect(307, "/faculty/manage_event/edit");
       });
     });
   });
@@ -860,7 +860,7 @@ router.post("/manage_event/edit/updateevent", verifyToken, (req, res) => {
               (err, result) => {
                 if (err) throw err;
                 console.log("Event data updated successfully");
-                res.redirect(307, "/theevent/faculty/manage_event/edit");
+                res.redirect(307, "/faculty/manage_event/edit");
               }
             );
           });

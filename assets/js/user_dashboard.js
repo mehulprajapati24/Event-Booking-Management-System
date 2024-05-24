@@ -76,7 +76,7 @@ function toggleDropDown2() {
 function your_events() {
   var form_req = document.createElement("form");
   form_req.setAttribute("method", "post");
-  form_req.setAttribute("action", "/theevent/user/registeredevents");
+  form_req.setAttribute("action", "/registeredevents");
 
   document.body.appendChild(form_req);
   form_req.submit();

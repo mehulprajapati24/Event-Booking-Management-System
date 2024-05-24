@@ -93,7 +93,7 @@
         <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
             <h1>Add Department</h1>
             <div style="width: 600px; height: 350px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
-                <form action="/theevent/admin/manage_department/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                <form action="/admin/manage_department/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
                     <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
                         <p style="font-size: 20px;">Department Name</p>
                         <input type="text" name="departmentName" placeholder="Enter Department Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
@@ -124,7 +124,7 @@
 
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin"+path;
+            form.action = "/admin"+path;
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';
@@ -152,7 +152,7 @@
         function logoutAdmin(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/logout";
+            form.action = "/admin/logout";
             document.body.appendChild(form);
             form.submit();
         }
@@ -160,7 +160,7 @@
         function manageDepartment(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_department/edit";
+            form.action = "/admin/manage_department/edit";
             document.body.appendChild(form);
             form.submit();
         }

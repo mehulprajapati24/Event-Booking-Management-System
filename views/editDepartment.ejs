@@ -69,7 +69,7 @@
         function deleteDepartment(departmentId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_department/edit/delete";
+            form.action = "/admin/manage_department/edit/delete";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'departmentId';
@@ -82,7 +82,7 @@
         function updateDepartment(departmentId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_department/edit/update";
+            form.action = "/admin/manage_department/edit/update";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'departmentId';
@@ -95,7 +95,7 @@
         function goBack(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_department";
+            form.action = "/admin/manage_department";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';

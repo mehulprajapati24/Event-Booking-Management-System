@@ -111,7 +111,7 @@
         <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
             <h1>Add Coordinators</h1>
             <div class="centerFormEvent" style="background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
-                <form action="/theevent/faculty/manage_coordinator/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
+                <form action="/faculty/manage_coordinator/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
                     <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 45px;">
                         <div style="display: flex; flex-direction: column; gap: 20px; margin-right: 25px;">
                         <% if(locals.noOfCoordinators){ %>
@@ -145,7 +145,7 @@
                     document.getElementById("coordForm").style.display = "block";
                     var form = document.createElement("form");
                     form.method = "post";
-                    form.action = "/theevent/faculty/eventselected";
+                    form.action = "/faculty/eventselected";
                     var input = document.createElement("input");
                     input.type = "hidden";
                     input.name = "eventName";
@@ -181,7 +181,7 @@
 
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty"+path;
+            form.action = "/faculty"+path;
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';
@@ -225,7 +225,7 @@
         function manageCoordinator(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_coordinator/edit";
+            form.action = "/faculty/manage_coordinator/edit";
             document.body.appendChild(form);
             form.submit();
         }

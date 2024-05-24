@@ -21,7 +21,7 @@
     <div class="bg_image"></div>
     <div class="center">
         <h1>ADMIN LOGIN</h1>
-        <form action="/theevent/admin/login" method="post" name="loginForm">
+        <form action="/admin/login" method="post" name="loginForm">
             <div class="txt_field bottom">
                 <% if(locals.existUsername){ %>
                     <input type="text" name="username" id="emaillogin" value="<%= existUsername %>" required>

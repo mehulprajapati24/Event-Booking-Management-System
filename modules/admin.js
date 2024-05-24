@@ -21,7 +21,7 @@ router.post("/login", (req, res) => {
   var key = req.body.key;
 
   if (key == "value") {
-    res.redirect(307, "/theevent/admin/");
+    res.redirect(307, "/admin/");
   } else {
     var sql = `select username, password from admin where username=?`;
     con.query(sql, [username], (err, result) => {
@@ -37,7 +37,7 @@ router.post("/login", (req, res) => {
           if (err) console.log(err);
           else {
             if (passwordMatch) {
-              res.redirect(307, "/theevent/admin/");
+              res.redirect(307, "/admin/");
             } else {
               res.render("adminLogin.ejs", {
                 password: "Password is incorrect!",
@@ -356,7 +356,7 @@ router.post("/eventstatistics", (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  res.redirect("/theevent/admin/login");
+  res.redirect("/admin/login");
 });
 
 router.post("/lockedProfile/:user_id", (req, res) => {
@@ -367,7 +367,7 @@ router.post("/lockedProfile/:user_id", (req, res) => {
       console.log(err);
     } else {
       console.log("profile locked");
-      res.redirect(307, "/theevent/admin/");
+      res.redirect(307, "/admin/");
     }
   });
 });
@@ -380,7 +380,7 @@ router.post("/unLockedProfile/:user_id", (req, res) => {
       console.log(err);
     } else {
       console.log("profile unlocked");
-      res.redirect(307, "/theevent/admin/");
+      res.redirect(307, "/admin/");
     }
   });
 });
@@ -504,7 +504,7 @@ router.post("/manage_department/edit/delete", (req, res) => {
           sql = "delete from department where id=?";
           con.query(sql, [departmentId], (err, result) => {
             if (err) throw err;
-            res.redirect(307, "/theevent/admin/manage_department/edit");
+            res.redirect(307, "/admin/manage_department/edit");
           });
         });
       });
@@ -517,7 +517,7 @@ router.post("/manage_faculty/edit/delete", (req, res) => {
   sql = "delete from faculty where id=?";
   con.query(sql, [facultyId], (err, result) => {
     if (err) throw err;
-    res.redirect(307, "/theevent/admin/manage_faculty/edit");
+    res.redirect(307, "/admin/manage_faculty/edit");
   });
 });
 
@@ -532,7 +532,7 @@ router.post("/manage_event/edit/delete", (req, res) => {
         sql = "delete from event where id=?";
         con.query(sql, [eventId], (err, result) => {
           if (err) throw err;
-          res.redirect(307, "/theevent/admin/manage_event/edit");
+          res.redirect(307, "/admin/manage_event/edit");
         });
     });
   });
@@ -652,7 +652,7 @@ router.post("/manage_department/edit/updatedepartment", (req, res) => {
         (err, result) => {
           if (err) throw err;
           console.log("Department data updated successfully");
-          res.redirect(307, "/theevent/admin/manage_department/edit");
+          res.redirect(307, "/admin/manage_department/edit");
         }
       );
 });
@@ -687,7 +687,7 @@ router.post("/manage_faculty/edit/updatefaculty", (req, res) => {
           "Your password is: ",
           facultyEmail
         );
-        res.redirect(307, "/theevent/admin/manage_faculty/edit");
+        res.redirect(307, "/admin/manage_faculty/edit");
       }
     );
   });
@@ -749,7 +749,7 @@ router.post("/manage_event/edit/updateevent", (req, res) => {
               (err, result) => {
                 if (err) throw err;
                 console.log("Event data updated successfully");
-                res.redirect(307, "/theevent/admin/manage_event/edit");
+                res.redirect(307, "/admin/manage_event/edit");
               }
             );
           });

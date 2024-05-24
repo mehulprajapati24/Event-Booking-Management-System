@@ -67,11 +67,11 @@
                     <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
                     
                     <hr width="100%" color="black" style="opacity: 0.2;">
-                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/logout'">Logout</p>
                   </div> 
                 <% }else{ %>
-            <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
-            <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
+            <li><a href="/registration" class="signup">Sign Up</a></li>
+            <li><a href="/login" class="signin">Sign In</a></li>
             <%}%>
         </ul>
         
@@ -103,7 +103,7 @@
                 <td><%= date[i] %></td>
                 <td><%= time[i] %></td>
                 <td><%= department[i] %></td>
-                <td> <button style="background-color: #1993de; padding: 5px; border: 1px solid #1993de; border-radius: 5px; color: white; width: 100px; font-size: 16px; font-weight: 400; cursor: pointer;" onclick="document.location='/theevent/user/event/<%= name[i] %>'">View</button></td>
+                <td> <button style="background-color: #1993de; padding: 5px; border: 1px solid #1993de; border-radius: 5px; color: white; width: 100px; font-size: 16px; font-weight: 400; cursor: pointer;" onclick="document.location='/event/<%= name[i] %>'">View</button></td>
               </tr>
               <% } %>
             </tbody>

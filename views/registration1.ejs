@@ -19,7 +19,7 @@
     <div class="bg_image"></div>
     <div class="center">
         <h1>Registration</h1>
-        <form action="/theevent/user/registration" id="registrationForm" method="post">
+        <form action="/registration" id="registrationForm" method="post">
             <div class="txt_field row_field">
                 <% if(locals.firstname){ %>
                     <input type="text" name="first_name" value="<%= firstname %>" id="first_name" required>
@@ -99,7 +99,7 @@
 
              <button type="submit" class="btn">Next</button> 
             <div class="signup_link">
-                Already have an account? <a href="/theevent/user/login">Login</a>
+                Already have an account? <a href="/login">Login</a>
             </div>
     </form>
     </div>

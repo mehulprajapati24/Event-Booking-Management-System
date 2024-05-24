@@ -71,7 +71,7 @@
         function deleteFaculty(facultyId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_faculty/edit/delete";
+            form.action = "/admin/manage_faculty/edit/delete";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'facultyId';
@@ -84,7 +84,7 @@
         function updateFaculty(facultyId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_faculty/edit/update";
+            form.action = "/admin/manage_faculty/edit/update";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'facultyId';
@@ -97,7 +97,7 @@
         function goBack(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/admin/manage_faculty";
+            form.action = "/admin/manage_faculty";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';

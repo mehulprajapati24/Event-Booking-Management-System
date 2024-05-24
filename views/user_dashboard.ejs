@@ -45,11 +45,11 @@
                     <hr width="100%" color="black" style="opacity: 0.2;">
                     <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px;" onclick="your_events()">Your Events</p>
                     <hr width="100%" color="black" style="opacity: 0.2;">
-                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/logout'">Logout</p>
                   </div>                
             <% }else{ %>
-            <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
-            <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
+            <li><a href="/registration" class="signup">Sign Up</a></li>
+            <li><a href="/login" class="signin">Sign In</a></li>
             <%}%>
         </ul>
         
@@ -64,7 +64,7 @@
             <hr width="100%" color="black" style="opacity: 0.2;">
             <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; " onclick="your_events()">Your Events</p>
             <hr width="100%" color="black" style="opacity: 0.2;">
-            <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+            <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/logout'">Logout</p>
           </div>
 
           <% } %>
@@ -116,7 +116,7 @@
         <% if(departmentNames.length>0){ %>
         <div class="grid_container">
             <% for(var i=0; i<departmentNames.length; i++){ %>
-                    <div class="department" onclick="document.location='/theevent/user/department/<%= departmentNames[i] %>';">
+                    <div class="department" onclick="document.location='/department/<%= departmentNames[i] %>';">
                     <img src="<%= departmentIcons[i] %>" class="imageDepartment">
                     <h2 class="departmentName"><%= departmentNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;">View the events</span> </h2>
                 </div>
@@ -149,7 +149,7 @@
                 <div class="schedule">
                         <h3 style="margin-right: 20px;"><%= eventStartTime1[i] %> to <%= eventEndTime1[i] %></h3>
                     <div class="eventDetail">
-                <img src="/img/events/<%= eventImage1[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                <img src="<%= eventImage1[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                 <div class="eventDept">
                     <h4><%= eventDetails1[i] %></h4>
                     <h5><%= departmentDetails1[i] %></h5>
@@ -171,7 +171,7 @@
                        <div class="schedule">
                                <h3 style="margin-right: 20px;"><%= eventStartTime2[i] %> to <%= eventEndTime2[i] %></h3>
                            <div class="eventDetail">
-                       <img src="/img/events/<%= eventImage2[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                       <img src="<%= eventImage2[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                        <div class="eventDept">
                            <h4><%= eventDetails2[i] %></h4>
                            <h5><%= departmentDetails2[i] %></h5>
@@ -193,7 +193,7 @@
                            <div class="schedule">
                                    <h3 style="margin-right: 20px;"><%= eventStartTime3[i] %> to <%= eventEndTime3[i] %></h3>
                                <div class="eventDetail">
-                           <img src="/img/events/<%= eventImage3[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                           <img src="<%= eventImage3[i] %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                            <div class="eventDept">
                                <h4><%= eventDetails3[i] %></h4>
                                <h5><%= departmentDetails3[i] %></h5>

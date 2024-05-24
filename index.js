@@ -36,9 +36,9 @@ app.use(
   })
 );
 
-app.use("/theevent/user", user);
-app.use("/theevent/admin", admin);
-app.use("/theevent/faculty", faculty);
-app.use("/theevent/coordinator", coordinator);
+app.use("/", user);
+app.use("/admin", admin);
+app.use("/faculty", faculty);
+app.use("/coordinator", coordinator);
 
 app.listen(3000);

@@ -67,7 +67,7 @@
         function updateCoordinator(coordinatorId){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_coordinator/edit/update";
+            form.action = "/faculty/manage_coordinator/edit/update";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'coordinatorId';
@@ -80,7 +80,7 @@
         function goBack(){
             var form = document.createElement('form');
             form.method = "post";
-            form.action = "/theevent/faculty/manage_coordinator";
+            form.action = "/faculty/manage_coordinator";
             var hiddenInput = document.createElement('input');
             hiddenInput.type = "hidden";
             hiddenInput.name = 'key';

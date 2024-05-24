@@ -21,7 +21,7 @@
     <div class="bg_image"></div>
     <div class="center">
         <h1>COORDINATOR LOGIN</h1>
-        <form action="/theevent/coordinator/login" method="post" name="loginForm">
+        <form action="/coordinator/login" method="post" name="loginForm">
             <div class="txt_field bottom">
                 <% if(locals.existEmailId){ %>
                     <input type="email" name="email" id="emaillogin" value="<%= existEmailId %>" required>
@@ -48,7 +48,7 @@
                 <h5 id="passwordError" class="passworderror" style="display: block;"><%= password %></h5>
                 <% } %>
             </div>
-            <div class="pass" onclick="window.location.href='/theevent/coordinator/forgot-password'">Forgot Password?</div>
+            <div class="pass" onclick="window.location.href='/coordinator/forgot-password'">Forgot Password?</div>
             <input type="submit" value="Login" style="margin-bottom: 40px;">
         </form>
     </div>    

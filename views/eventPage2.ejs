@@ -32,11 +32,11 @@
                     <hr width="100%" color="black" style="opacity: 0.2;">
                     <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; " onclick="your_events()">Your Events</p>
                     <hr width="100%" color="black" style="opacity: 0.2;">
-                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
+                    <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/logout'">Logout</p>
                   </div> 
                 <% }else{ %>
-            <li><a href="/theevent/user/registration" class="signup">Sign Up</a></li>
-            <li><a href="/theevent/user/login" class="signin">Sign In</a></li>
+            <li><a href="/registration" class="signup">Sign Up</a></li>
+            <li><a href="/login" class="signin">Sign In</a></li>
             <%}%>
         </ul>
         
@@ -131,7 +131,7 @@
         if (result) {
             var form = document.createElement("form");
             form.setAttribute("method", "post");
-            form.setAttribute("action", "/theevent/user/successpayment/"+eventName);
+            form.setAttribute("action", "/successpayment/"+eventName);
             document.body.appendChild(form);
             form.submit();
         } else {
@@ -145,7 +145,7 @@
         if (result) {
             var form = document.createElement("form");
             form.setAttribute("method", "post");
-            form.setAttribute("action", "/theevent/user/successpayment/"+eventName);
+            form.setAttribute("action", "/successpayment/"+eventName);
             document.body.appendChild(form);
             form.submit();
         } else {
@@ -166,7 +166,7 @@
     function your_events(){
         var form_req = document.createElement("form");
         form_req.setAttribute("method", "post");
-        form_req.setAttribute("action", "/theevent/user/registeredevents");
+        form_req.setAttribute("action", "/registeredevents");
 
         document.body.appendChild(form_req);
         form_req.submit();
