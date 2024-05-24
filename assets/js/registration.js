@@ -72,7 +72,7 @@ document
       document.getElementsByClassName("year_error")[0].style.display = "block";
       return;
     } else {
-      document.getElementsByClassName("year_error")[0].style.display = "block";
+      document.getElementsByClassName("year_error")[0].style.display = "none";
     }
 
     document.getElementById("registrationForm").submit();

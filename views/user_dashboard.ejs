@@ -62,7 +62,7 @@
         <div id="dropdownList2" class="dropdown-content" style="display: flex; flex-direction: column; align-items: center; background-color: #F82249; border-radius: 5px; display: none; width: 160px; position: absolute; top: 70px; right: 50px;">
             <p style="text-align: center;cursor: pointer; padding: 5px 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #1993de;">Hello <%= first_name %></p>
             <hr width="100%" color="black" style="opacity: 0.2;">
-            <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; ">Your Events</p>
+            <p id="option1" style="text-align: center;cursor: pointer; padding: 5px 5px; " onclick="your_events()">Your Events</p>
             <hr width="100%" color="black" style="opacity: 0.2;">
             <p id="option2" style="cursor: pointer; padding: 5px 5px; width: 100%; text-align: center; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" onclick="document.location='/theevent/user/logout'">Logout</p>
           </div>
@@ -117,8 +117,7 @@
         <div class="grid_container">
             <% for(var i=0; i<departmentNames.length; i++){ %>
                     <div class="department" onclick="document.location='/theevent/user/department/<%= departmentNames[i] %>';">
-
-                    <img src="/img/departments/<%= departmentIcons[i] %>" class="imageDepartment">
+                    <img src="<%= departmentIcons[i] %>" class="imageDepartment">
                     <h2 class="departmentName"><%= departmentNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;">View the events</span> </h2>
                 </div>
                 <%}%>

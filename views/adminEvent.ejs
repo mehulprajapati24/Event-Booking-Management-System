@@ -33,6 +33,10 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.10.0/toastify.min.js"></script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+    <script>
+        UPLOADCARE_PUBLIC_KEY = '<%=upload_care_public_key%>';
+    </script>
 </head>
 <body>
     <div class="container">
@@ -92,7 +96,7 @@
     
             <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column;">
                 <h1>Add Event</h1>
-                <div class="centerFormEvent" style="width: 1200px; height: 690px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
+                <div class="centerFormEvent" style="width: 1200px; height: 620px; background-color: #F8F8FF; border: 1px solid black; border-radius: 5px; filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.2));">
                     <form id="eventForm" action="/theevent/admin/manage_event/" method="post" style="width: 100%; height: 100%;" enctype="multipart/form-data">
                         <div style="width: 100%; height: 100%; padding-left: 25px; padding-top: 5px;">
                             <div style="display: flex; gap: 50px;">
@@ -120,20 +124,26 @@
                                 <p style="font-size: 16px;">Number of Coordinators</p>
                                 <input type="number" placeholder="Enter Number of Coordinators" name="numberOfCoordinators" min="0" max="4" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
                                 </div>
-                            <div>
-                                <p style="font-size: 16px;">Upload Icon</p>
-                                <input type="file" accept="image/jpeg, image/jpg, image/png" name="eventIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
-                            </div>
+                                <div>
+                                    <p style="font-size: 16px;">Event Date</p>
+                                    <input type="date" name="eventDate" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
+                                </div>
                             </div>
                             <div style="display: flex; gap: 50px; margin-top: 20px;">
+                                <div style="display: flex; gap: 95px; width: 550px;">
+                                    <div>
+                                        <p style="font-size: 16px;">Upload Icon</p>
+                                        <input type="hidden" role="uploadcare-uploader" name="eventIcon"/>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 16px;">Upload Flyer</p>
+                                        <input type="hidden" role="uploadcare-uploader" name="eventFlyer"/>
+                                        </div>
+                                </div>
                             <div>
-                            <p style="font-size: 16px;">Upload Flyer</p>
-                            <input type="file" accept="image/jpeg, image/jpg, image/png" name="eventFlyer" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                                <p style="font-size: 16px;">Faculty Email ID</p>
+                                <input type="text" name="facultyEmailId" placeholder="Enter EmailID of associated faculty" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                             </div>
-                            <div>
-                            <p style="font-size: 16px;">Event Date</p>
-                            <input type="date" name="eventDate" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
-                        </div>
                             </div>
                             <div style="display: flex; gap: 50px; margin-top: 20px;">
                                 <div>
@@ -148,7 +158,7 @@
     
                                     <select name="startMinute" id="startMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
                                         <option disabled selected value="select minute">select minute</option>
-                                        <% for(i=1;i<=60;i++){ %>
+                                        <% for(i=0;i<=59;i++){ %>
                                             <option value="<%= i %>"><%= i %></option>
                                         <% } %>
                                     </select>
@@ -170,7 +180,7 @@
     
                                     <select name="endMinute" id="endMinute" style="width: 180px; height: 45px; font-size: 16px; border-radius: 2px; padding-left: 8px; border: 1px solid black;" required>
                                         <option disabled selected value="select minute">select minute</option>
-                                        <% for(i=1;i<=60;i++){ %>
+                                        <% for(i=0;i<=59;i++){ %>
                                             <option value="<%= i %>"><%= i %></option>
                                         <% } %>
                                     </select>
@@ -194,10 +204,7 @@
                                 </div>
 
                                 <div style="display: flex; gap: 50px; margin-top: 20px;">
-                                    <div>
-                                        <p style="font-size: 16px;">Faculty Email ID</p>
-                                        <input type="text" name="facultyEmailId" placeholder="Enter EmailID of associated faculty" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
-                                    </div>
+                                    
                                 </div>
                             <div style="display: flex; justify-content: center; margin-top: 15px;">
                                 <input type="submit" value="Add" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">

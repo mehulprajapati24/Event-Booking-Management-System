@@ -32,6 +32,10 @@
             background-color: #F82249;
         }
     </style>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+    <script>
+        UPLOADCARE_PUBLIC_KEY = '<%=upload_care_public_key%>';
+    </script>
 </head>
 <body>
         <div class="content" style="display: flex; margin: auto; align-items: center; flex-direction: column; margin-top: 30px;">
@@ -42,7 +46,7 @@
                         <p style="font-size: 20px;">Department Name</p>
                         <input type="text" name="departmentName" value="<%= departmentName %>" placeholder="Enter Department Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                         <p style="font-size: 20px;margin-top: 25px;">Upload Icon</p>
-                        <input type="file" accept="image/jpeg, image/jpg, image/png" value="<%= departmentIcon %>" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
+                        <input type="hidden" role="uploadcare-uploader" name="departmentIcon"/>
                         <input type="text" name="departmentId" value="<%= departmentId %>" style="display: none;" />
 
                         <div style="display: flex; justify-content: center; margin-top: 40px;">

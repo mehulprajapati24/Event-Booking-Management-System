@@ -292,43 +292,16 @@ router.get("/manage_event", verifyToken, (req, res) => {
 router.post("/manage_event", verifyToken, (req, res) => {
   var key = req.body.key;
   console.log("Value of key:", key);
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
 
   if (key === "value") {
-    res.render("facultyEvent.ejs", { facultyName: req.faculty.facultyName });
+    res.render("facultyEvent.ejs", { facultyName: req.faculty.facultyName, upload_care_public_key:upload_care_public_key });
   } else {
-    var file1 = req.files.eventIcon;
-    var file2 = req.files.eventFlyer;
-    var filename1 = file1.name;
-    console.log(filename1);
-    var filename2 = file2.name;
-    console.log(filename2);
 
-    var destinationPath1 = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "img",
-      "events",
-      filename1
-    );
-    var destinationPath2 = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "img",
-      "events",
-      filename2
-    );
+    var filename1 = req.body.eventIcon || "/img/default.png";
+    var filename2 = req.body.eventFlyer || "/img/default.png";
 
-    file1.mv(destinationPath1, (err) => {
-      if (err) {
-        res.send(err);
-      } else {
-        file2.mv(destinationPath2, (err) => {
-          if (err) {
-            res.send(err);
-          } else {
-            console.log("Files moved successfully");
+
             faculty_email = req.faculty.facultyEmail;
             sql =
               "select associatedDepartment from faculty where facultyEmail=?";
@@ -378,15 +351,12 @@ router.post("/manage_event", verifyToken, (req, res) => {
                   res.render("facultyEvent.ejs", {
                     eventData: req.body.eventName,
                     facultyName: req.faculty.facultyName,
+                    upload_care_public_key : upload_care_public_key
                   });
                 }
               );
             });
           }
-        });
-      }
-    });
-  }
 });
 
 router.get("/manage_coordinator", verifyToken, (req, res) => {
@@ -784,6 +754,7 @@ router.post("/manage_event/edit/delete", verifyToken, (req, res) => {
 
 router.post("/manage_event/edit/update", verifyToken, (req, res) => {
   var eventId = req.body.eventId;
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
   console.log("event id: " + eventId);
   sql = "select * from event where id=?";
   con.query(sql, [eventId], (err, result) => {
@@ -829,6 +800,7 @@ router.post("/manage_event/edit/update", verifyToken, (req, res) => {
       hours2: hours2,
       minutes2: minutes2,
       period2: period2,
+      upload_care_public_key:upload_care_public_key
     });
   });
 });
@@ -836,36 +808,11 @@ router.post("/manage_event/edit/update", verifyToken, (req, res) => {
 router.post("/manage_event/edit/updateevent", verifyToken, (req, res) => {
   var eventId = req.body.eventId;
 
-  var file1 = req.files.eventIcon;
-  var file2 = req.files.eventFlyer;
-  var filename1 = file1.name;
-  var filename2 = file2.name;
 
-  var destinationPath1 = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "img",
-    "events",
-    filename1
-  );
-  var destinationPath2 = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "img",
-    "events",
-    filename2
-  );
+  var filename1 = req.body.eventIcon || "/img/default.png";
+  var filename2 = req.body.eventFlyer || "/img/default.png";
 
-  file1.mv(destinationPath1, (err) => {
-    if (err) {
-      res.send(err);
-    } else {
-      file2.mv(destinationPath2, (err) => {
-        if (err) {
-          res.send(err);
-        } else {
+
           faculty_email = req.faculty.facultyEmail;
 
           sql = "select associatedDepartment from faculty where facultyEmail=?";
@@ -917,10 +864,6 @@ router.post("/manage_event/edit/updateevent", verifyToken, (req, res) => {
               }
             );
           });
-        }
-      });
-    }
-  });
 });
 
 function generatePassword() {

@@ -53,7 +53,7 @@
         <div class="grid_container">
             <% for(i=0; i<eventNames.length; i++){ %>
             <div class="event" onclick="document.location='/theevent/user/event/<%= eventNames[i] %>'">
-                <img src="/img/events/<%= eventIcons[i] %>" class="imageEvent">
+                <img src="<%= eventIcons[i] %>" class="imageEvent">
                 <h2 class="eventName"><%= eventNames[i] %> <br> <span style="font-size: 20px; font-weight: 400;"><%= eventTagline[i] %></span> </h2>
             </div>
             <% }  %>

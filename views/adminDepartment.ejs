@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.10.0/toastify.min.css">
     <link rel="stylesheet" href="/css/adminDashboard.css">
-
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+    <script>
+        UPLOADCARE_PUBLIC_KEY = '<%=upload_care_public_key%>';
+    </script>
     <style>
          #edit {
             cursor: pointer;
@@ -95,8 +98,8 @@
                         <p style="font-size: 20px;">Department Name</p>
                         <input type="text" name="departmentName" placeholder="Enter Department Name" style="border: 1px solid black; border-radius: 2px; height: 45px; width: 550px; font-size: 16px; padding-left: 8px;" required>
                         <p style="font-size: 20px;margin-top: 25px;">Upload Icon</p>
-                        <input type="file" accept="image/jpeg, image/jpg, image/png" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required>
-
+                        <!-- <input type="file" accept="image/jpeg, image/jpg, image/png" name="departmentIcon" style="border: 1px solid black; border-radius: 2px; font-size: 16px; padding: 10px; background-color: white; width: 550px;" required> -->
+                        <input type="hidden" role="uploadcare-uploader" name="departmentIcon"/>
                         <div style="display: flex; justify-content: center; margin-top: 40px;">
                             <input type="submit" value="Add" style="border: 1px solid #0D6EFD; border-radius: 5px;background-color: #0D6EFD; color: white; padding: 10px; font-size: 20px; width: 125px; cursor: pointer;">
                         </div>

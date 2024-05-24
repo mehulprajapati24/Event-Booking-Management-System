@@ -4,7 +4,6 @@ const con = require("./connect");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const { error } = require("console");
-const fs = require('fs');
 
 const router = express.Router();
 
@@ -105,36 +104,25 @@ router.post("/", (req, res) => {
 router.post("/manage_department", (req, res) => {
   var key = req.body.key;
   console.log("Value of key:", key);
-
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
   if (key === "value") {
-    res.render("adminDepartment.ejs");
+    res.render("adminDepartment.ejs", {upload_care_public_key: upload_care_public_key});
   } else {
-    var file = req.files.departmentIcon;
-    var filename = file.name;
-    console.log(filename);
+    var fileUrl = req.body.departmentIcon || "/img/default.png";  // This will be the URL returned by Uploadcare
+    var departmentName = req.body.departmentName;
 
-    // var destinationPath = path.join(__dirname, '..', 'assets', 'img', 'departments', req.body.departmentName+filename);
-    var destinationPath = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "img",
-      "departments",
-      filename
-    );
-    file.mv(destinationPath, (err) => {
+    console.log("File URL:", fileUrl);
+
+    var sql = "INSERT INTO department(departmentName, departmentIcon) VALUES (?,?);";
+    con.query(sql, [departmentName, fileUrl], (err, result) => {
       if (err) {
-        res.send(err);
+        console.error('Error inserting department data:', err);
+        res.status(500).send('Error adding department data.');
       } else {
-        console.log("File moved successfully");
-        var sql =
-          "insert into department(departmentName, departmentIcon) values(?,?);";
-        con.query(sql, [req.body.departmentName, filename], (err, result) => {
-          if (err) throw err;
-          console.log("Department data added successfully");
-          res.render("adminDepartment.ejs", {
-            departmentData: req.body.departmentName,
-          });
+        console.log("Department data added successfully");
+        res.render("adminDepartment.ejs", {
+          departmentData: departmentName,
+          upload_care_public_key : upload_care_public_key
         });
       }
     });
@@ -201,43 +189,15 @@ router.post("/manage_faculty", (req, res) => {
 router.post("/manage_event", (req, res) => {
   var key = req.body.key;
   console.log("Value of key:", key);
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
 
   if (key === "value") {
-    res.render("adminEvent.ejs");
+    res.render("adminEvent.ejs", {upload_care_public_key:upload_care_public_key});
   } else {
-    var file1 = req.files.eventIcon;
-    var file2 = req.files.eventFlyer;
-    var filename1 = file1.name;
-    console.log(filename1);
-    var filename2 = file2.name;
-    console.log(filename2);
 
-    var destinationPath1 = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "img",
-      "events",
-      filename1
-    );
-    var destinationPath2 = path.join(
-      __dirname,
-      "..",
-      "assets",
-      "img",
-      "events",
-      filename2
-    );
+    var filename1 = req.body.eventIcon || "/img/default.png";
+    var filename2 = req.body.eventFlyer || "/img/default.png";
 
-    file1.mv(destinationPath1, (err) => {
-      if (err) {
-        res.send(err);
-      } else {
-        file2.mv(destinationPath2, (err) => {
-          if (err) {
-            res.send(err);
-          } else {
-            console.log("Files moved successfully");
             faculty_email = req.body.facultyEmailId;
 
             sql =
@@ -287,14 +247,11 @@ router.post("/manage_event", (req, res) => {
                   console.log("Event data added successfully");
                   res.render("adminEvent.ejs", {
                     eventData: req.body.eventName,
+                    upload_care_public_key : upload_care_public_key
                   });
                 }
               );
             });
-          }
-        });
-      }
-    });
   }
 });
 
@@ -583,6 +540,7 @@ router.post("/manage_event/edit/delete", (req, res) => {
 
 router.post("/manage_department/edit/update", (req, res) => {
   var departmentId = req.body.departmentId;
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
   sql = "select * from department where id=?";
   con.query(sql, [departmentId], (err, result) => {
     if (err) throw err;
@@ -592,6 +550,7 @@ router.post("/manage_department/edit/update", (req, res) => {
       departmentName: departmentName,
       departmentIcon: departmentIcon,
       departmentId: departmentId,
+      upload_care_public_key : upload_care_public_key
     });
   });
 });
@@ -628,6 +587,7 @@ router.post("/manage_event/edit/update", (req, res) => {
   var eventId = req.body.eventId;
   console.log(eventId);
   sql = "select * from event where id=?";
+  var upload_care_public_key = process.env.UPLOAD_CARE_PUBLIC_KEY;
   con.query(sql, [eventId], (err, result) => {
     if (err) throw err;
 
@@ -675,28 +635,14 @@ router.post("/manage_event/edit/update", (req, res) => {
       hours2: hours2,
       minutes2: minutes2,
       period2: period2,
+      upload_care_public_key : upload_care_public_key
     });
   });
 });
 
 router.post("/manage_department/edit/updatedepartment", (req, res) => {
   var departmentId = req.body.departmentId;
-  var file = req.files.departmentIcon;
-  var filename = file.name;
-
-  // var destinationPath = path.join(__dirname, '..', 'assets', 'img', 'departments', req.body.departmentName+filename);
-  var destinationPath = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "img",
-    "departments",
-    filename
-  );
-  file.mv(destinationPath, (err) => {
-    if (err) {
-      res.send(err);
-    } else {
+   var filename = req.body.departmentIcon || "/img/default.png";
       console.log("File moved successfully");
       sql =
         "update department set departmentName=?, departmentIcon=? where id=?";
@@ -709,8 +655,6 @@ router.post("/manage_department/edit/updatedepartment", (req, res) => {
           res.redirect(307, "/theevent/admin/manage_department/edit");
         }
       );
-    }
-  });
 });
 
 router.post("/manage_faculty/edit/updatefaculty", (req, res) => {
@@ -753,36 +697,11 @@ router.post("/manage_event/edit/updateevent", (req, res) => {
   var eventId = req.body.eventId;
   console.log("event id " + eventId);
 
-  var file1 = req.files.eventIcon;
-  var file2 = req.files.eventFlyer;
-  var filename1 = file1.name;
-  var filename2 = file2.name;
 
-  var destinationPath1 = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "img",
-    "events",
-    filename1
-  );
-  var destinationPath2 = path.join(
-    __dirname,
-    "..",
-    "assets",
-    "img",
-    "events",
-    filename2
-  );
+    var filename1 = req.body.eventIcon || "/img/default.png";
+    var filename2 = req.body.eventFlyer || "/img/default.png";
 
-  file1.mv(destinationPath1, (err) => {
-    if (err) {
-      res.send(err);
-    } else {
-      file2.mv(destinationPath2, (err) => {
-        if (err) {
-          res.send(err);
-        } else {
+
           faculty_email = req.body.facultyEmailId;
 
           sql = "select associatedDepartment from faculty where facultyEmail=?";
@@ -834,10 +753,6 @@ router.post("/manage_event/edit/updateevent", (req, res) => {
               }
             );
           });
-        }
-      });
-    }
-  });
 });
 
 function generatePassword() {
