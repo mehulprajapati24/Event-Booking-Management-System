@@ -1789,6 +1789,36 @@ router.post("/successpayment/:eventName", verifyToken, (req, res) => {
       con.query(sql, [userId, eventId], (err, result) => {
         if (err) throw err;
         console.log("Event registered successfully");
+
+
+        var transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "mehulprajapati1661@gmail.com",
+            pass: process.env.PASS_KEY,
+          },
+        });
+      
+        var mailOptions = {
+          from: "mehulprajapati1661@gmail.com",
+          to: emailId,
+          subject: "Thank You for Participating! You Have Successfully Registered for " + eventName,
+          text:
+            "Hello " +
+            firstNAME +
+            ",\n" +
+            "Thank you for participating in "+ eventName +"! We are thrilled to confirm your successful registration.\nWe look forward to seeing you at the event and hope you have a fantastic time connecting with fellow enthusiasts. "
+        };
+      
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+
+
         res.redirect("/event/" + eventName);
       });
     });
