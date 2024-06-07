@@ -215,11 +215,11 @@
         <div class="venue_grid_container">
             <div class="venue_container">
             <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">Main building</h1>
-            <img src="/img/form-bg.jpeg" class="imageVenue">
+            <img src="/img/venue/mainbuilding.jpeg" class="imageVenue">
             </div>
             <div class="venue_container">
             <h1 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.696); width: 100%; color: white;">New building</h1>
-            <img src="/img/venue/mainbuilding.jpeg" class="imageVenue">
+            <img src="/img/form-bg.jpeg" class="imageVenue">
             </div>
             
         </div>
@@ -304,14 +304,17 @@
             </div>
         </div>
 
-        <form class="containerForm">
+        <form class="containerForm" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="acd77f4e-8265-4f57-a44d-65d54d3c5efd">
             <div class="formContainer">
-                <input type="text" placeholder="Your Name" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
-                <input type="email" placeholder="Your Email" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
-                <input type="text" placeholder="Subject" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;">
-                <textarea rows="6" cols="50" placeholder="Message" style="resize: none; width: 100%; padding-left: 6px; font-size: 14px; padding-top: 15px;"></textarea>
+                <input type="text" name="name" placeholder="Your Name" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;" required>
+                <input type="email" name="email" placeholder="Your Email" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;" required>
+                <!-- <input type="text" placeholder="Subject" style="width: 100%; height: 40px; padding-left: 6px; font-size: 14px;"> -->
+                <textarea rows="6" name="message" cols="50" placeholder="Message" style="resize: none; width: 100%; padding-left: 6px; font-size: 14px; padding-top: 15px;" required></textarea>
 
-                <input type="submit" value="Send Message" style="width: 250px; height: 30px; background-color: #F82249; border: none; border-radius: 50px; color: white; font-size: 18px; cursor: pointer;">
+                <div class="h-captcha" data-captcha="true"></div>
+                <button type="submit" style="width: 250px; height: 30px; background-color: #F82249; border: none; border-radius: 50px; color: white; font-size: 18px; cursor: pointer;">Send Message</button>
+                <!-- <input type="submit" value="Send Message" style="width: 250px; height: 30px; background-color: #F82249; border: none; border-radius: 50px; color: white; font-size: 18px; cursor: pointer;"> -->
             </div>
         </form>
     </section>
@@ -320,6 +323,7 @@
         <p style="font-size: 16px;">© Copyright TheEvent. All Rights Reserved | Designed by A|M|D</p>
     </footer>
 
+    <script src="https://web3forms.com/client/script.js" async defer></script>
     <script src="/js/user_dashboard.js"></script>
 </body>
 </html>

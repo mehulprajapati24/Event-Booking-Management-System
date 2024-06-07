@@ -113,7 +113,7 @@ router.get("/", verifyToken, (req, res) => {
 
     for (i = 0; i < result.length; i++) {
       userOriginalID.push(result[i].user_id);
-      userName.push(result[i].first_name + " " + result[0].last_name);
+      userName.push(result[i].first_name + " " + result[i].last_name);
       userEmail.push(result[i].email_id);
       userPhone.push(result[i].phone_no);
       userGender.push(result[i].gender);
@@ -177,7 +177,7 @@ router.post("/", (req, res) => {
 
     for (i = 0; i < result.length; i++) {
       userOriginalID.push(result[i].user_id);
-      userName.push(result[i].first_name + " " + result[0].last_name);
+      userName.push(result[i].first_name + " " + result[i].last_name);
       userEmail.push(result[i].email_id);
       userPhone.push(result[i].phone_no);
       userGender.push(result[i].gender);
@@ -553,7 +553,7 @@ router.post("/eventstatistics", verifyToken, (req, res) => {
 
         for (i = 0; i < result.length; i++) {
           userOriginalID.push(result[i].user_id);
-          userName.push(result[i].first_name + " " + result[0].last_name);
+          userName.push(result[i].first_name + " " + result[i].last_name);
           userEmail.push(result[i].email_id);
           userPhone.push(result[i].phone_no);
           userGender.push(result[i].gender);
